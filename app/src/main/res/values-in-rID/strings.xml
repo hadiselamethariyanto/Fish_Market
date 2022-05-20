@@ -12,4 +12,5 @@
     <string name="no">tidak</string>
     <string name="title_edit_restaurant">Edit Restoran</string>
     <string name="title_table">Meja</string>
+    <string name="empty_data">Tidak ada data</string>
 </resources>

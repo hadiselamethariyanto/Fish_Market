@@ -58,7 +58,14 @@ class RestaurantFragment : Fragment() {
         )
 
         viewModel.getRestaurant().observe(viewLifecycleOwner) {
-            restaurantAdapter.updateData(it)
+            if (it.isNotEmpty()) {
+                restaurantAdapter.updateData(it)
+                binding.rvRestaurant.visibility = View.VISIBLE
+                binding.llNoData.visibility = View.GONE
+            } else {
+                binding.rvRestaurant.visibility = View.GONE
+                binding.llNoData.visibility = View.VISIBLE
+            }
         }
 
         binding.fabAddRestaurant.setOnClickListener {

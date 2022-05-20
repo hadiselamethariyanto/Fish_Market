@@ -8,6 +8,7 @@ plugins {
 ext{
     room_version = '2.4.2'
     koin_version= '2.2.3'
+    lottie_version = '3.4.1'
 }
 
 task clean(type: Delete) {
