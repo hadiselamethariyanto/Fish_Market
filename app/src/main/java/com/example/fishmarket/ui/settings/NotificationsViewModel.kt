@@ -1,4 +1,4 @@
-package com.example.fishmarket.ui.notifications
+package com.example.fishmarket.ui.settings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -13,13 +13,32 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.fishmarket.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.example.fishmarket.ui.restaurant.RestaurantFragment"
+        android:label="@string/title_restaurant"
+        tools:layout="@layout/fragment_restaurant">
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_add_restaurant"
+            app:destination="@id/navigation_add_restaurant" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_edit_restaurant"
+            app:destination="@id/navigation_edit_restaurant" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.fishmarket.ui.notifications.NotificationsFragment"
+        android:name="com.example.fishmarket.ui.settings.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_add_restaurant"
+        android:name="com.example.fishmarket.ui.add_restaurant.AddRestaurantFragment"
+        android:label="@string/title_add_restaurant"
+        tools:layout="@layout/fragment_add_restaurant" />
+
+    <fragment
+        android:id="@+id/navigation_edit_restaurant"
+        android:name="com.example.fishmarket.ui.edit_restaurant.EditRestaurantFragment"
+        android:label="@string/title_edit_restaurant"
+        tools:layout="@layout/fragment_edit_restaurant" />
 </navigation>

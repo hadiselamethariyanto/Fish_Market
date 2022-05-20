@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fish Market</string>
+    <string name="title_home">Home</string>
+    <string name="title_restaurant">Restoran</string>
+    <string name="title_add_restaurant">Tambah Restoran</string>
+    <string name="et_name">Nama</string>
+    <string name="btn_save">Simpan</string>
+    <string name="delete_warning_message">Apakah anda yakin ingin menghapus %s?</string>
+    <string name="delete_restaurant_title">Hapus Restaurant</string>
+    <string name="yes">iya</string>
+    <string name="no">tidak</string>
+    <string name="title_edit_restaurant">Edit Restoran</string>
+    <string name="title_table">Meja</string>
+</resources>
