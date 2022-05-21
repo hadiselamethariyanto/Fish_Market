@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/navigation_table"
+    android:id="@+id/table">
+
+    <fragment
+        android:id="@+id/navigation_table"
+        android:name="com.example.fishmarket.ui.table.list_table.TableFragment"
+        android:label="@string/title_table"
+        tools:layout="@layout/fragment_table">
+        <action
+            android:id="@+id/action_navigation_table_to_navigation_add_table"
+            app:destination="@id/navigation_add_table" />
+        <action
+            android:id="@+id/action_navigation_table_to_navigation_edit_table"
+            app:destination="@id/navigation_edit_table" />
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/navigation_add_table"
+        android:name="com.example.fishmarket.ui.table.add_table.AddTableFragment"
+        android:label="@string/title_add_table"
+        tools:layout="@layout/fragment_add_table" />
+
+    <fragment
+        android:id="@+id/navigation_edit_table"
+        android:name="com.example.fishmarket.ui.table.edit_table.EditTableFragment"
+        android:label="@string/title_edit_table"
+        tools:layout="@layout/fragment_edit_table" />
+
+</navigation>

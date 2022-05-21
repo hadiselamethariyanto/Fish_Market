@@ -15,4 +15,11 @@
     <string name="empty_data">Tidak ada data</string>
     <string name="title_add_table">Tambah Meja</string>
     <string name="delete_table_title">Hapus Meja</string>
+    <string name="title_edit_table">Edit Meja</string>
+    <string name="title_add_transaction">Tambah Transaksi</string>
+    <string name="select_table">Pilih Meja</string>
+    <string name="select_restaurant">Pilih Restoran</string>
+    <string name="warning_message_select_table">Mohon pilih meja</string>
+    <string name="warning_message_select_restaurant">Mohon pilih restoran</string>
+
 </resources>

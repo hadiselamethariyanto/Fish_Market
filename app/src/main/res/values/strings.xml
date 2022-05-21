@@ -17,4 +17,12 @@
     <string name="empty_data">Empty data</string>
     <string name="title_add_table">Add Table</string>
     <string name="delete_table_title">Delete Table</string>
+    <string name="title_edit_table">Edit Table</string>
+    <string name="title_add_transaction">Add Transaction</string>
+    <string name="select_table">Select Table</string>
+    <string name="select_restaurant">Select Restaurant</string>
+    <string name="warning_message_select_table">Please select table</string>
+    <string name="warning_message_select_restaurant">Please Select Restaurant</string>
+    <string name="status_transaction" translatable="false"><![CDATA[Status: <font color="%s">%s</font>]]></string>
+    <string name="transaction_id" translatable="false">ID: %d</string>
 </resources>

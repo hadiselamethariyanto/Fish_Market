@@ -5,15 +5,19 @@ import com.example.fishmarket.data.repository.restaurant.RestaurantRepository
 import com.example.fishmarket.data.repository.restaurant.source.local.RestaurantLocalDataSource
 import com.example.fishmarket.data.repository.table.TableRepository
 import com.example.fishmarket.data.repository.table.source.local.TableLocalDataSource
+import com.example.fishmarket.data.repository.transaction.TransactionRepository
+import com.example.fishmarket.data.repository.transaction.source.local.TransactionLocalDataSource
 import com.example.fishmarket.data.source.local.FishMarketDatabase
 import com.example.fishmarket.domain.repository.IRestaurantRepository
 import com.example.fishmarket.domain.repository.ITableRepository
+import com.example.fishmarket.domain.repository.ITransactionRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val databaseModule = module {
     factory { get<FishMarketDatabase>().restaurantDao() }
     factory { get<FishMarketDatabase>().tableDao() }
+    factory { get<FishMarketDatabase>().transactionDao() }
 
     single {
         Room.databaseBuilder(
@@ -26,6 +30,9 @@ val databaseModule = module {
 val repositoryModule = module {
     single { RestaurantLocalDataSource(get()) }
     single { TableLocalDataSource(get()) }
+    single { TransactionLocalDataSource(get()) }
+
     single<IRestaurantRepository> { RestaurantRepository(get()) }
     single<ITableRepository> { TableRepository(get()) }
+    single<ITransactionRepository> { TransactionRepository(get()) }
 }
