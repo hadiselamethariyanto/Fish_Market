@@ -4,22 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.restaurant.list_restaurant.RestaurantFragment">
+    tools:context=".ui.table.list_table.TableFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvRestaurant"
+        android:id="@+id/rvTable"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        tools:listitem="@layout/item_table" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddRestaurant"
+        android:id="@+id/fabAddTable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -45,7 +41,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             app:lottie_autoPlay="true"
-            app:lottie_fileName="restaurant.json"
+            app:lottie_fileName="table_food.json"
             app:lottie_loop="true" />
 
         <TextView
@@ -58,4 +54,5 @@
             android:textSize="14sp" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

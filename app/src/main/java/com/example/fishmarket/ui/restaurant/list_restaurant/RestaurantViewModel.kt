@@ -1,4 +1,4 @@
-package com.example.fishmarket.ui.restaurant
+package com.example.fishmarket.ui.restaurant.list_restaurant
 
 import androidx.lifecycle.*
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity

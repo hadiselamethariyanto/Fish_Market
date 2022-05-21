@@ -1,4 +1,4 @@
-package com.example.fishmarket.ui.restaurant
+package com.example.fishmarket.ui.restaurant.list_restaurant
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

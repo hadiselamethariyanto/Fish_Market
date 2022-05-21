@@ -13,4 +13,6 @@
     <string name="title_edit_restaurant">Edit Restoran</string>
     <string name="title_table">Meja</string>
     <string name="empty_data">Tidak ada data</string>
+    <string name="title_add_table">Tambah Meja</string>
+    <string name="delete_table_title">Hapus Meja</string>
 </resources>

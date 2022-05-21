@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".ui.restaurant.add_restaurant.AddRestaurantFragment">
+    tools:context=".ui.table.add_table.AddTableFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilName"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/etRestaurantName"
+            android:id="@+id/etTableName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/et_name"
@@ -37,6 +37,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tilName" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

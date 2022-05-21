@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.fishmarket.ui.restaurant.RestaurantFragment"
+        android:name="com.example.fishmarket.ui.restaurant.list_restaurant.RestaurantFragment"
         android:label="@string/title_restaurant"
         tools:layout="@layout/fragment_restaurant">
         <action
@@ -25,20 +25,40 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.fishmarket.ui.settings.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_table"
+        android:name="com.example.fishmarket.ui.table.list_table.TableFragment"
+        android:label="@string/title_table"
+        tools:layout="@layout/fragment_table">
+        <action
+            android:id="@+id/action_navigation_table_to_navigation_add_table"
+            app:destination="@id/navigation_add_table" />
+        <action
+            android:id="@+id/action_navigation_table_to_navigation_edit_table"
+            app:destination="@id/navigation_edit_table" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_add_restaurant"
-        android:name="com.example.fishmarket.ui.add_restaurant.AddRestaurantFragment"
+        android:name="com.example.fishmarket.ui.restaurant.add_restaurant.AddRestaurantFragment"
         android:label="@string/title_add_restaurant"
         tools:layout="@layout/fragment_add_restaurant" />
 
     <fragment
         android:id="@+id/navigation_edit_restaurant"
-        android:name="com.example.fishmarket.ui.edit_restaurant.EditRestaurantFragment"
+        android:name="com.example.fishmarket.ui.restaurant.edit_restaurant.EditRestaurantFragment"
         android:label="@string/title_edit_restaurant"
         tools:layout="@layout/fragment_edit_restaurant" />
+
+    <fragment
+        android:id="@+id/navigation_add_table"
+        android:name="com.example.fishmarket.ui.table.add_table.AddTableFragment"
+        android:label="@string/title_add_table"
+        tools:layout="@layout/fragment_add_table" />
+
+    <fragment
+        android:id="@+id/navigation_edit_table"
+        android:name="com.example.fishmarket.ui.table.edit_table.EditTableFragment"
+        android:label=""
+        tools:layout="@layout/fragment_edit_table"/>
+
 </navigation>

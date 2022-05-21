@@ -12,7 +12,7 @@
         android:title="@string/title_restaurant" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_table"
         android:icon="@drawable/ic_table"
         android:title="@string/title_table" />
 

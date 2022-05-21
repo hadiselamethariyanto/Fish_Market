@@ -1,27 +1,27 @@
-package com.example.fishmarket.ui.add_restaurant
+package com.example.fishmarket.ui.table.add_table
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
-import com.example.fishmarket.databinding.FragmentAddRestaurantBinding
+import com.example.fishmarket.R
+import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
+import com.example.fishmarket.databinding.FragmentAddTableBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class AddRestaurantFragment : Fragment() {
+class AddTableFragment : Fragment() {
 
-    private var _binding: FragmentAddRestaurantBinding? = null
+    private var _binding: FragmentAddTableBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: AddRestaurantViewModel by viewModel()
+    private val viewModel: AddTableViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddRestaurantBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentAddTableBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -29,12 +29,15 @@ class AddRestaurantFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.isSuccess.observe(viewLifecycleOwner) {
-            findNavController().navigateUp()
+            if (it > 0) {
+                findNavController().navigateUp()
+            }
         }
 
         binding.btnSave.setOnClickListener {
-            val name = binding.etRestaurantName.text.toString()
-            viewModel.addRestaurant(RestaurantEntity(name = name, id = 0))
+            val name = binding.etTableName.text.toString()
+            val table = TableEntity(id = 0, name = name)
+            viewModel.addTable(table)
         }
     }
 
@@ -42,5 +45,6 @@ class AddRestaurantFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
 
 }

@@ -15,4 +15,6 @@
     <string name="title_edit_restaurant">Edit Restaurant</string>
     <string name="title_table">Table</string>
     <string name="empty_data">Empty data</string>
+    <string name="title_add_table">Add Table</string>
+    <string name="delete_table_title">Delete Table</string>
 </resources>
