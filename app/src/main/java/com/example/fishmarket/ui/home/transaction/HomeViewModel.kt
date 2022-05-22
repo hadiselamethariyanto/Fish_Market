@@ -20,7 +20,7 @@ class HomeViewModel(
     fun changeStatusTransaction(id: Int, status: Int, idTable: Int) = viewModelScope.launch {
         _isSuccessUpdate.value = transactionRepository.changeStatusTransaction(id, status)
         val finishedDate = System.currentTimeMillis()
-        if (status == 3) {
+        if (status == 4) {
             transactionRepository.setFinishedTransaction(id, finishedDate)
             transactionRepository.setStatusTable(false, idTable)
         } else {

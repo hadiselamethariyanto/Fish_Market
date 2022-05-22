@@ -36,7 +36,7 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         val changeStatusAdapter = ChangeStatusTransactionAdapter(requireActivity())
 
         binding.rvStatus.adapter = changeStatusAdapter
-        binding.rvStatus.layoutManager = GridLayoutManager(requireActivity(), 3)
+        binding.rvStatus.layoutManager = GridLayoutManager(requireActivity(), 4)
 
         homeViewModel.getStatusTransaction().observe(viewLifecycleOwner) {
             changeStatusAdapter.updateData(it)

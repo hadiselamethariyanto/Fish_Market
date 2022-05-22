@@ -48,15 +48,22 @@ val databaseModule = module {
                 cv2.put("name", "dibakar")
                 cv2.put("icon", icon2)
 
-                val icon3 = R.drawable.ic_payment
+                val icon3 = R.drawable.ic_served
                 val cv3 = ContentValues()
                 cv3.put("id", 3)
-                cv3.put("name", "dibayar")
+                cv3.put("name", "disajikan")
                 cv3.put("icon", icon3)
+
+                val icon4 = R.drawable.ic_payment
+                val cv4 = ContentValues()
+                cv4.put("id", 4)
+                cv4.put("name", "dibayar")
+                cv4.put("icon", icon4)
 
                 db.insert("status_transaction", SQLiteDatabase.CONFLICT_IGNORE, contentValues)
                 db.insert("status_transaction", SQLiteDatabase.CONFLICT_IGNORE, cv2)
                 db.insert("status_transaction", SQLiteDatabase.CONFLICT_IGNORE, cv3)
+                db.insert("status_transaction", SQLiteDatabase.CONFLICT_IGNORE, cv4)
             }
         })
             .fallbackToDestructiveMigration().build()
