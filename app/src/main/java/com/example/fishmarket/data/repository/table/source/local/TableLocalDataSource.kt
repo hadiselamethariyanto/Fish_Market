@@ -12,5 +12,7 @@ class TableLocalDataSource(private val tableDao: TableDao) {
 
     fun getTable(id: String) = tableDao.getTable(id)
 
+    fun getAvailableTable() = tableDao.getAvailableTable()
+
     fun getTables() = tableDao.getTables()
 }

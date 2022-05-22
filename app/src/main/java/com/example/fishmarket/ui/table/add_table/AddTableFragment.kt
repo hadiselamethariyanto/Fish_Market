@@ -35,7 +35,7 @@ class AddTableFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val name = binding.etTableName.text.toString()
-            val table = TableEntity(id = 0, name = name)
+            val table = TableEntity(id = 0, name = name,status = false)
             viewModel.addTable(table)
         }
     }

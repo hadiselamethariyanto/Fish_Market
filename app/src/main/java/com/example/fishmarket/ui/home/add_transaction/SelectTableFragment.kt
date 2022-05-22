@@ -19,7 +19,6 @@ class SelectTableFragment : DialogFragment() {
 
     private var _binding: DialogSelectTableBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: TableViewModel by viewModel()
     private val addTransactionViewModel: AddTransactionViewModel by koinNavGraphViewModel(R.id.transaction)
 
     override fun onCreateView(
@@ -38,7 +37,7 @@ class SelectTableFragment : DialogFragment() {
         binding.rvTable.adapter = tableAdapter
         binding.rvTable.layoutManager = GridLayoutManager(requireActivity(), 3)
 
-        viewModel.getTables().observe(viewLifecycleOwner) {
+        addTransactionViewModel.getAvailableTable().observe(viewLifecycleOwner) {
             tableAdapter.updateData(it)
         }
 

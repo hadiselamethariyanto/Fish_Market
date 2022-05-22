@@ -57,11 +57,11 @@ class SelectRestaurantAdapter : RecyclerView.Adapter<SelectRestaurantAdapter.Vie
             binding.tvRestaurant.text = restaurant.name
             itemView.setOnClickListener {
                 selectedItemPos = adapterPosition
-                if (lastItemSelectedPos == -1) {
-                    lastItemSelectedPos = selectedItemPos
+                lastItemSelectedPos = if (lastItemSelectedPos == -1) {
+                    selectedItemPos
                 } else {
                     notifyItemChanged(lastItemSelectedPos)
-                    lastItemSelectedPos = selectedItemPos
+                    selectedItemPos
                 }
                 notifyItemChanged(selectedItemPos)
             }

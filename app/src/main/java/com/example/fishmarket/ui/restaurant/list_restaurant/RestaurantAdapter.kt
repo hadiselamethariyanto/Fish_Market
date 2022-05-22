@@ -1,38 +1,50 @@
 package com.example.fishmarket.ui.restaurant.list_restaurant
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
+import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantWithTransactionEntity
 import com.example.fishmarket.databinding.ItemRestaurantBinding
 
-class RestaurantAdapter : RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
+class RestaurantAdapter(private val context: Context) :
+    RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
 
-    private val list = ArrayList<RestaurantEntity>()
+    private val list = ArrayList<RestaurantWithTransactionEntity>()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun updateData(new: List<RestaurantEntity>) {
+    fun updateData(new: List<RestaurantWithTransactionEntity>) {
         list.clear()
         list.addAll(new)
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val binding: ItemRestaurantBinding) :
+    inner class ViewHolder(private val binding: ItemRestaurantBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindItem(restaurant: RestaurantEntity, onItemClickCallback: OnItemClickCallback) {
-            binding.tvRestaurantName.text = restaurant.name
+        fun bindItem(
+            restaurant: RestaurantWithTransactionEntity,
+            onItemClickCallback: OnItemClickCallback
+        ) {
+            binding.tvRestaurantName.text = restaurant.restaurant.name
+
+            val restaurantTransactionAdapter = RestaurantTransactionAdapter(restaurant.transaction)
+            binding.rvTransactions.adapter = restaurantTransactionAdapter
+            binding.rvTransactions.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
             itemView.setOnLongClickListener {
-                onItemClickCallback.onItemLongClicked(restaurant)
+                onItemClickCallback.onItemLongClicked(restaurant.restaurant)
                 true
             }
 
             itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(restaurant)
+                onItemClickCallback.onItemClicked(restaurant.restaurant)
             }
 
         }

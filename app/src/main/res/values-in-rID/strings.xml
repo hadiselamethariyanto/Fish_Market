@@ -21,5 +21,6 @@
     <string name="select_restaurant">Pilih Restoran</string>
     <string name="warning_message_select_table">Mohon pilih meja</string>
     <string name="warning_message_select_restaurant">Mohon pilih restoran</string>
+    <string name="btn_select">Pilih</string>
 
 </resources>

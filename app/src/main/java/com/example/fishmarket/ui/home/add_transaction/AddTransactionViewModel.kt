@@ -1,16 +1,17 @@
 package com.example.fishmarket.ui.home.add_transaction
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
+import com.example.fishmarket.domain.repository.ITableRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
 import kotlinx.coroutines.launch
 
-class AddTransactionViewModel(private val repository: ITransactionRepository) : ViewModel() {
+class AddTransactionViewModel(
+    private val repository: ITransactionRepository,
+    private val tableRepository: ITableRepository
+) : ViewModel() {
 
     private var _isSuccess = MutableLiveData<Long>()
     val isSuccess: LiveData<Long> get() = _isSuccess
@@ -44,12 +45,16 @@ class AddTransactionViewModel(private val repository: ITransactionRepository) : 
             id_table = idTable ?: 0,
             id_restaurant = idRestaurant ?: 0,
             created_date = createdDate,
-            status = status
+            status = status,
+            finished_date = 0
         )
 
         viewModelScope.launch {
             _isSuccess.value = repository.addTransaction(transaction)
+            repository.setStatusTable(true, idTable ?: 0)
         }
 
     }
+
+    fun getAvailableTable() = tableRepository.getAvailableTable().asLiveData()
 }

@@ -29,6 +29,8 @@ class EditTableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val id = arguments?.getInt("id")
+        val status = arguments?.getBoolean("status")
+
         getTable(id.toString())
 
         viewModel.isSuccess.observe(viewLifecycleOwner) {
@@ -39,7 +41,7 @@ class EditTableFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val name = binding.etTableName.text.toString()
-            val table = TableEntity(id = id ?: 0, name = name)
+            val table = TableEntity(id = id ?: 0, name = name, status = status ?: false)
             viewModel.updateTable(table)
         }
     }

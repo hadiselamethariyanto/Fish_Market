@@ -2,6 +2,7 @@ package com.example.fishmarket.data.repository.restaurant
 
 import com.example.fishmarket.data.repository.restaurant.source.local.RestaurantLocalDataSource
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
+import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantWithTransactionEntity
 import com.example.fishmarket.domain.repository.IRestaurantRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -16,6 +17,9 @@ class RestaurantRepository(private val localDataSource: RestaurantLocalDataSourc
 
     override suspend fun updateRestaurant(restaurantEntity: RestaurantEntity) =
         localDataSource.updateRestaurant(restaurantEntity)
+
+    override suspend fun getRestaurantWithTransaction(): List<RestaurantWithTransactionEntity> =
+        localDataSource.getRestaurantWithTransaction()
 
     override fun getRestaurant(): Flow<List<RestaurantEntity>> = localDataSource.getRestaurant()
 

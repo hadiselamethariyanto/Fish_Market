@@ -33,7 +33,7 @@ class RestaurantFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val restaurantAdapter = RestaurantAdapter()
+        val restaurantAdapter = RestaurantAdapter(requireActivity())
         restaurantAdapter.setOnItemClickCallback(object : RestaurantAdapter.OnItemClickCallback {
             override fun onItemLongClicked(restaurant: RestaurantEntity) {
                 setAlertDialog(restaurant)
@@ -57,7 +57,9 @@ class RestaurantFragment : Fragment() {
             )
         )
 
-        viewModel.getRestaurant().observe(viewLifecycleOwner) {
+        viewModel.getRestaurantWithTransaction()
+
+        viewModel.restaurantWithTransaction.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 restaurantAdapter.updateData(it)
                 binding.rvRestaurant.visibility = View.VISIBLE

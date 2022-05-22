@@ -3,15 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/background_change_status_transaction.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/background_change_status_transaction_selected.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/background_restaurant_transaction.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_table_transaction.xml" value="0.1235" />
         <entry key="app/src/main/res/drawable/circle_highlighted_table.xml" value="0.1095" />
         <entry key="app/src/main/res/drawable/circle_not_highlicted_table.xml" value="0.1095" />
         <entry key="app/src/main/res/drawable/circle_table.xml" value="0.1095" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1095" />
+        <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1095" />
+        <entry key="app/src/main/res/drawable/ic_dibersihkan.xml" value="0.1095" />
+        <entry key="app/src/main/res/drawable/ic_dibersihkan_white.xml" value="0.1085" />
         <entry key="app/src/main/res/drawable/ic_store.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/ic_store_white.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/ic_table.xml" value="0.1095" />
         <entry key="app/src/main/res/drawable/ic_table_white.xml" value="0.1085" />
         <entry key="app/src/main/res/drawable/ic_table_white_12.xml" value="0.1235" />
+        <entry key="app/src/main/res/drawable/logo_fish.xml" value="0.1085" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_change_status.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_change_status_transaction.xml" value="0.1" />
@@ -27,6 +35,7 @@
         <entry key="app/src/main/res/layout/fragment_table.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_change_status_transaction.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_restaurant.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_restaurant_transaction.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_select_restaurant.xml" value="0.182518115942029" />
         <entry key="app/src/main/res/layout/item_select_table.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_table.xml" value="0.1" />

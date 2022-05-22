@@ -13,7 +13,16 @@ interface TransactionDao {
     @Insert
     suspend fun addTransaction(transaction: TransactionEntity): Long
 
-    @Query("SELECT t.id,t.created_date,t.status,r.name as restaurant, tr.name as `table` FROM `transaction` t INNER JOIN restaurant r ON t.id_restaurant = r.id INNER JOIN table_restaurant tr ON t.id_table = tr.id ORDER by created_date DESC")
+    @Query("SELECT t.id,t.created_date,t.status,r.name as restaurant, tr.name as `table`,t.id_table FROM `transaction` t INNER JOIN restaurant r ON t.id_restaurant = r.id INNER JOIN table_restaurant tr ON t.id_table = tr.id ORDER by created_date DESC")
     fun getTransactions(): Flow<List<TransactionHomeEntity>>
+
+    @Query("UPDATE `transaction` SET status =:status WHERE id=:id")
+    suspend fun changeStatusTransaction(id: Int, status: Int): Int
+
+    @Query("UPDATE `transaction` SET finished_date =:finished_date WHERE id=:id")
+    suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int
+
+    @Query("UPDATE table_restaurant SET status =:status WHERE id=:id")
+    suspend fun setStatusTable(status: Boolean, id: Int)
 
 }

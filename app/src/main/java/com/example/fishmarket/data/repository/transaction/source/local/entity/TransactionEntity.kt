@@ -10,5 +10,6 @@ data class TransactionEntity(
     @ColumnInfo(name = "id_table") val id_table: Int,
     @ColumnInfo(name = "id_restaurant") val id_restaurant: Int,
     @ColumnInfo(name = "created_date") val created_date: Long,
-    @ColumnInfo(name = "status") val status:Int
+    @ColumnInfo(name = "finished_date") val finished_date: Long,
+    @ColumnInfo(name = "status") val status: Int
 )

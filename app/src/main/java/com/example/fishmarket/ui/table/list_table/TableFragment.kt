@@ -48,7 +48,7 @@ class TableFragment : Fragment() {
             }
 
             override fun onItemClicked(table: TableEntity) {
-                val bundle = bundleOf("id" to table.id)
+                val bundle = bundleOf("id" to table.id, "status" to table.status)
                 findNavController().navigate(
                     R.id.action_navigation_table_to_navigation_edit_table,
                     bundle

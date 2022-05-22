@@ -15,6 +15,8 @@ class TableRepository(private val localDataSource: TableLocalDataSource) : ITabl
 
     override fun getTables(): Flow<List<TableEntity>> = localDataSource.getTables()
 
+    override fun getAvailableTable(): Flow<List<TableEntity>> = localDataSource.getAvailableTable()
+
     override fun getTable(id: String): Flow<TableEntity> = localDataSource.getTable(id)
 
 

@@ -12,5 +12,7 @@ interface ITableRepository {
 
     fun getTables(): Flow<List<TableEntity>>
 
+    fun getAvailableTable():Flow<List<TableEntity>>
+
     fun getTable(id: String): Flow<TableEntity>
 }

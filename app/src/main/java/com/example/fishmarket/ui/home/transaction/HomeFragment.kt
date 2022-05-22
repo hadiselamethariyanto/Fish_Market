@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.R
@@ -32,13 +33,30 @@ class HomeFragment : Fragment() {
         val transactionAdapter = TransactionAdapter(requireActivity())
         transactionAdapter.setOnItemClickCallback(object : TransactionAdapter.OnItemClickCallback {
             override fun onItemClicked(transaction: TransactionHomeEntity) {
-                findNavController().navigate(R.id.action_navigation_home_to_navigation_dialog_change_status_transaction)
+                if (transaction.status != 3) {
+                    val bundle = bundleOf(
+                        "status" to transaction.status,
+                        "id" to transaction.id,
+                        "id_table" to transaction.id_table
+                    )
+                    findNavController().navigate(
+                        R.id.action_navigation_home_to_navigation_dialog_change_status_transaction,
+                        bundle
+                    )
+                }
             }
         })
         binding.rvTransactions.adapter = transactionAdapter
 
         viewModel.getTransactions().observe(viewLifecycleOwner) {
-            transactionAdapter.updateData(it)
+            if (it.isNotEmpty()) {
+                binding.rvTransactions.visibility = View.VISIBLE
+                binding.llNoData.visibility = View.GONE
+                transactionAdapter.updateData(it)
+            } else {
+                binding.rvTransactions.visibility = View.GONE
+                binding.llNoData.visibility = View.VISIBLE
+            }
         }
 
         binding.fabAddTransaction.setOnClickListener {

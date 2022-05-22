@@ -42,7 +42,7 @@ class AddTransactionFragment : Fragment() {
         viewModel.isSuccess.observe(viewLifecycleOwner) {
             if (it > 0) {
                 viewModel.setRestaurant(RestaurantEntity(id = 0, name = ""))
-                viewModel.setTable(TableEntity(id = 0, name = ""))
+                viewModel.setTable(TableEntity(id = 0, name = "",status = false))
                 viewModel.resetIsSuccess()
                 findNavController().navigateUp()
             }
@@ -71,9 +71,7 @@ class AddTransactionFragment : Fragment() {
         }
     }
 
-    fun showToast(message: String) {
-        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-    }
+
 
 
 }

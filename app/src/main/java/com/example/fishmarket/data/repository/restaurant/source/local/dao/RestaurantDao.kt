@@ -2,6 +2,7 @@ package com.example.fishmarket.data.repository.restaurant.source.local.dao
 
 import androidx.room.*
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
+import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantWithTransactionEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -21,5 +22,9 @@ interface RestaurantDao {
 
     @Query("SELECT * FROM restaurant WHERE id=:id")
     fun getRestaurant(id: String): Flow<RestaurantEntity>
+
+    @Transaction
+    @Query("SELECT * FROM `restaurant`")
+    suspend fun getRestaurantWithTransaction(): List<RestaurantWithTransactionEntity>
 
 }
