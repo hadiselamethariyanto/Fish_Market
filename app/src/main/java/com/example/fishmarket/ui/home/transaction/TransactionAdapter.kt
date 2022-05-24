@@ -72,6 +72,22 @@ class TransactionAdapter(private val context: Context) :
                         ), HtmlCompat.FROM_HTML_MODE_LEGACY
                     )
                 }
+                3 ->{
+                    val colorHex = "#" + Integer.toHexString(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.indigo_500
+                        ) and 0x00ffffff
+                    )
+
+                    binding.tvStatus.text = HtmlCompat.fromHtml(
+                        context.resources.getString(
+                            R.string.status_transaction,
+                            colorHex,
+                            "Disajikan"
+                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                    )
+                }
                 else -> {
                     val colorHex = "#" + Integer.toHexString(
                         ContextCompat.getColor(

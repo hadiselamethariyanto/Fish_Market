@@ -10,6 +10,8 @@ interface ITransactionRepository {
 
     suspend fun changeStatusTransaction(id: Int, status: Int): Int
 
+    suspend fun updateRestaurantTransaction(id: Int, id_restaurant: Int): Int
+
     suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int
 
     suspend fun setStatusTable(status: Boolean, id: Int)

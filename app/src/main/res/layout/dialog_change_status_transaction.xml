@@ -15,6 +15,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tvSelectRestaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/select_restaurant"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvStatus" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRestaurant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tvSelectRestaurant" />
+
     <Button
         android:id="@+id/btnSave"
         style="@style/Widget.MaterialComponents.Button"
@@ -28,6 +52,6 @@
         android:text="@string/btn_select"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rvStatus" />
+        app:layout_constraintTop_toBottomOf="@id/rvRestaurant" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

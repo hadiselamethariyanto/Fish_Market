@@ -15,6 +15,9 @@ class TransactionRepository(private val localDataSource: TransactionLocalDataSou
     override suspend fun changeStatusTransaction(id: Int, status: Int): Int =
         localDataSource.changeStatusTransaction(id, status)
 
+    override suspend fun updateRestaurantTransaction(id: Int, id_restaurant: Int): Int =
+        localDataSource.updateRestaurantTransaction(id, id_restaurant)
+
     override suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int =
         localDataSource.setFinishedTransaction(id, finished_date)
 

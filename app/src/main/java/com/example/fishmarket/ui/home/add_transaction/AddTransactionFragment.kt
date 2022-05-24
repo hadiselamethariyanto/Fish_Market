@@ -60,11 +60,8 @@ class AddTransactionFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val table = binding.etTable.text.toString()
-            val restaurant = binding.etRestaurant.text.toString()
             if (table == "") {
                 binding.etTable.error = ""
-            } else if (restaurant == "") {
-                binding.etRestaurant.error = ""
             } else {
                 viewModel.addTransaction()
             }

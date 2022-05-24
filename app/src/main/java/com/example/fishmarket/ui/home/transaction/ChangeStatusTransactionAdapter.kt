@@ -16,7 +16,11 @@ class ChangeStatusTransactionAdapter(private val context: Context) :
     private val list = ArrayList<StatusTransactionEntity>()
     var selectedItemPos = -1
     var lastItemSelectedPos = -1
+    private lateinit var onItemClickCallback: OnItemClickCallback
 
+    fun setOnItemClickCallBack(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
 
     fun updateData(new: List<StatusTransactionEntity>) {
         list.clear()
@@ -63,7 +67,7 @@ class ChangeStatusTransactionAdapter(private val context: Context) :
             binding.tvStatus.setTextColor(ContextCompat.getColor(context, R.color.black))
         }
 
-        fun bindItem(status: StatusTransactionEntity) {
+        fun bindItem(status: StatusTransactionEntity, onItemClickCallback: OnItemClickCallback) {
             binding.tvStatus.text = status.name
             binding.ivIcon.setImageResource(status.icon)
 
@@ -76,6 +80,7 @@ class ChangeStatusTransactionAdapter(private val context: Context) :
                     selectedItemPos
                 }
                 notifyItemChanged(selectedItemPos)
+                onItemClickCallback.onItemClicked(status.id)
             }
         }
     }
@@ -95,8 +100,12 @@ class ChangeStatusTransactionAdapter(private val context: Context) :
         } else {
             holder.unSelectedBg()
         }
-        holder.bindItem(list[position])
+        holder.bindItem(list[position], onItemClickCallback)
     }
 
     override fun getItemCount() = list.size
+
+    interface OnItemClickCallback {
+        fun onItemClicked(id: Int)
+    }
 }

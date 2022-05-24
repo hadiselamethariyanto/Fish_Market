@@ -19,5 +19,5 @@ val viewModelModule = module {
     viewModel { TableViewModel(get()) }
     viewModel { EditTableViewModel(get()) }
     viewModel { AddTransactionViewModel(get(), get()) }
-    viewModel { HomeViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
 }

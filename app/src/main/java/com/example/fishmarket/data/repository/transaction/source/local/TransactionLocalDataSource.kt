@@ -14,6 +14,9 @@ class TransactionLocalDataSource(private val transactionDao: TransactionDao) {
     suspend fun changeStatusTransaction(id: Int, status: Int): Int =
         transactionDao.changeStatusTransaction(id, status)
 
+    suspend fun updateRestaurantTransaction(id: Int, id_restaurant: Int): Int =
+        transactionDao.updateRestaurantTransaction(id, id_restaurant)
+
     suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int =
         transactionDao.setFinishedTransaction(id, finished_date)
 

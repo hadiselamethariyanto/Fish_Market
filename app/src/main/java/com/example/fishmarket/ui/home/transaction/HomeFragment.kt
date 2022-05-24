@@ -33,11 +33,12 @@ class HomeFragment : Fragment() {
         val transactionAdapter = TransactionAdapter(requireActivity())
         transactionAdapter.setOnItemClickCallback(object : TransactionAdapter.OnItemClickCallback {
             override fun onItemClicked(transaction: TransactionHomeEntity) {
-                if (transaction.status != 3) {
+                if (transaction.status != 4) {
                     val bundle = bundleOf(
                         "status" to transaction.status,
                         "id" to transaction.id,
-                        "id_table" to transaction.id_table
+                        "id_table" to transaction.id_table,
+                        "id_restaurant" to transaction.id_restaurant
                     )
                     findNavController().navigate(
                         R.id.action_navigation_home_to_navigation_dialog_change_status_transaction,
