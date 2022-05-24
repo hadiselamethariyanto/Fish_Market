@@ -11,8 +11,8 @@ class TransactionLocalDataSource(private val transactionDao: TransactionDao) {
 
     fun getTransactions(): Flow<List<TransactionHomeEntity>> = transactionDao.getTransactions()
 
-    suspend fun changeStatusTransaction(id: Int, status: Int): Int =
-        transactionDao.changeStatusTransaction(id, status)
+    suspend fun changeStatusTransaction(transaction: TransactionEntity): Int =
+        transactionDao.changeStatusTransaction(transaction)
 
     suspend fun updateRestaurantTransaction(id: Int, id_restaurant: Int): Int =
         transactionDao.updateRestaurantTransaction(id, id_restaurant)

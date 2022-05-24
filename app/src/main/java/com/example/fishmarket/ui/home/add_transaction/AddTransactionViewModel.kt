@@ -45,6 +45,8 @@ class AddTransactionViewModel(
             id_table = idTable ?: 0,
             id_restaurant = idRestaurant ?: 0,
             created_date = createdDate,
+            dibakar_date = 0,
+            disajikan_date = 0,
             status = status,
             finished_date = 0
         )

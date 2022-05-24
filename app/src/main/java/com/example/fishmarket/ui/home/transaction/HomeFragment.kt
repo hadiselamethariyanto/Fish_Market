@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.databinding.FragmentHomeBinding
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -34,12 +35,12 @@ class HomeFragment : Fragment() {
         transactionAdapter.setOnItemClickCallback(object : TransactionAdapter.OnItemClickCallback {
             override fun onItemClicked(transaction: TransactionHomeEntity) {
                 if (transaction.status != 4) {
+                    val json = Gson().toJson(transaction)
+
                     val bundle = bundleOf(
-                        "status" to transaction.status,
-                        "id" to transaction.id,
-                        "id_table" to transaction.id_table,
-                        "id_restaurant" to transaction.id_restaurant
+                        "transaction" to json
                     )
+
                     findNavController().navigate(
                         R.id.action_navigation_home_to_navigation_dialog_change_status_transaction,
                         bundle

@@ -8,7 +8,7 @@ interface ITransactionRepository {
 
     suspend fun addTransaction(transactionEntity: TransactionEntity): Long
 
-    suspend fun changeStatusTransaction(id: Int, status: Int): Int
+    suspend fun changeStatusTransaction(transactionEntity: TransactionEntity): Int
 
     suspend fun updateRestaurantTransaction(id: Int, id_restaurant: Int): Int
 

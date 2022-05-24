@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fishmarket.R
+import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.databinding.DialogChangeStatusTransactionBinding
 import com.example.fishmarket.ui.home.add_transaction.SelectRestaurantAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.gson.Gson
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
@@ -30,11 +32,8 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val status = arguments?.getInt("status")
-        val id = arguments?.getInt("id")
-        val idTable = arguments?.getInt("id_table") ?: 0
-        val idRestaurant = arguments?.getInt("id_restaurant") ?: 0
+        val json = arguments?.getString("transaction")
+        val transaction = Gson().fromJson(json, TransactionHomeEntity::class.java)
 
         val changeStatusAdapter = ChangeStatusTransactionAdapter(requireActivity())
 
@@ -58,16 +57,14 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
 
         homeViewModel.getRestaurant().observe(viewLifecycleOwner) {
             restaurantAdapter.updateData(it)
-            restaurantAdapter.selectRestaurant(idRestaurant)
+            restaurantAdapter.selectRestaurant(transaction.id_restaurant)
         }
 
         binding.rvStatus.layoutManager = GridLayoutManager(requireActivity(), 4)
 
         homeViewModel.getStatusTransaction().observe(viewLifecycleOwner) {
             changeStatusAdapter.updateData(it)
-            if (status != null) {
-                changeStatusAdapter.selectStatus(status)
-            }
+            changeStatusAdapter.selectStatus(transaction.status)
         }
 
         homeViewModel.isSuccessUpdate.observe(viewLifecycleOwner) {
@@ -79,7 +76,13 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
 
         binding.btnSave.setOnClickListener {
             val newStatus = changeStatusAdapter.getStatus()
-            if (id != null) {
+            if (newStatus > transaction.status + 1) {
+                Toast.makeText(
+                    requireActivity(),
+                    resources.getString(R.string.warning_select_progress),
+                    Toast.LENGTH_LONG
+                ).show()
+            }else{
                 if (newStatus == 2) {
                     if (restaurantAdapter.getSelectedPosition() == -1) {
                         Toast.makeText(
@@ -89,10 +92,14 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
                         ).show()
                     } else {
                         val restaurant = restaurantAdapter.getSelectedRestaurant()
-                        homeViewModel.changeStatusTransaction(id, newStatus, idTable, restaurant.id)
+                        homeViewModel.changeStatusTransaction(
+                            transaction,
+                            newStatus,
+                            restaurant.id
+                        )
                     }
                 } else {
-                    homeViewModel.changeStatusTransaction(id, newStatus, idTable, 0)
+                    homeViewModel.changeStatusTransaction(transaction, newStatus, 0)
                 }
             }
         }

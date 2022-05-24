@@ -1,6 +1,8 @@
 package com.example.fishmarket.ui.home.transaction
 
 import androidx.lifecycle.*
+import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
+import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.domain.repository.IRestaurantRepository
 import com.example.fishmarket.domain.repository.IStatusTransactionRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
@@ -19,23 +21,60 @@ class HomeViewModel(
 
     fun getStatusTransaction() = statusRepository.getStatusTransaction().asLiveData()
 
-    fun changeStatusTransaction(id: Int, status: Int, idTable: Int, idRestaurant: Int) =
+    fun changeStatusTransaction(
+        transaction: TransactionHomeEntity,
+        newStatus: Int,
+        idRestaurant: Int
+    ) =
         viewModelScope.launch {
-            _isSuccessUpdate.value = transactionRepository.changeStatusTransaction(id, status)
+            val dataTransactionUpdate = TransactionEntity(
+                id = transaction.id,
+                id_table = transaction.id_table,
+                id_restaurant = transaction.id_restaurant,
+                created_date = transaction.created_date,
+                dibakar_date = transaction.dibakar_date,
+                disajikan_date = transaction.disajikan_date,
+                finished_date = transaction.finished_date,
+                status = newStatus
+            )
+
             val finishedDate = System.currentTimeMillis()
-            when (status) {
+            when (newStatus) {
                 4 -> {
-                    transactionRepository.setFinishedTransaction(id, finishedDate)
-                    transactionRepository.setStatusTable(false, idTable)
+                    dataTransactionUpdate.finished_date = finishedDate
+                    transactionRepository.setStatusTable(false, transaction.id_table)
+                }
+                3 -> {
+                    if (transaction.status > newStatus){
+                        dataTransactionUpdate.disajikan_date = 0
+                    }
+
+                    dataTransactionUpdate.disajikan_date = finishedDate
+                    transactionRepository.setStatusTable(true, transaction.id_table)
                 }
                 2 -> {
-                    transactionRepository.updateRestaurantTransaction(id, idRestaurant)
-                    transactionRepository.setStatusTable(true, idTable)
+                    if (transaction.status > newStatus){
+                        dataTransactionUpdate.finished_date = 0
+                        dataTransactionUpdate.disajikan_date = 0
+                    }
+
+                    dataTransactionUpdate.dibakar_date = finishedDate
+                    dataTransactionUpdate.id_restaurant = idRestaurant
+                    transactionRepository.setStatusTable(true, transaction.id_table)
                 }
-                else -> {
-                    transactionRepository.setStatusTable(true, idTable)
+                1 -> {
+                    if (transaction.status > newStatus) {
+                        dataTransactionUpdate.finished_date = 0
+                        dataTransactionUpdate.disajikan_date = 0
+                        dataTransactionUpdate.dibakar_date = 0
+                    }
+                    dataTransactionUpdate.created_date = finishedDate
+                    transactionRepository.setStatusTable(true, transaction.id_table)
                 }
             }
+            _isSuccessUpdate.value =
+                transactionRepository.changeStatusTransaction(dataTransactionUpdate)
+
         }
 
     fun getRestaurant() = restaurantRepository.getRestaurant().asLiveData()

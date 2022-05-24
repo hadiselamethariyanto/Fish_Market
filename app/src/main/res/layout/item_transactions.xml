@@ -73,5 +73,49 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvRestaurant" />
 
+        <TextView
+            android:id="@+id/tvDibersihkan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="4dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="10 menit"
+            android:textSize="12sp"
+            app:drawableStartCompat="@drawable/ic_dibersihkan_12"
+            app:layout_constraintEnd_toStartOf="@id/tvDibakar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvStatus" />
+
+        <TextView
+            android:id="@+id/tvDibakar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="4dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="10 menit"
+            android:textSize="12sp"
+            app:drawableStartCompat="@drawable/ic_fire_fish_12"
+            app:layout_constraintEnd_toStartOf="@id/tvDibayar"
+            app:layout_constraintStart_toEndOf="@id/tvDibersihkan"
+            app:layout_constraintTop_toBottomOf="@id/tvStatus" />
+
+        <TextView
+            android:id="@+id/tvDibayar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/ic_payment_12"
+            android:drawablePadding="4dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="10 menit"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/tvDibakar"
+            app:layout_constraintTop_toBottomOf="@id/tvStatus" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

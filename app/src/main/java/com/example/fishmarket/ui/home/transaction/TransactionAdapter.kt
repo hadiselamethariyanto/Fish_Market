@@ -72,7 +72,7 @@ class TransactionAdapter(private val context: Context) :
                         ), HtmlCompat.FROM_HTML_MODE_LEGACY
                     )
                 }
-                3 ->{
+                3 -> {
                     val colorHex = "#" + Integer.toHexString(
                         ContextCompat.getColor(
                             context,
@@ -104,6 +104,36 @@ class TransactionAdapter(private val context: Context) :
                         ), HtmlCompat.FROM_HTML_MODE_LEGACY
                     )
                 }
+            }
+
+            if (transaction.dibakar_date != 0L) {
+                val dibersihkanMilliSecond = transaction.dibakar_date - transaction.created_date
+                val dibersihkanMinutes = (dibersihkanMilliSecond / 1000) / 60
+
+                binding.tvDibersihkan.text =
+                    context.resources.getString(R.string.data_minutes, dibersihkanMinutes)
+            } else {
+                binding.tvDibersihkan.text = "--"
+            }
+
+            if (transaction.disajikan_date != 0L) {
+                val dibakarMilliSecond = transaction.disajikan_date - transaction.dibakar_date
+                val dibakarMinutes = (dibakarMilliSecond / 1000) / 60
+
+                binding.tvDibakar.text =
+                    context.resources.getString(R.string.data_minutes, dibakarMinutes)
+            } else {
+                binding.tvDibakar.text = "--"
+            }
+
+            if (transaction.finished_date != 0L) {
+                val disajikanMilliSecond = transaction.finished_date - transaction.disajikan_date
+                val disajikanMinutes = (disajikanMilliSecond / 1000) / 60
+
+                binding.tvDibayar.text =
+                    context.resources.getString(R.string.data_minutes, disajikanMinutes)
+            } else {
+                binding.tvDibayar.text = "--"
             }
 
             itemView.setOnClickListener {
