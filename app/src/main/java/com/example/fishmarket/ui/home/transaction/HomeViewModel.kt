@@ -17,6 +17,9 @@ class HomeViewModel(
     private var _isSuccessUpdate = MutableLiveData<Int>()
     val isSuccessUpdate: LiveData<Int> get() = _isSuccessUpdate
 
+    private var _filter = MutableLiveData(0)
+    val filter: LiveData<Int> get() = _filter
+
     fun getTransactions() = transactionRepository.getTransactions().asLiveData()
 
     fun getStatusTransaction() = statusRepository.getStatusTransaction().asLiveData()
@@ -45,7 +48,7 @@ class HomeViewModel(
                     transactionRepository.setStatusTable(false, transaction.id_table)
                 }
                 3 -> {
-                    if (transaction.status > newStatus){
+                    if (transaction.status > newStatus) {
                         dataTransactionUpdate.disajikan_date = 0
                     }
 
@@ -53,7 +56,7 @@ class HomeViewModel(
                     transactionRepository.setStatusTable(true, transaction.id_table)
                 }
                 2 -> {
-                    if (transaction.status > newStatus){
+                    if (transaction.status > newStatus) {
                         dataTransactionUpdate.finished_date = 0
                         dataTransactionUpdate.disajikan_date = 0
                     }
@@ -76,6 +79,14 @@ class HomeViewModel(
                 transactionRepository.changeStatusTransaction(dataTransactionUpdate)
 
         }
+
+    fun changeFilter() {
+        if (_filter.value == 0) {
+            _filter.value = 1
+        } else {
+            _filter.value = 0
+        }
+    }
 
     fun getRestaurant() = restaurantRepository.getRestaurant().asLiveData()
 

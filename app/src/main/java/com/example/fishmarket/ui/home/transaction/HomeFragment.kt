@@ -61,6 +61,12 @@ class HomeFragment : Fragment() {
             }
         }
 
+        viewModel.filter.observe(viewLifecycleOwner){
+            if (it==0){
+                binding.btnAll
+            }
+        }
+
         binding.fabAddTransaction.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_add_transaction)
         }

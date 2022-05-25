@@ -1,6 +1,8 @@
 package com.example.fishmarket.ui.home.transaction
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -16,7 +18,9 @@ import java.util.*
 class TransactionAdapter(private val context: Context) :
     RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
+    private val handler = Handler(Looper.getMainLooper())
     private val list = ArrayList<TransactionHomeEntity>()
+
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -31,14 +35,21 @@ class TransactionAdapter(private val context: Context) :
 
     inner class ViewHolder(private val binding: ItemTransactionsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindItem(transaction: TransactionHomeEntity, onItemClickCallback: OnItemClickCallback) {
 
+        private val countdownRunnable = CountdownRunnable(handler, binding.tvClock, 1000, context)
+
+        fun bindItem(transaction: TransactionHomeEntity, onItemClickCallback: OnItemClickCallback) {
+            handler.removeCallbacks(countdownRunnable)
             val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
             binding.tvId.text = context.resources.getString(R.string.transaction_id, transaction.id)
             binding.tvRestaurant.text = transaction.restaurant
             binding.tvTable.text = transaction.table
             binding.tvClock.text = simpleDateFormat.format(transaction.created_date)
+
+            val currentMillis = System.currentTimeMillis()
+
+
             when (transaction.status) {
                 1 -> {
                     val colorHex = "#" + Integer.toHexString(
@@ -47,6 +58,11 @@ class TransactionAdapter(private val context: Context) :
                             R.color.yellow_700
                         ) and 0x00ffffff
                     )
+
+                    val gap = currentMillis - transaction.created_date
+                    countdownRunnable.holder = binding.tvDibersihkan
+                    countdownRunnable.millisUntilFinished = gap
+                    handler.postDelayed(countdownRunnable, 100)
 
                     binding.tvStatus.text = HtmlCompat.fromHtml(
                         context.resources.getString(
@@ -64,6 +80,11 @@ class TransactionAdapter(private val context: Context) :
                         ) and 0x00ffffff
                     )
 
+                    val gap = currentMillis - transaction.dibakar_date
+                    countdownRunnable.holder = binding.tvDibakar
+                    countdownRunnable.millisUntilFinished = gap
+                    handler.postDelayed(countdownRunnable, 100)
+
                     binding.tvStatus.text = HtmlCompat.fromHtml(
                         context.resources.getString(
                             R.string.status_transaction,
@@ -79,6 +100,11 @@ class TransactionAdapter(private val context: Context) :
                             R.color.indigo_500
                         ) and 0x00ffffff
                     )
+
+                    val gap = currentMillis - transaction.disajikan_date
+                    countdownRunnable.holder = binding.tvDibayar
+                    countdownRunnable.millisUntilFinished = gap
+                    handler.postDelayed(countdownRunnable, 100)
 
                     binding.tvStatus.text = HtmlCompat.fromHtml(
                         context.resources.getString(
@@ -104,7 +130,11 @@ class TransactionAdapter(private val context: Context) :
                         ), HtmlCompat.FROM_HTML_MODE_LEGACY
                     )
                 }
+
             }
+
+
+
 
             if (transaction.dibakar_date != 0L) {
                 val dibersihkanMilliSecond = transaction.dibakar_date - transaction.created_date
@@ -135,6 +165,8 @@ class TransactionAdapter(private val context: Context) :
             } else {
                 binding.tvDibayar.text = "--"
             }
+
+
 
             itemView.setOnClickListener {
                 onItemClickCallback.onItemClicked(transaction)
