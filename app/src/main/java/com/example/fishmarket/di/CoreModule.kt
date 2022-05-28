@@ -8,6 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.restaurant.RestaurantRepository
 import com.example.fishmarket.data.repository.restaurant.source.local.RestaurantLocalDataSource
+import com.example.fishmarket.data.repository.restaurant.source.remote.RestaurantRemoteDataSource
 import com.example.fishmarket.data.repository.status_transaction.StatusTransactionRepository
 import com.example.fishmarket.data.repository.status_transaction.source.local.LocalStatusTransactionDataSource
 import com.example.fishmarket.data.repository.table.TableRepository
@@ -19,6 +20,8 @@ import com.example.fishmarket.domain.repository.IRestaurantRepository
 import com.example.fishmarket.domain.repository.IStatusTransactionRepository
 import com.example.fishmarket.domain.repository.ITableRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -70,13 +73,18 @@ val databaseModule = module {
     }
 }
 
+val firebaseModule = module {
+    single { FirebaseFirestore.getInstance() }
+}
+
 val repositoryModule = module {
     single { RestaurantLocalDataSource(get()) }
+    single { RestaurantRemoteDataSource(get()) }
     single { TableLocalDataSource(get()) }
     single { TransactionLocalDataSource(get()) }
     single { LocalStatusTransactionDataSource(get()) }
 
-    single<IRestaurantRepository> { RestaurantRepository(get()) }
+    single<IRestaurantRepository> { RestaurantRepository(get(), get()) }
     single<ITableRepository> { TableRepository(get()) }
     single<ITransactionRepository> { TransactionRepository(get()) }
     single<IStatusTransactionRepository> { StatusTransactionRepository(get()) }

@@ -28,7 +28,7 @@
     <string name="btn_select">Select</string>
     <string name="data_minutes">%d minutes</string>
     <string name="warning_select_progress">Please select progress step by step</string>
-    <string name="btn_all">All</string>
     <string name="btn_paid">Paid</string>
+    <string name="btn_progress">Progress</string>
 
 </resources>

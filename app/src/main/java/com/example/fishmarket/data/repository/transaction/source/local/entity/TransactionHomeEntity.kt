@@ -4,7 +4,7 @@ data class TransactionHomeEntity(
     val id: Int,
     val table: String,
     val id_table: Int,
-    val id_restaurant: Int,
+    val id_restaurant: String,
     val restaurant: String,
     val created_date: Long,
     val dibakar_date: Long,

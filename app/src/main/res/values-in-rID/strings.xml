@@ -24,7 +24,7 @@
     <string name="btn_select">Pilih</string>
     <string name="data_minutes">%d menit</string>
     <string name="warning_select_progress">Mohon pilih proses secara bertahap</string>
-    <string name="btn_all">Semua</string>
     <string name="btn_paid">Dibayar</string>
+    <string name="btn_progress">Proses</string>
 
 </resources>

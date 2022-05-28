@@ -2,17 +2,18 @@ package com.example.fishmarket.domain.repository
 
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantWithTransactionEntity
+import com.example.fishmarket.data.source.remote.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface IRestaurantRepository {
 
-    suspend fun addRestaurant(restaurant: RestaurantEntity): Long
+    fun addRestaurant(restaurant: RestaurantEntity): Flow<Resource<RestaurantEntity>>
 
-    suspend fun deleteRestaurant(restaurant: RestaurantEntity)
+    fun deleteRestaurant(restaurant: RestaurantEntity): Flow<Resource<List<RestaurantWithTransactionEntity>>>
 
-    suspend fun updateRestaurant(restaurantEntity: RestaurantEntity): Int
+    fun updateRestaurant(restaurantEntity: RestaurantEntity): Flow<Resource<RestaurantEntity>>
 
-    suspend fun getRestaurantWithTransaction():List<RestaurantWithTransactionEntity>
+    fun getRestaurantWithTransaction(): Flow<List<RestaurantWithTransactionEntity>>
 
     fun getRestaurant(): Flow<List<RestaurantEntity>>
 

@@ -21,7 +21,7 @@ class SelectRestaurantAdapter : RecyclerView.Adapter<SelectRestaurantAdapter.Vie
         notifyDataSetChanged()
     }
 
-    fun selectRestaurant(id: Int) {
+    fun selectRestaurant(id: String) {
         list.mapIndexed { index, restaurantEntity ->
             if (restaurantEntity.id == id) {
                 selectedItemPos = index

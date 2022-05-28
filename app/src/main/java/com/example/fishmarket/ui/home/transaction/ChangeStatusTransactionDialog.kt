@@ -99,7 +99,7 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
                         )
                     }
                 } else {
-                    homeViewModel.changeStatusTransaction(transaction, newStatus, 0)
+                    homeViewModel.changeStatusTransaction(transaction, newStatus, "")
                 }
             }
         }

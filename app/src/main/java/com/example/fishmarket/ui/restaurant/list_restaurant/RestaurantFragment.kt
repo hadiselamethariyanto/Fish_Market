@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentRestaurantBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,6 +20,7 @@ class RestaurantFragment : Fragment() {
 
     private var _binding: FragmentRestaurantBinding? = null
     private val binding get() = _binding!!
+    private lateinit var restaurantAdapter: RestaurantAdapter
     private val viewModel: RestaurantViewModel by viewModel()
 
     override fun onCreateView(
@@ -33,14 +35,15 @@ class RestaurantFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val restaurantAdapter = RestaurantAdapter(requireActivity())
+        restaurantAdapter = RestaurantAdapter(requireActivity())
         restaurantAdapter.setOnItemClickCallback(object : RestaurantAdapter.OnItemClickCallback {
             override fun onItemLongClicked(restaurant: RestaurantEntity) {
                 setAlertDialog(restaurant)
             }
 
             override fun onItemClicked(restaurant: RestaurantEntity) {
-                val bundle = bundleOf("id" to restaurant.id)
+                val bundle =
+                    bundleOf("id" to restaurant.id, "createdDate" to restaurant.createdDate)
                 findNavController().navigate(
                     R.id.action_navigation_dashboard_to_navigation_edit_restaurant,
                     bundle
@@ -59,7 +62,7 @@ class RestaurantFragment : Fragment() {
 
         viewModel.getRestaurantWithTransaction()
 
-        viewModel.restaurantWithTransaction.observe(viewLifecycleOwner) {
+        viewModel.getRestaurantWithTransaction().observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 restaurantAdapter.updateData(it)
                 binding.rvRestaurant.visibility = View.VISIBLE
@@ -86,7 +89,22 @@ class RestaurantFragment : Fragment() {
         )
 
         builder.setPositiveButton(requireActivity().resources.getString(R.string.yes)) { _, _ ->
-            viewModel.deleteRestaurant(restaurantEntity)
+            viewModel.deleteRestaurant(restaurantEntity).observe(viewLifecycleOwner) { res ->
+                when (res) {
+                    is Resource.Loading -> {
+
+                    }
+                    is Resource.Success -> {
+                        if (res.data != null) {
+                            restaurantAdapter.updateData(res.data)
+                        }
+                    }
+                    is Resource.Error -> {
+
+                    }
+                }
+
+            }
         }
 
         builder.setNegativeButton(requireActivity().resources.getString(R.string.no)) { _, _ ->

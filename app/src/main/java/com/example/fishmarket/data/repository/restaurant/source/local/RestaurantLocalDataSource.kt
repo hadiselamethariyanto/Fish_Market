@@ -14,7 +14,7 @@ class RestaurantLocalDataSource(private val restaurantDao: RestaurantDao) {
     suspend fun updateRestaurant(restaurant: RestaurantEntity) =
         restaurantDao.updateRestaurant(restaurant)
 
-    suspend fun getRestaurantWithTransaction() = restaurantDao.getRestaurantWithTransaction()
+    fun getRestaurantWithTransaction() = restaurantDao.getRestaurantWithTransaction()
 
     fun getRestaurant() = restaurantDao.getRestaurant()
 

@@ -20,14 +20,16 @@ class HomeViewModel(
     private var _filter = MutableLiveData(0)
     val filter: LiveData<Int> get() = _filter
 
-    fun getTransactions() = transactionRepository.getTransactions().asLiveData()
+    val transactions = Transformations.switchMap(filter) { filter ->
+        transactionRepository.getTransactions(filter).asLiveData()
+    }
 
     fun getStatusTransaction() = statusRepository.getStatusTransaction().asLiveData()
 
     fun changeStatusTransaction(
         transaction: TransactionHomeEntity,
         newStatus: Int,
-        idRestaurant: Int
+        idRestaurant: String
     ) =
         viewModelScope.launch {
             val dataTransactionUpdate = TransactionEntity(

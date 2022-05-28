@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "294493739374",
+    "project_id": "fishmarket-9b8cb",
+    "storage_bucket": "fishmarket-9b8cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294493739374:android:d9b9b754217c15ce44097f",
+        "android_client_info": {
+          "package_name": "com.example.fishmarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "294493739374-u9ukaqifv1167t1kl8h5ub4akv20gov8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fishmarket",
+            "certificate_hash": "896375a2a1ff09a00d2d7b333630ce935615950c"
+          }
+        },
+        {
+          "client_id": "294493739374-ub965mecafj7ka2739uv5b8spfau0eof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2hKgJps75lsFp8LpcxU_dZboBeT1JB54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "294493739374-ub965mecafj7ka2739uv5b8spfau0eof.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentEditRestaurantBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,19 +28,31 @@ class EditRestaurantFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val id = arguments?.getInt("id")
-        getRestaurant(id.toString())
+        val id = arguments?.getString("id")
+        val createdDate = arguments?.getLong("createdDate")
 
-        viewModel.isSuccess.observe(viewLifecycleOwner) {
-            if (it == 1) {
-                findNavController().navigateUp()
-            }
-        }
+        getRestaurant(id.toString())
 
         binding.btnSave.setOnClickListener {
             val name = binding.etRestaurantName.text.toString()
-            val restaurantEntity = RestaurantEntity(id = id ?: 0, name = name)
-            viewModel.updateRestaurant(restaurantEntity)
+            val restaurantEntity =
+                RestaurantEntity(id = id ?: "", name = name, createdDate = createdDate ?: 0)
+            viewModel.updateRestaurant(restaurantEntity).observe(viewLifecycleOwner) { res ->
+                when (res) {
+                    is Resource.Loading -> {
+                        binding.btnSave.isEnabled = false
+                    }
+                    is Resource.Success -> {
+                        findNavController().navigateUp()
+                        binding.btnSave.isEnabled = true
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                            .show()
+                        binding.btnSave.isEnabled = true
+                    }
+                }
+            }
         }
     }
 

@@ -27,6 +27,9 @@
         <entry key="app/src/main/res/drawable/ic_table_white.xml" value="0.1085" />
         <entry key="app/src/main/res/drawable/ic_table_white_12.xml" value="0.1235" />
         <entry key="app/src/main/res/drawable/logo_fish.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/rectangle_highlighted_transaction.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/rectangle_not_highlighted.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/rectangle_not_highlighted_transaction.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_change_status.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_change_status_transaction.xml" value="0.10166794506471549" />
@@ -37,7 +40,7 @@
         <entry key="app/src/main/res/layout/fragment_add_transaction.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_edit_restaurant.xml" value="0.182518115942029" />
         <entry key="app/src/main/res/layout/fragment_edit_table.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.22831878662109376" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.28050692484259065" />
         <entry key="app/src/main/res/layout/fragment_restaurant.xml" value="0.32513275146484377" />
         <entry key="app/src/main/res/layout/fragment_table.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_change_status_transaction.xml" value="0.1" />

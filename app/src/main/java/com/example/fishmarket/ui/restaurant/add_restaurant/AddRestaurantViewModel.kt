@@ -7,15 +7,7 @@ import kotlinx.coroutines.launch
 
 class AddRestaurantViewModel(private val repository: IRestaurantRepository) : ViewModel() {
 
-    private var _isSuccess = MutableLiveData<Long>()
-    val isSuccess: LiveData<Long> get() = _isSuccess
-
-    fun addRestaurant(restaurant: RestaurantEntity) {
-        viewModelScope.launch {
-            _isSuccess.value = repository.addRestaurant(restaurant)
-
-        }
-    }
+    fun addRestaurant(restaurant: RestaurantEntity) = repository.addRestaurant(restaurant).asLiveData()
 
 
 }

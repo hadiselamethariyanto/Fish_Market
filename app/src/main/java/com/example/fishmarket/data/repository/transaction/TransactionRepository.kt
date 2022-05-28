@@ -15,7 +15,7 @@ class TransactionRepository(private val localDataSource: TransactionLocalDataSou
     override suspend fun changeStatusTransaction(transactionEntity: TransactionEntity): Int =
         localDataSource.changeStatusTransaction(transactionEntity)
 
-    override suspend fun updateRestaurantTransaction(id: Int, id_restaurant: Int): Int =
+    override suspend fun updateRestaurantTransaction(id: Int, id_restaurant: String): Int =
         localDataSource.updateRestaurantTransaction(id, id_restaurant)
 
     override suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int =
@@ -24,7 +24,7 @@ class TransactionRepository(private val localDataSource: TransactionLocalDataSou
     override suspend fun setStatusTable(status: Boolean, id: Int) =
         localDataSource.setStatusTable(status, id)
 
-    override fun getTransactions(): Flow<List<TransactionHomeEntity>> =
-        localDataSource.getTransactions()
+    override fun getTransactions(filter: Int): Flow<List<TransactionHomeEntity>> =
+        localDataSource.getTransactions(filter)
 
 }

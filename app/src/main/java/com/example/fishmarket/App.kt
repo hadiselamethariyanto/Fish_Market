@@ -2,6 +2,7 @@ package com.example.fishmarket
 
 import android.app.Application
 import com.example.fishmarket.di.databaseModule
+import com.example.fishmarket.di.firebaseModule
 import com.example.fishmarket.di.repositoryModule
 import com.example.fishmarket.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -19,7 +20,8 @@ class App : Application() {
                 listOf(
                     databaseModule,
                     repositoryModule,
-                    viewModelModule
+                    viewModelModule,
+                    firebaseModule
                 )
             )
         }

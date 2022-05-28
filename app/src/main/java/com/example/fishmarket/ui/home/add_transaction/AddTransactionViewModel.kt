@@ -43,7 +43,7 @@ class AddTransactionViewModel(
         val transaction = TransactionEntity(
             id = 0,
             id_table = idTable ?: 0,
-            id_restaurant = idRestaurant ?: 0,
+            id_restaurant = idRestaurant ?: "",
             created_date = createdDate,
             dibakar_date = 0,
             disajikan_date = 0,

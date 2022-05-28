@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.databinding.ItemTransactionsBinding
+import com.example.fishmarket.utilis.CountdownRunnable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +37,13 @@ class TransactionAdapter(private val context: Context) :
     inner class ViewHolder(private val binding: ItemTransactionsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val countdownRunnable = CountdownRunnable(handler, binding.tvClock, 1000, context)
+        private val countdownRunnable =
+            CountdownRunnable(
+                handler,
+                binding.tvClock,
+                1000,
+                context
+            )
 
         fun bindItem(transaction: TransactionHomeEntity, onItemClickCallback: OnItemClickCallback) {
             handler.removeCallbacks(countdownRunnable)

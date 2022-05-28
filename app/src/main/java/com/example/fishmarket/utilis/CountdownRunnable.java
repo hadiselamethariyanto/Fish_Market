@@ -1,11 +1,9 @@
-package com.example.fishmarket.ui.home.transaction;
+package com.example.fishmarket.utilis;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.TextView;
 
-import com.example.fishmarket.R;
 
 public class CountdownRunnable implements Runnable {
 
@@ -28,7 +26,7 @@ public class CountdownRunnable implements Runnable {
         long hours = minutes / 60;
 
 
-        String time = "";
+        String time;
         if (hours > 0) {
             time = hours % 24 + ":" + minutes % 60 + ":" + seconds % 60;
         } else {

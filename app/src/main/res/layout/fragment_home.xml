@@ -6,23 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.transaction.HomeFragment">
 
-    <Button
+    <TextView
         android:id="@+id/btnAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Semua"
-        style="@style/Widget.MaterialComponents.Button"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rectangle_highlighted_transaction"
+        android:fontFamily="sans-serif"
+        android:padding="8dp"
+        android:text="@string/btn_progress"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/btnFinished"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Dibayar"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rectangle_not_highlighted_transaction"
+        android:fontFamily="sans-serif"
+        android:padding="8dp"
+        android:text="@string/btn_paid"
+        android:textColor="@color/orange_500"
         app:layout_constraintStart_toEndOf="@id/btnAll"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +41,7 @@
         android:clipToPadding="false"
         android:paddingTop="16dp"
         android:scrollbars="vertical"
+        android:paddingBottom="100dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/btnAll"
         tools:listitem="@layout/item_transactions" />

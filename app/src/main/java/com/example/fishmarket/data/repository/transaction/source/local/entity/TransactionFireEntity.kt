@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class TransactionFireEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "id_restaurant") val id_restaurant: Int,
+    @ColumnInfo(name = "id_restaurant") val id_restaurant: String,
     @ColumnInfo(name = "created_date") val created_date: Long,
     @ColumnInfo(name = "status") val status: Int
 )
