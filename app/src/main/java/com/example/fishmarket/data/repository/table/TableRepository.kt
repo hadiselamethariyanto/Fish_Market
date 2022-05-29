@@ -28,7 +28,19 @@ class TableRepository(
         }.asFlow()
     }
 
-    override suspend fun updateTable(table: TableEntity) = localDataSource.updateTable(table)
+    override fun updateTable(table: TableEntity): Flow<Resource<TableEntity>> {
+        return object : NetworkBoundInternetOnly<TableEntity, TableEntity>() {
+            override fun loadFromDB(): Flow<TableEntity> = localDataSource.getTable(table.id)
+
+            override suspend fun createCall(): Flow<ApiResponse<TableEntity>> =
+                remoteDataSource.updateTable(table)
+
+            override suspend fun saveCallResult(data: TableEntity) {
+                localDataSource.updateTable(table)
+            }
+
+        }.asFlow()
+    }
 
     override suspend fun deleteTable(table: TableEntity) = localDataSource.deleteTable(table)
 

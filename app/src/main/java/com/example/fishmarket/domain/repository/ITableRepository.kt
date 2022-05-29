@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface ITableRepository {
     fun addTable(table: TableEntity): Flow<Resource<TableEntity>>
 
-    suspend fun updateTable(table: TableEntity): Int
+    fun updateTable(table: TableEntity): Flow<Resource<TableEntity>>
 
     suspend fun deleteTable(table: TableEntity)
 

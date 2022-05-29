@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentEditTableBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,14 +32,9 @@ class EditTableFragment : Fragment() {
 
         val id = arguments?.getString("id")
         val status = arguments?.getBoolean("status")
+        val createdDate = arguments?.getLong("createdDate")
 
         getTable(id.toString())
-
-        viewModel.isSuccess.observe(viewLifecycleOwner) {
-            if (it == 1) {
-                findNavController().navigateUp()
-            }
-        }
 
         binding.btnSave.setOnClickListener {
             val name = binding.etTableName.text.toString()
@@ -45,9 +42,24 @@ class EditTableFragment : Fragment() {
                 id = id ?: "",
                 name = name,
                 status = status ?: false,
-                createdDate = 0
+                createdDate = createdDate ?: 0
             )
-            viewModel.updateTable(table)
+            viewModel.updateTable(table).observe(viewLifecycleOwner) { res ->
+                when (res) {
+                    is Resource.Loading -> {
+                        binding.btnSave.isEnabled = false
+                    }
+                    is Resource.Success -> {
+                        findNavController().navigateUp()
+                        binding.btnSave.isEnabled = false
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                            .show()
+                        binding.btnSave.isEnabled = false
+                    }
+                }
+            }
         }
     }
 

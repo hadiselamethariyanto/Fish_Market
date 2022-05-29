@@ -10,7 +10,7 @@ interface TableDao {
     suspend fun addTable(table: TableEntity)
 
     @Update
-    suspend fun updateTable(table: TableEntity): Int
+    suspend fun updateTable(table: TableEntity)
 
     @Delete
     suspend fun deleteTable(table: TableEntity)
