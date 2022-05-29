@@ -40,6 +40,8 @@ class RestaurantRemoteDataSource(private val firebase: FirebaseFirestore) {
         val restaurantReference = firebase.collection("restaurant").get().await()
         val restaurants = restaurantReference.toObjects(RestaurantResponse::class.java)
         emit(ApiResponse.Success(restaurants))
-    }
+    }.catch {
+        emit(ApiResponse.Error(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
 
 }

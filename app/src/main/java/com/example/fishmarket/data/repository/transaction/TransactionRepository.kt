@@ -3,14 +3,33 @@ package com.example.fishmarket.data.repository.transaction
 import com.example.fishmarket.data.repository.transaction.source.local.TransactionLocalDataSource
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
+import com.example.fishmarket.data.repository.transaction.source.remote.TransactionRemoteDataSource
+import com.example.fishmarket.data.source.remote.NetworkBoundInternetOnly
+import com.example.fishmarket.data.source.remote.Resource
+import com.example.fishmarket.data.source.remote.network.ApiResponse
 import com.example.fishmarket.domain.repository.ITransactionRepository
 import kotlinx.coroutines.flow.Flow
 
-class TransactionRepository(private val localDataSource: TransactionLocalDataSource) :
+class TransactionRepository(
+    private val localDataSource: TransactionLocalDataSource,
+    private val remoteDataSource: TransactionRemoteDataSource
+) :
     ITransactionRepository {
 
-    override suspend fun addTransaction(transactionEntity: TransactionEntity) =
-        localDataSource.addTransaction(transactionEntity)
+    override fun addTransaction(transactionEntity: TransactionEntity): Flow<Resource<TransactionEntity>> {
+        return object : NetworkBoundInternetOnly<TransactionEntity, TransactionEntity>() {
+            override fun loadFromDB(): Flow<TransactionEntity> =
+                localDataSource.getTransaction(transactionEntity.id)
+
+            override suspend fun createCall(): Flow<ApiResponse<TransactionEntity>> =
+                remoteDataSource.addTransaction(transactionEntity)
+
+            override suspend fun saveCallResult(data: TransactionEntity) {
+                localDataSource.addTransaction(data)
+                localDataSource.setStatusTable(true, data.id_table)
+            }
+        }.asFlow()
+    }
 
     override suspend fun changeStatusTransaction(transactionEntity: TransactionEntity): Int =
         localDataSource.changeStatusTransaction(transactionEntity)

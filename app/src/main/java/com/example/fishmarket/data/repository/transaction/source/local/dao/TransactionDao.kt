@@ -11,10 +11,13 @@ import kotlinx.coroutines.flow.Flow
 interface TransactionDao {
 
     @Insert
-    suspend fun addTransaction(transaction: TransactionEntity): Long
+    suspend fun addTransaction(transaction: TransactionEntity)
 
     @RawQuery(observedEntities = [TransactionEntity::class, RestaurantEntity::class])
     fun getTransactions(sqLiteQuery: SupportSQLiteQuery): Flow<List<TransactionHomeEntity>>
+
+    @Query("SELECT * FROM `transaction` WHERE id=:id")
+    fun getTransaction(id: String): Flow<TransactionEntity>
 
     @Update
     suspend fun changeStatusTransaction(transaction: TransactionEntity): Int

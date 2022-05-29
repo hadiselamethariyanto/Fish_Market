@@ -15,7 +15,7 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.Tr
 @Database(
     entities = [RestaurantEntity::class, TableEntity::class, TransactionEntity::class, StatusTransactionEntity::class],
     views = [TransactionFireEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class FishMarketDatabase : RoomDatabase() {

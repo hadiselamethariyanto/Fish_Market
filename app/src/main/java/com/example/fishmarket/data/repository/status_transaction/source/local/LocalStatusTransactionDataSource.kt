@@ -7,4 +7,7 @@ import kotlinx.coroutines.flow.Flow
 class LocalStatusTransactionDataSource(private val statusDao: StatusTransactionDao) {
     fun getStatusTransaction(): Flow<List<StatusTransactionEntity>> =
         statusDao.getStatusTransaction()
+
+    suspend fun insertStatusTransactions(status: List<StatusTransactionEntity>) =
+        statusDao.insertStatusTransactions(status)
 }

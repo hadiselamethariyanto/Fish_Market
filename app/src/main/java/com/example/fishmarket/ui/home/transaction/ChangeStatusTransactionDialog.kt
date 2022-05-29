@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
@@ -75,9 +76,30 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
 
         binding.rvStatus.layoutManager = GridLayoutManager(requireActivity(), 4)
 
-        homeViewModel.getStatusTransaction().observe(viewLifecycleOwner) {
-            changeStatusAdapter.updateData(it)
-            changeStatusAdapter.selectStatus(transaction.status)
+        homeViewModel.getStatusTransaction().observe(viewLifecycleOwner) { res ->
+            when (res) {
+                is Resource.Loading -> {
+                    binding.btnSave.isVisible = false
+                    binding.rvStatus.isVisible = false
+                    binding.refresh.isVisible = true
+                }
+                is Resource.Success -> {
+                    if (res.data != null) {
+                        changeStatusAdapter.updateData(res.data)
+                        changeStatusAdapter.selectStatus(transaction.status)
+                    }
+                    binding.refresh.isVisible = false
+                    binding.btnSave.isVisible = true
+                    binding.rvStatus.isVisible = true
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                        .show()
+                    binding.refresh.isVisible = false
+                    binding.btnSave.isVisible = true
+                    binding.rvStatus.isVisible = true
+                }
+            }
         }
 
         homeViewModel.isSuccessUpdate.observe(viewLifecycleOwner) {

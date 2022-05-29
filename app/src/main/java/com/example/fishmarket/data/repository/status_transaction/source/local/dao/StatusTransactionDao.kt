@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface StatusTransactionDao {
 
     @Insert
-    suspend fun insertStatusTransaction(status: StatusTransactionEntity)
+    suspend fun insertStatusTransactions(status: List<StatusTransactionEntity>)
 
     @Query("SELECT * FROM status_transaction ORDER BY id ASC")
     fun getStatusTransaction(): Flow<List<StatusTransactionEntity>>

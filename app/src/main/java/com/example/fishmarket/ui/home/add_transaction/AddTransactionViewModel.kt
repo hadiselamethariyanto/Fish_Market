@@ -4,17 +4,15 @@ import androidx.lifecycle.*
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.repository.ITableRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
-import kotlinx.coroutines.launch
+import com.example.fishmarket.utilis.Utils
 
 class AddTransactionViewModel(
     private val repository: ITransactionRepository,
     private val tableRepository: ITableRepository
 ) : ViewModel() {
-
-    private var _isSuccess = MutableLiveData<Long>()
-    val isSuccess: LiveData<Long> get() = _isSuccess
 
     private var _table = MutableLiveData<TableEntity>()
     val table: LiveData<TableEntity> get() = _table
@@ -30,18 +28,20 @@ class AddTransactionViewModel(
         _restaurant.value = restaurant
     }
 
-    fun resetIsSuccess() {
-        _isSuccess.value = 0
+    fun resetTransaction() {
+        _table.value = TableEntity("", "", false, 0)
+        _restaurant.value = RestaurantEntity("", "", 0)
     }
 
-    fun addTransaction() {
+    fun addTransaction(): LiveData<Resource<TransactionEntity>> {
+        val id = Utils.getRandomString()
         val createdDate = System.currentTimeMillis()
         val status = 1
         val idTable = table.value?.id
         val idRestaurant = restaurant.value?.id
 
         val transaction = TransactionEntity(
-            id = 0,
+            id = id,
             id_table = idTable ?: "",
             id_restaurant = idRestaurant ?: "",
             created_date = createdDate,
@@ -51,11 +51,7 @@ class AddTransactionViewModel(
             finished_date = 0
         )
 
-        viewModelScope.launch {
-            _isSuccess.value = repository.addTransaction(transaction)
-            repository.setStatusTable(true, idTable ?: "")
-        }
-
+        return repository.addTransaction(transaction).asLiveData()
     }
 
     fun getAvailableTable() = tableRepository.getAvailableTable().asLiveData()

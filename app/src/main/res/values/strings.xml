@@ -24,7 +24,7 @@
     <string name="warning_message_select_table">Please select table</string>
     <string name="warning_message_select_restaurant">Please Select Restaurant</string>
     <string name="status_transaction" translatable="false"><![CDATA[Status: <font color="%s">%s</font>]]></string>
-    <string name="transaction_id" translatable="false">ID: %d</string>
+    <string name="transaction_id" translatable="false">ID: %s</string>
     <string name="btn_select">Select</string>
     <string name="data_minutes">%d minutes</string>
     <string name="warning_select_progress">Please select progress step by step</string>

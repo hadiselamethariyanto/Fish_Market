@@ -10,8 +10,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fishmarket.R
 import com.example.fishmarket.databinding.DialogSelectTableBinding
-import com.example.fishmarket.ui.table.list_table.TableViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 

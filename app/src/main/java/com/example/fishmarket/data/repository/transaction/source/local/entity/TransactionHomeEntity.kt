@@ -1,7 +1,7 @@
 package com.example.fishmarket.data.repository.transaction.source.local.entity
 
 data class TransactionHomeEntity(
-    val id: Int,
+    val id: String,
     val table: String,
     val id_table: String,
     val id_restaurant: String,
