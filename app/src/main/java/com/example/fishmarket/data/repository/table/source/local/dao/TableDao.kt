@@ -6,10 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TableDao {
-    @Insert
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTable(table: TableEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTables(tables: List<TableEntity>)
 
     @Update

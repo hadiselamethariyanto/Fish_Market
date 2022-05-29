@@ -11,11 +11,7 @@ interface ITransactionRepository {
 
     fun changeStatusTransaction(transactionEntity: TransactionEntity): Flow<Resource<TransactionEntity>>
 
-    suspend fun updateRestaurantTransaction(id: Int, id_restaurant: String): Int
-
-    suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int
-
     suspend fun setStatusTable(status: Boolean, id: String)
 
-    fun getTransactions(filter:Int): Flow<List<TransactionHomeEntity>>
+    fun getTransactions(filter: Int): Flow<Resource<List<TransactionHomeEntity>>>
 }

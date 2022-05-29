@@ -7,6 +7,9 @@ import com.example.fishmarket.data.repository.status_transaction.source.local.en
 import com.example.fishmarket.data.repository.status_transaction.source.remote.model.StatusTransactionResponse
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.repository.table.source.remote.model.TableResponse
+import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
+import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
+import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 
 object DataMapper {
 
@@ -27,6 +30,20 @@ object DataMapper {
             createdDate = it.createdDate ?: 0
         )
     }
+
+    fun mapTransactionResponseToEntity(list: List<TransactionResponse>): List<TransactionEntity> =
+        list.map {
+            TransactionEntity(
+                id = it.id.toString(),
+                id_restaurant = it.id_restaurant.toString(),
+                id_table = it.id_table.toString(),
+                created_date = it.created_date ?: 0,
+                dibakar_date = it.dibakar_date ?: 0,
+                disajikan_date = it.disajikan_date ?: 0,
+                finished_date = it.finished_date ?: 0,
+                status = it.status ?: 0
+            )
+        }
 
     fun mapStatusTransactionResponseToEntity(list: List<StatusTransactionResponse>): List<StatusTransactionEntity> {
         val newList = ArrayList<StatusTransactionEntity>()

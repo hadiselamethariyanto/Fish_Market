@@ -4,10 +4,13 @@ import com.example.fishmarket.data.repository.transaction.source.local.Transacti
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.TransactionRemoteDataSource
+import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.NetworkBoundInternetOnly
+import com.example.fishmarket.data.source.remote.NetworkBoundResource
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.data.source.remote.network.ApiResponse
 import com.example.fishmarket.domain.repository.ITransactionRepository
+import com.example.fishmarket.utilis.DataMapper
 import kotlinx.coroutines.flow.Flow
 
 class TransactionRepository(
@@ -51,16 +54,27 @@ class TransactionRepository(
         }.asFlow()
     }
 
-    override suspend fun updateRestaurantTransaction(id: Int, id_restaurant: String): Int =
-        localDataSource.updateRestaurantTransaction(id, id_restaurant)
-
-    override suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int =
-        localDataSource.setFinishedTransaction(id, finished_date)
-
     override suspend fun setStatusTable(status: Boolean, id: String) =
         localDataSource.setStatusTable(status, id)
 
-    override fun getTransactions(filter: Int): Flow<List<TransactionHomeEntity>> =
-        localDataSource.getTransactions(filter)
+    override fun getTransactions(filter: Int): Flow<Resource<List<TransactionHomeEntity>>> {
+        return object :
+            NetworkBoundResource<List<TransactionHomeEntity>, List<TransactionResponse>>() {
+            override fun loadFromDB(): Flow<List<TransactionHomeEntity>> =
+                localDataSource.getTransactions(filter)
+
+            override fun shouldFetch(data: List<TransactionHomeEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> =
+                remoteDataSource.getTransactions()
+
+            override suspend fun saveCallResult(data: List<TransactionResponse>) {
+                localDataSource.addTransactions(DataMapper.mapTransactionResponseToEntity(data))
+            }
+
+        }.asFlow()
+    }
+
 
 }

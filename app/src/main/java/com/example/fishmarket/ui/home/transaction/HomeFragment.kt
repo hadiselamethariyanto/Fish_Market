@@ -1,16 +1,17 @@
 package com.example.fishmarket.ui.home.transaction
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentHomeBinding
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -52,19 +53,33 @@ class HomeFragment : Fragment() {
         })
         binding.rvTransactions.adapter = transactionAdapter
 
-        viewModel.transactions.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                binding.rvTransactions.visibility = View.VISIBLE
-                binding.llNoData.visibility = View.GONE
-                transactionAdapter.updateData(it)
-            } else {
-                binding.rvTransactions.visibility = View.GONE
-                binding.llNoData.visibility = View.VISIBLE
+        viewModel.transactions.observe(viewLifecycleOwner) { res ->
+            when (res) {
+                is Resource.Loading -> {
+                    binding.refresh.isRefreshing = true
+                }
+                is Resource.Success -> {
+                    if (res.data != null) {
+                        if (res.data.isNotEmpty()) {
+                            binding.rvTransactions.visibility = View.VISIBLE
+                            binding.llNoData.visibility = View.GONE
+                            transactionAdapter.updateData(res.data)
+                        } else {
+                            binding.rvTransactions.visibility = View.GONE
+                            binding.llNoData.visibility = View.VISIBLE
+                        }
+                    }
+                    binding.refresh.isRefreshing = false
+                }
+                is Resource.Error -> {
+                    binding.refresh.isRefreshing = false
+                    Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                        .show()
+                }
             }
         }
 
         viewModel.filter.observe(viewLifecycleOwner) {
-            Log.d("UHT", it.toString())
             if (it == 0) {
                 binding.btnAll.background = ContextCompat.getDrawable(
                     requireActivity(),

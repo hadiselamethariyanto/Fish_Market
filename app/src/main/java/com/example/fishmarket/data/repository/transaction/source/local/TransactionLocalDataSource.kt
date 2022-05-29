@@ -10,6 +10,9 @@ class TransactionLocalDataSource(private val transactionDao: TransactionDao) {
     suspend fun addTransaction(transaction: TransactionEntity) =
         transactionDao.addTransaction(transaction)
 
+    suspend fun addTransactions(transactions: List<TransactionEntity>) =
+        transactionDao.addTransactions(transactions)
+
     fun getTransactions(filter: Int): Flow<List<TransactionHomeEntity>> {
         return transactionDao.getTransactions(SortUtils.getSortedQuery(filter))
     }
@@ -18,12 +21,6 @@ class TransactionLocalDataSource(private val transactionDao: TransactionDao) {
 
     suspend fun changeStatusTransaction(transaction: TransactionEntity): Int =
         transactionDao.changeStatusTransaction(transaction)
-
-    suspend fun updateRestaurantTransaction(id: Int, id_restaurant: String): Int =
-        transactionDao.updateRestaurantTransaction(id, id_restaurant)
-
-    suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int =
-        transactionDao.setFinishedTransaction(id, finished_date)
 
     suspend fun setStatusTable(status: Boolean, id: String) =
         transactionDao.setStatusTable(status, id)
