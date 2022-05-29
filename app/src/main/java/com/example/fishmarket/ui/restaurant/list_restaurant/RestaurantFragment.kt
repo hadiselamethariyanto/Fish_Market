@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -60,17 +61,30 @@ class RestaurantFragment : Fragment() {
             )
         )
 
-        viewModel.getRestaurantWithTransaction()
-
-        viewModel.getRestaurantWithTransaction().observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                restaurantAdapter.updateData(it)
-                binding.rvRestaurant.visibility = View.VISIBLE
-                binding.llNoData.visibility = View.GONE
-            } else {
-                binding.rvRestaurant.visibility = View.GONE
-                binding.llNoData.visibility = View.VISIBLE
+        viewModel.getRestaurantWithTransaction().observe(viewLifecycleOwner) { res ->
+            when (res) {
+                is Resource.Loading -> {
+                    binding.refresh.isRefreshing = true
+                }
+                is Resource.Success -> {
+                    binding.refresh.isRefreshing = false
+                    if (res.data != null) {
+                        if (res.data.isNotEmpty()) {
+                            restaurantAdapter.updateData(res.data)
+                            binding.rvRestaurant.visibility = View.VISIBLE
+                            binding.llNoData.visibility = View.GONE
+                        } else {
+                            binding.rvRestaurant.visibility = View.GONE
+                            binding.llNoData.visibility = View.VISIBLE
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
+                    binding.refresh.isRefreshing = false
+                }
             }
+
         }
 
         binding.fabAddRestaurant.setOnClickListener {
@@ -92,15 +106,18 @@ class RestaurantFragment : Fragment() {
             viewModel.deleteRestaurant(restaurantEntity).observe(viewLifecycleOwner) { res ->
                 when (res) {
                     is Resource.Loading -> {
-
+                        binding.refresh.isRefreshing = true
                     }
                     is Resource.Success -> {
+                        binding.refresh.isRefreshing = false
                         if (res.data != null) {
                             restaurantAdapter.updateData(res.data)
                         }
                     }
                     is Resource.Error -> {
-
+                        binding.refresh.isRefreshing = false
+                        Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
 

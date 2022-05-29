@@ -64,8 +64,24 @@ class RestaurantRepository(
         }.asFlow()
     }
 
-    override fun getRestaurantWithTransaction(): Flow<List<RestaurantWithTransactionEntity>> =
-        localDataSource.getRestaurantWithTransaction()
+    override fun getRestaurantWithTransaction(): Flow<Resource<List<RestaurantWithTransactionEntity>>> {
+        return object :
+            NetworkBoundResource<List<RestaurantWithTransactionEntity>, List<RestaurantResponse>>() {
+            override fun loadFromDB(): Flow<List<RestaurantWithTransactionEntity>> =
+                localDataSource.getRestaurantWithTransaction()
+
+            override fun shouldFetch(data: List<RestaurantWithTransactionEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            override suspend fun createCall(): Flow<ApiResponse<List<RestaurantResponse>>> =
+                remoteDataSource.getRestaurant()
+
+            override suspend fun saveCallResult(data: List<RestaurantResponse>) {
+                localDataSource.addRestaurants(DataMapper.mapRestaurantResponseToEntity(data))
+            }
+
+        }.asFlow()
+    }
 
     override fun getRestaurant(): Flow<Resource<List<RestaurantEntity>>> {
         return object : NetworkBoundResource<List<RestaurantEntity>, List<RestaurantResponse>>() {
