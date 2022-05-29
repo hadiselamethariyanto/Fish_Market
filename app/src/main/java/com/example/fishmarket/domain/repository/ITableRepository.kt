@@ -9,7 +9,7 @@ interface ITableRepository {
 
     fun updateTable(table: TableEntity): Flow<Resource<TableEntity>>
 
-    suspend fun deleteTable(table: TableEntity)
+    fun deleteTable(table: TableEntity): Flow<Resource<List<TableEntity>>>
 
     fun getTables(): Flow<List<TableEntity>>
 

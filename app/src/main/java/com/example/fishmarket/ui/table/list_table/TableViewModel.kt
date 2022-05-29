@@ -11,8 +11,6 @@ class TableViewModel(private val repository: ITableRepository) : ViewModel() {
 
     fun getTables() = repository.getTables().asLiveData()
 
-    fun deleteTable(table: TableEntity) = viewModelScope.launch {
-        repository.deleteTable(table)
-    }
+    fun deleteTable(table: TableEntity) = repository.deleteTable(table).asLiveData()
 
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentTableBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,6 +21,7 @@ class TableFragment : Fragment() {
 
     private var _binding: FragmentTableBinding? = null
     private val binding get() = _binding!!
+    private lateinit var tableAdapter: TableAdapter
     private val viewModel: TableViewModel by viewModel()
 
     override fun onCreateView(
@@ -41,7 +44,7 @@ class TableFragment : Fragment() {
     }
 
     private fun getTable() {
-        val tableAdapter = TableAdapter()
+        tableAdapter = TableAdapter()
         tableAdapter.setOnItemClickCallback(object : TableAdapter.OnItemClickCallBack {
             override fun onItemLongClicked(table: TableEntity) {
                 setAlertDialog(table)
@@ -91,7 +94,24 @@ class TableFragment : Fragment() {
         )
 
         builder.setPositiveButton(requireActivity().resources.getString(R.string.yes)) { _, _ ->
-            viewModel.deleteTable(table)
+            viewModel.deleteTable(table).observe(viewLifecycleOwner) { res ->
+                when (res) {
+                    is Resource.Loading -> {
+                        binding.refresh.isRefreshing = true
+                    }
+                    is Resource.Success -> {
+                        if (res.data != null) {
+                            tableAdapter.updateData(res.data)
+                        }
+                        binding.refresh.isRefreshing = false
+                    }
+                    is Resource.Error -> {
+                        binding.refresh.isRefreshing = false
+                        Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }
+            }
         }
 
         builder.setNegativeButton(requireActivity().resources.getString(R.string.no)) { _, _ ->

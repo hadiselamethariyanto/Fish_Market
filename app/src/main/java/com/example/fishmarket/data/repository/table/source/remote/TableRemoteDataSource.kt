@@ -25,4 +25,12 @@ class TableRemoteDataSource(private val firebase: FirebaseFirestore) {
     }.catch {
         emit(ApiResponse.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
+
+    fun deleteTable(tableEntity: TableEntity) = flow<ApiResponse<TableEntity>> {
+        val tableReference = firebase.collection("table").document(tableEntity.id)
+        tableReference.delete().await()
+        emit(ApiResponse.Success(tableEntity))
+    }.catch {
+        emit(ApiResponse.Error(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
 }
