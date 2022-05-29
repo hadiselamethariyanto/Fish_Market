@@ -31,8 +31,25 @@ class TransactionRepository(
         }.asFlow()
     }
 
-    override suspend fun changeStatusTransaction(transactionEntity: TransactionEntity): Int =
-        localDataSource.changeStatusTransaction(transactionEntity)
+    override fun changeStatusTransaction(transactionEntity: TransactionEntity): Flow<Resource<TransactionEntity>> {
+        return object : NetworkBoundInternetOnly<TransactionEntity, TransactionEntity>() {
+            override fun loadFromDB(): Flow<TransactionEntity> =
+                localDataSource.getTransaction(transactionEntity.id)
+
+            override suspend fun createCall(): Flow<ApiResponse<TransactionEntity>> =
+                remoteDataSource.updateTransaction(transactionEntity)
+
+            override suspend fun saveCallResult(data: TransactionEntity) {
+                localDataSource.changeStatusTransaction(transactionEntity)
+                if (data.status != 4) {
+                    localDataSource.setStatusTable(true, data.id_table)
+                } else {
+                    localDataSource.setStatusTable(false, data.id_table)
+                }
+            }
+
+        }.asFlow()
+    }
 
     override suspend fun updateRestaurantTransaction(id: Int, id_restaurant: String): Int =
         localDataSource.updateRestaurantTransaction(id, id_restaurant)

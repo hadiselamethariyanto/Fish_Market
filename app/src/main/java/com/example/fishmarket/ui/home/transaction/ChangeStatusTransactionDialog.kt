@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fishmarket.R
+import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.DialogChangeStatusTransactionBinding
@@ -102,13 +105,6 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
             }
         }
 
-        homeViewModel.isSuccessUpdate.observe(viewLifecycleOwner) {
-            if (it > 0) {
-                dismiss()
-                homeViewModel.resetSuccessUpdate()
-            }
-        }
-
         binding.btnSave.setOnClickListener {
             val newStatus = changeStatusAdapter.getStatus()
             if (newStatus > transaction.status + 1) {
@@ -131,11 +127,26 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
                             transaction,
                             newStatus,
                             restaurant.id
-                        )
+                        ).observe(viewLifecycleOwner, changeStatusObserver)
                     }
                 } else {
                     homeViewModel.changeStatusTransaction(transaction, newStatus, "")
+                        .observe(viewLifecycleOwner, changeStatusObserver)
                 }
+            }
+        }
+    }
+
+    private val changeStatusObserver = Observer<Resource<TransactionEntity>> { res ->
+        when (res) {
+            is Resource.Loading -> {
+
+            }
+            is Resource.Success -> {
+                findNavController().navigateUp()
+            }
+            is Resource.Error -> {
+
             }
         }
     }

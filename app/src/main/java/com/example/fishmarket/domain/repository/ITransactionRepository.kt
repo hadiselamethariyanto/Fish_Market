@@ -9,7 +9,7 @@ interface ITransactionRepository {
 
     fun addTransaction(transactionEntity: TransactionEntity): Flow<Resource<TransactionEntity>>
 
-    suspend fun changeStatusTransaction(transactionEntity: TransactionEntity): Int
+    fun changeStatusTransaction(transactionEntity: TransactionEntity): Flow<Resource<TransactionEntity>>
 
     suspend fun updateRestaurantTransaction(id: Int, id_restaurant: String): Int
 

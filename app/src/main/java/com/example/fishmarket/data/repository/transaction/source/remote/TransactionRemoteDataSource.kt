@@ -17,4 +17,12 @@ class TransactionRemoteDataSource(private val firebase: FirebaseFirestore) {
     }.catch {
         emit(ApiResponse.Error(it.message.toString()))
     }.flowOn(Dispatchers.IO)
+
+    fun updateTransaction(transaction: TransactionEntity) = flow<ApiResponse<TransactionEntity>> {
+        val transactionReference = firebase.collection("transaction").document(transaction.id)
+        transactionReference.set(transaction).await()
+        emit(ApiResponse.Success(transaction))
+    }.catch {
+        emit(ApiResponse.Error(it.message.toString()))
+    }.flowOn(Dispatchers.IO)
 }
