@@ -1,6 +1,7 @@
 package com.example.fishmarket.data.repository.restaurant.source.remote
 
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
+import com.example.fishmarket.data.repository.restaurant.source.remote.model.RestaurantResponse
 import com.example.fishmarket.data.source.remote.network.ApiResponse
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -34,5 +35,11 @@ class RestaurantRemoteDataSource(private val firebase: FirebaseFirestore) {
         }.catch {
             emit(ApiResponse.Error(it.message.toString()))
         }.flowOn(Dispatchers.IO)
+
+    fun getRestaurant() = flow<ApiResponse<List<RestaurantResponse>>> {
+        val restaurantReference = firebase.collection("restaurant").get().await()
+        val restaurants = restaurantReference.toObjects(RestaurantResponse::class.java)
+        emit(ApiResponse.Success(restaurants))
+    }
 
 }

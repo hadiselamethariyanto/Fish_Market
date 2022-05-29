@@ -11,6 +11,9 @@ interface RestaurantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRestaurant(restaurant: RestaurantEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRestaurants(restaurants: List<RestaurantEntity>)
+
     @Delete
     suspend fun deleteRestaurant(restaurant: RestaurantEntity)
 

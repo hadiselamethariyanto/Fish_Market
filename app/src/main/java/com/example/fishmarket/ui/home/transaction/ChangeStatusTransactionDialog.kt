@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.DialogChangeStatusTransactionBinding
 import com.example.fishmarket.ui.home.add_transaction.SelectRestaurantAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -55,9 +56,21 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         binding.rvRestaurant.adapter = restaurantAdapter
         binding.rvRestaurant.layoutManager = GridLayoutManager(requireActivity(), 3)
 
-        homeViewModel.getRestaurant().observe(viewLifecycleOwner) {
-            restaurantAdapter.updateData(it)
-            restaurantAdapter.selectRestaurant(transaction.id_restaurant)
+        homeViewModel.getRestaurant().observe(viewLifecycleOwner) { res ->
+            when (res) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    if (res.data != null) {
+                        restaurantAdapter.updateData(res.data)
+                        restaurantAdapter.selectRestaurant(transaction.id_restaurant)
+                    }
+                }
+                is Resource.Error -> {
+
+                }
+            }
         }
 
         binding.rvStatus.layoutManager = GridLayoutManager(requireActivity(), 4)
@@ -82,7 +95,7 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
                     resources.getString(R.string.warning_select_progress),
                     Toast.LENGTH_LONG
                 ).show()
-            }else{
+            } else {
                 if (newStatus == 2) {
                     if (restaurantAdapter.getSelectedPosition() == -1) {
                         Toast.makeText(

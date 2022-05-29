@@ -4,12 +4,14 @@ import com.example.fishmarket.data.repository.restaurant.source.local.Restaurant
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantWithTransactionEntity
 import com.example.fishmarket.data.repository.restaurant.source.remote.RestaurantRemoteDataSource
+import com.example.fishmarket.data.repository.restaurant.source.remote.model.RestaurantResponse
 import com.example.fishmarket.data.source.remote.NetworkBoundInternetOnly
+import com.example.fishmarket.data.source.remote.NetworkBoundResource
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.data.source.remote.network.ApiResponse
 import com.example.fishmarket.domain.repository.IRestaurantRepository
+import com.example.fishmarket.utilis.DataMapper
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 
 class RestaurantRepository(
     private val localDataSource: RestaurantLocalDataSource,
@@ -65,7 +67,23 @@ class RestaurantRepository(
     override fun getRestaurantWithTransaction(): Flow<List<RestaurantWithTransactionEntity>> =
         localDataSource.getRestaurantWithTransaction()
 
-    override fun getRestaurant(): Flow<List<RestaurantEntity>> = localDataSource.getRestaurant()
+    override fun getRestaurant(): Flow<Resource<List<RestaurantEntity>>> {
+        return object : NetworkBoundResource<List<RestaurantEntity>, List<RestaurantResponse>>() {
+            override fun loadFromDB(): Flow<List<RestaurantEntity>> =
+                localDataSource.getRestaurant()
+
+            override fun shouldFetch(data: List<RestaurantEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            override suspend fun createCall(): Flow<ApiResponse<List<RestaurantResponse>>> =
+                remoteDataSource.getRestaurant()
+
+            override suspend fun saveCallResult(data: List<RestaurantResponse>) {
+                localDataSource.addRestaurants(DataMapper.mapRestaurantResponseToEntity(data))
+            }
+
+        }.asFlow()
+    }
 
     override fun getRestaurant(id: String) = localDataSource.getRestaurant(id)
 

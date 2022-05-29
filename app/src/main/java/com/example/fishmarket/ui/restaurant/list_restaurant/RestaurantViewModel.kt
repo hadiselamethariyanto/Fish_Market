@@ -8,10 +8,6 @@ import kotlinx.coroutines.launch
 
 class RestaurantViewModel(private val repository: IRestaurantRepository) : ViewModel() {
 
-//    private var _restaurantWithTransaction =
-//        MutableLiveData<List<RestaurantWithTransactionEntity>>()
-//    val restaurantWithTransaction: LiveData<List<RestaurantWithTransactionEntity>> get() = _restaurantWithTransaction
-
     fun getRestaurant() = repository.getRestaurant().asLiveData()
 
     fun getRestaurantWithTransaction() = repository.getRestaurantWithTransaction().asLiveData()

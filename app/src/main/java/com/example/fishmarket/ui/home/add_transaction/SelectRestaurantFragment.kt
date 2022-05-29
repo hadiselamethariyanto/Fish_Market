@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fishmarket.R
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.DialogSelectRestaurantBinding
 import com.example.fishmarket.ui.restaurant.list_restaurant.RestaurantViewModel
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -37,8 +38,20 @@ class SelectRestaurantFragment : DialogFragment() {
         binding.rvRestaurant.adapter = selectRestaurantAdapter
         binding.rvRestaurant.layoutManager = GridLayoutManager(requireActivity(), 3)
 
-        viewModel.getRestaurant().observe(viewLifecycleOwner) {
-            selectRestaurantAdapter.updateData(it)
+        viewModel.getRestaurant().observe(viewLifecycleOwner) { res ->
+            when (res) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    if (res.data!=null){
+                        selectRestaurantAdapter.updateData(res.data)
+                    }
+                }
+                is Resource.Error -> {
+
+                }
+            }
         }
 
         binding.btnSave.setOnClickListener {

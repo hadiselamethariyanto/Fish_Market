@@ -8,6 +8,9 @@ class RestaurantLocalDataSource(private val restaurantDao: RestaurantDao) {
     suspend fun addRestaurant(restaurant: RestaurantEntity) =
         restaurantDao.insertRestaurant(restaurant)
 
+    suspend fun addRestaurants(restaurants: List<RestaurantEntity>) =
+        restaurantDao.insertRestaurants(restaurants)
+
     suspend fun deleteRestaurant(restaurant: RestaurantEntity) =
         restaurantDao.deleteRestaurant(restaurant)
 

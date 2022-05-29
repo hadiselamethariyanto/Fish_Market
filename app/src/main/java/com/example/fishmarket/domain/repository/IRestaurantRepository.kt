@@ -15,7 +15,7 @@ interface IRestaurantRepository {
 
     fun getRestaurantWithTransaction(): Flow<List<RestaurantWithTransactionEntity>>
 
-    fun getRestaurant(): Flow<List<RestaurantEntity>>
+    fun getRestaurant(): Flow<Resource<List<RestaurantEntity>>>
 
     fun getRestaurant(id: String): Flow<RestaurantEntity>
 }
