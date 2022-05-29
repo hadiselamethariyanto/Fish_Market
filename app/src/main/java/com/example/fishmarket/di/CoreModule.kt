@@ -13,6 +13,7 @@ import com.example.fishmarket.data.repository.status_transaction.StatusTransacti
 import com.example.fishmarket.data.repository.status_transaction.source.local.LocalStatusTransactionDataSource
 import com.example.fishmarket.data.repository.table.TableRepository
 import com.example.fishmarket.data.repository.table.source.local.TableLocalDataSource
+import com.example.fishmarket.data.repository.table.source.remote.TableRemoteDataSource
 import com.example.fishmarket.data.repository.transaction.TransactionRepository
 import com.example.fishmarket.data.repository.transaction.source.local.TransactionLocalDataSource
 import com.example.fishmarket.data.source.local.FishMarketDatabase
@@ -21,7 +22,6 @@ import com.example.fishmarket.domain.repository.IStatusTransactionRepository
 import com.example.fishmarket.domain.repository.ITableRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -81,11 +81,12 @@ val repositoryModule = module {
     single { RestaurantLocalDataSource(get()) }
     single { RestaurantRemoteDataSource(get()) }
     single { TableLocalDataSource(get()) }
+    single { TableRemoteDataSource(get()) }
     single { TransactionLocalDataSource(get()) }
     single { LocalStatusTransactionDataSource(get()) }
 
     single<IRestaurantRepository> { RestaurantRepository(get(), get()) }
-    single<ITableRepository> { TableRepository(get()) }
+    single<ITableRepository> { TableRepository(get(), get()) }
     single<ITransactionRepository> { TransactionRepository(get()) }
     single<IStatusTransactionRepository> { StatusTransactionRepository(get()) }
 }

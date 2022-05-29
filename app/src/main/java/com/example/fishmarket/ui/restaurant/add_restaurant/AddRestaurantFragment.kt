@@ -10,16 +10,13 @@ import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddRestaurantBinding
+import com.example.fishmarket.utilis.Utils
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 class AddRestaurantFragment : Fragment() {
 
     private var _binding: FragmentAddRestaurantBinding? = null
     private val binding get() = _binding!!
-    private val char = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-    private val randomStrengthLength = 12
-    private var random = Random()
     private val viewModel: AddRestaurantViewModel by viewModel()
 
     override fun onCreateView(
@@ -35,7 +32,7 @@ class AddRestaurantFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val name = binding.etRestaurantName.text.toString()
-            val uniqueID = getRandomString()
+            val uniqueID = Utils.getRandomString()
             val createdDate = System.currentTimeMillis()
             viewModel.addRestaurant(
                 RestaurantEntity(
@@ -66,24 +63,6 @@ class AddRestaurantFragment : Fragment() {
         }
     }
 
-    private fun getRandomString(): String {
-        val randStr = StringBuffer()
-        for (i in 0 until randomStrengthLength) {
-            val number = getRandomNumber()
-            val ch = char[number]
-            randStr.append(ch)
-        }
-        return randStr.toString()
-    }
-
-    private fun getRandomNumber(): Int {
-        val randomInt: Int = random.nextInt(char.length)
-        return if (randomInt - 1 == -1) {
-            randomInt
-        } else {
-            randomInt - 1
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()

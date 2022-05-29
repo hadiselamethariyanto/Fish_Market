@@ -26,6 +26,6 @@ interface TransactionDao {
     suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int
 
     @Query("UPDATE table_restaurant SET status =:status WHERE id=:id")
-    suspend fun setStatusTable(status: Boolean, id: Int)
+    suspend fun setStatusTable(status: Boolean, id: String)
 
 }

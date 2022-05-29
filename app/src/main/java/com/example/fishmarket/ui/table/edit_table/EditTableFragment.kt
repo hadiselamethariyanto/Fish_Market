@@ -28,7 +28,7 @@ class EditTableFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val id = arguments?.getInt("id")
+        val id = arguments?.getString("id")
         val status = arguments?.getBoolean("status")
 
         getTable(id.toString())
@@ -41,7 +41,12 @@ class EditTableFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val name = binding.etTableName.text.toString()
-            val table = TableEntity(id = id ?: 0, name = name, status = status ?: false)
+            val table = TableEntity(
+                id = id ?: "",
+                name = name,
+                status = status ?: false,
+                createdDate = 0
+            )
             viewModel.updateTable(table)
         }
     }

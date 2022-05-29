@@ -42,7 +42,7 @@ class AddTransactionViewModel(
 
         val transaction = TransactionEntity(
             id = 0,
-            id_table = idTable ?: 0,
+            id_table = idTable ?: "",
             id_restaurant = idRestaurant ?: "",
             created_date = createdDate,
             dibakar_date = 0,
@@ -53,7 +53,7 @@ class AddTransactionViewModel(
 
         viewModelScope.launch {
             _isSuccess.value = repository.addTransaction(transaction)
-            repository.setStatusTable(true, idTable ?: 0)
+            repository.setStatusTable(true, idTable ?: "")
         }
 
     }

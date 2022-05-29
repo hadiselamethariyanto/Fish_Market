@@ -14,7 +14,7 @@ interface ITransactionRepository {
 
     suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int
 
-    suspend fun setStatusTable(status: Boolean, id: Int)
+    suspend fun setStatusTable(status: Boolean, id: String)
 
     fun getTransactions(filter:Int): Flow<List<TransactionHomeEntity>>
 }

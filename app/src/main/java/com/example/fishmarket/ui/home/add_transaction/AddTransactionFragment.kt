@@ -42,7 +42,7 @@ class AddTransactionFragment : Fragment() {
         viewModel.isSuccess.observe(viewLifecycleOwner) {
             if (it > 0) {
                 viewModel.setRestaurant(RestaurantEntity(id = "", name = "",0))
-                viewModel.setTable(TableEntity(id = 0, name = "",status = false))
+                viewModel.setTable(TableEntity(id = "", name = "",status = false,0))
                 viewModel.resetIsSuccess()
                 findNavController().navigateUp()
             }

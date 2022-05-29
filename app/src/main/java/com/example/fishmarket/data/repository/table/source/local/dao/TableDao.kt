@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TableDao {
     @Insert
-    suspend fun addTable(table: TableEntity): Long
+    suspend fun addTable(table: TableEntity)
 
     @Update
     suspend fun updateTable(table: TableEntity): Int

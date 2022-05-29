@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTableBinding
+import com.example.fishmarket.utilis.Utils
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddTableFragment : Fragment() {
@@ -27,16 +29,26 @@ class AddTableFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.isSuccess.observe(viewLifecycleOwner) {
-            if (it > 0) {
-                findNavController().navigateUp()
-            }
-        }
 
         binding.btnSave.setOnClickListener {
             val name = binding.etTableName.text.toString()
-            val table = TableEntity(id = 0, name = name,status = false)
-            viewModel.addTable(table)
+            val id = Utils.getRandomString()
+            val createdDate = System.currentTimeMillis()
+            val table = TableEntity(id = id, name = name, status = false, createdDate = createdDate)
+            viewModel.addTable(table).observe(viewLifecycleOwner){res->
+                when(res){
+                    is Resource.Loading->{
+                        binding.btnSave.isEnabled = false
+                    }
+                    is Resource.Success->{
+                        findNavController().navigateUp()
+                        binding.btnSave.isEnabled = true
+                    }
+                    is Resource.Error->{
+                        binding.btnSave.isEnabled = true
+                    }
+                }
+            }
         }
     }
 

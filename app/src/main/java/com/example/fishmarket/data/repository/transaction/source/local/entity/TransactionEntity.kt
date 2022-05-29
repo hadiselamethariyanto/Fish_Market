@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "transaction")
 data class TransactionEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Int,
-    @ColumnInfo(name = "id_table") var id_table: Int,
+    @ColumnInfo(name = "id_table") var id_table: String,
     @ColumnInfo(name = "id_restaurant") var id_restaurant: String,
     @ColumnInfo(name = "created_date") var created_date: Long,
     @ColumnInfo(name = "dibakar_date") var dibakar_date: Long,

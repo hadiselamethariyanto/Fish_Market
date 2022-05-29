@@ -3,7 +3,7 @@ package com.example.fishmarket.data.repository.transaction.source.local.entity
 data class TransactionHomeEntity(
     val id: Int,
     val table: String,
-    val id_table: Int,
+    val id_table: String,
     val id_restaurant: String,
     val restaurant: String,
     val created_date: Long,
