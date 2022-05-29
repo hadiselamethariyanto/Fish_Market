@@ -9,6 +9,9 @@ interface TableDao {
     @Insert
     suspend fun addTable(table: TableEntity)
 
+    @Insert
+    suspend fun addTables(tables: List<TableEntity>)
+
     @Update
     suspend fun updateTable(table: TableEntity)
 

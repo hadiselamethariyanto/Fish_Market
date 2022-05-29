@@ -11,7 +11,7 @@ interface ITableRepository {
 
     fun deleteTable(table: TableEntity): Flow<Resource<List<TableEntity>>>
 
-    fun getTables(): Flow<List<TableEntity>>
+    fun getTables(): Flow<Resource<List<TableEntity>>>
 
     fun getAvailableTable(): Flow<List<TableEntity>>
 

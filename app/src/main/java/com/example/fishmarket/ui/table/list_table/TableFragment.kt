@@ -71,15 +71,32 @@ class TableFragment : Fragment() {
                 LinearLayoutManager.VERTICAL
             )
         )
-        viewModel.getTables().observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                tableAdapter.updateData(it)
-                binding.rvTable.visibility = View.VISIBLE
-                binding.llNoData.visibility = View.GONE
-            } else {
-                binding.rvTable.visibility = View.GONE
-                binding.llNoData.visibility = View.VISIBLE
+
+        viewModel.getTables().observe(viewLifecycleOwner) { res ->
+            when (res) {
+                is Resource.Loading -> {
+                    binding.refresh.isRefreshing = true
+                }
+                is Resource.Success -> {
+                    if (res.data != null) {
+                        if (res.data.isNotEmpty()) {
+                            tableAdapter.updateData(res.data)
+                            binding.rvTable.visibility = View.VISIBLE
+                            binding.llNoData.visibility = View.GONE
+                        } else {
+                            binding.rvTable.visibility = View.GONE
+                            binding.llNoData.visibility = View.VISIBLE
+                        }
+                    }
+                    binding.refresh.isRefreshing = false
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                        .show()
+                    binding.refresh.isRefreshing = false
+                }
             }
+
         }
     }
 
