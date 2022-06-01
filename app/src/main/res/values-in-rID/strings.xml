@@ -26,5 +26,6 @@
     <string name="warning_select_progress">Mohon pilih proses secara bertahap</string>
     <string name="btn_paid">Dibayar</string>
     <string name="btn_progress">Proses</string>
+    <string name="title_menu">Menu</string>
 
 </resources>

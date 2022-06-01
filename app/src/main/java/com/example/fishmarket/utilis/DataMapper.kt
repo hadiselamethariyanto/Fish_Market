@@ -1,6 +1,8 @@
 package com.example.fishmarket.utilis
 
 import com.example.fishmarket.R
+import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
+import com.example.fishmarket.data.repository.menu.source.remote.model.MenuResponse
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.repository.restaurant.source.remote.model.RestaurantResponse
 import com.example.fishmarket.data.repository.status_transaction.source.local.entity.StatusTransactionEntity
@@ -44,6 +46,16 @@ object DataMapper {
                 status = it.status ?: 0
             )
         }
+
+    fun mapMenuResponseToEntity(list: List<MenuResponse>): List<MenuEntity> = list.map {
+        MenuEntity(
+            id = it.id.toString(),
+            name = it.name.toString(),
+            price = it.price ?: 0,
+            id_category = it.id_category.toString(),
+            created_date = it.created_date ?: 0
+        )
+    }
 
     fun mapStatusTransactionResponseToEntity(list: List<StatusTransactionResponse>): List<StatusTransactionEntity> {
         val newList = ArrayList<StatusTransactionEntity>()

@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/transaction">
 
     <include app:graph="@navigation/transaction" />
     <include app:graph="@navigation/restaurant" />
     <include app:graph="@navigation/table" />
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.fishmarket.ui.menu.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" />
 
 
 </navigation>

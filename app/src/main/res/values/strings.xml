@@ -30,5 +30,6 @@
     <string name="warning_select_progress">Please select progress step by step</string>
     <string name="btn_paid">Paid</string>
     <string name="btn_progress">Progress</string>
+    <string name="title_menu">Menu</string>
 
 </resources>
