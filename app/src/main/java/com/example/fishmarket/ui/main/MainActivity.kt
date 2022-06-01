@@ -2,6 +2,7 @@ package com.example.fishmarket.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -34,11 +35,11 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_table
-            )
+            ), binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
-
+        binding.bottomNav.setupWithNavController(navController)
+        binding.sidebarNav.setupWithNavController(navController)
 
         mainViewModel.getRestaurants().observe(this) {}
         mainViewModel.getTables().observe(this) {}

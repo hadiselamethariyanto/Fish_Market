@@ -64,7 +64,7 @@ class TransactionRepository(
                 localDataSource.getTransactions(filter)
 
             override fun shouldFetch(data: List<TransactionHomeEntity>?): Boolean =
-                data == null || data.isEmpty()
+                true
 
             override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> =
                 remoteDataSource.getTransactions()

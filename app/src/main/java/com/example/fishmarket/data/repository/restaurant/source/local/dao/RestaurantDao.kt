@@ -20,14 +20,14 @@ interface RestaurantDao {
     @Update
     suspend fun updateRestaurant(restaurant: RestaurantEntity): Int
 
-    @Query("SELECT * FROM restaurant ORDER BY id DESC")
+    @Query("SELECT * FROM restaurant ORDER BY name ASC")
     fun getRestaurant(): Flow<List<RestaurantEntity>>
 
     @Query("SELECT * FROM restaurant WHERE id=:id")
     fun getRestaurant(id: String): Flow<RestaurantEntity>
 
     @Transaction
-    @Query("SELECT * FROM `restaurant`")
+    @Query("SELECT * FROM `restaurant` ORDER BY name ASC")
     fun getRestaurantWithTransaction(): Flow<List<RestaurantWithTransactionEntity>>
 
 }

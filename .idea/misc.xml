@@ -31,10 +31,13 @@
         <entry key="app/src/main/res/drawable/rectangle_not_highlighted.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/rectangle_not_highlighted_transaction.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_change_status.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_change_status_transaction.xml" value="0.10166794506471549" />
         <entry key="app/src/main/res/layout/dialog_select_restaurant.xml" value="0.182518115942029" />
         <entry key="app/src/main/res/layout/dialog_select_table.xml" value="0.3534820556640625" />
+        <entry key="app/src/main/res/layout/drawer_header.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_add_restaurant.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_add_table.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_add_transaction.xml" value="0.1" />
@@ -51,6 +54,7 @@
         <entry key="app/src/main/res/layout/item_table.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_transactions.xml" value="0.303497314453125" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/sidebar_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

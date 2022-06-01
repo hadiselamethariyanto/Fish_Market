@@ -25,6 +25,6 @@ interface TableDao {
     @Query("SELECT * FROM table_restaurant WHERE status =0")
     fun getAvailableTable(): Flow<List<TableEntity>>
 
-    @Query("SELECT * FROM table_restaurant ORDER BY id")
+    @Query("SELECT * FROM table_restaurant ORDER BY LENGTH(name),name")
     fun getTables(): Flow<List<TableEntity>>
 }
