@@ -31,5 +31,14 @@
     <string name="btn_paid">Paid</string>
     <string name="btn_progress">Progress</string>
     <string name="title_menu">Menu</string>
+    <string name="et_price">Price</string>
+    <string name="rupiah" translatable="false">Rp %s</string>
+    <string name="et_category">Category</string>
+    <string name="delete_menu">Delete Menu</string>
+    <string name="title_category">Category</string>
+    <string name="title_add_menu">Add Menu</string>
+    <string name="title_edit_menu">Edit Menu</string>
+    <string name="title_add_category">Add Category</string>
+    <string name="title_edit_category">Edit Category</string>
 
 </resources>

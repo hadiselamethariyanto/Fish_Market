@@ -4,6 +4,9 @@ import com.example.fishmarket.ui.home.transaction.HomeViewModel
 import com.example.fishmarket.ui.home.add_transaction.AddTransactionViewModel
 import com.example.fishmarket.ui.main.MainViewModel
 import com.example.fishmarket.ui.menu.MenuViewModel
+import com.example.fishmarket.ui.menu.add_menu.AddMenuViewModel
+import com.example.fishmarket.ui.menu.edit_menu.EditMenuViewModel
+import com.example.fishmarket.ui.menu.list_menu.ListMenuViewModel
 import com.example.fishmarket.ui.restaurant.add_restaurant.AddRestaurantViewModel
 import com.example.fishmarket.ui.restaurant.edit_restaurant.EditRestaurantViewModel
 import com.example.fishmarket.ui.restaurant.list_restaurant.RestaurantViewModel
@@ -24,4 +27,7 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get()) }
     viewModel { MenuViewModel(get()) }
+    viewModel { AddMenuViewModel(get()) }
+    viewModel { EditMenuViewModel(get()) }
+    viewModel { ListMenuViewModel(get()) }
 }

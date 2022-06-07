@@ -8,6 +8,10 @@ interface IMenuRepository {
 
     fun insertMenu(menu: MenuEntity): Flow<Resource<MenuEntity>>
 
+    fun editMenu(menu: MenuEntity): Flow<Resource<MenuEntity>>
+
+    fun deleteMenu(menu: MenuEntity): Flow<Resource<List<MenuEntity>>>
+
     fun getMenus(): Flow<Resource<List<MenuEntity>>>
 
 }

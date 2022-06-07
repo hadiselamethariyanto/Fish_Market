@@ -1,5 +1,9 @@
 package com.example.fishmarket.utilis
 
+import android.content.Context
+import com.example.fishmarket.R
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.util.*
 
 object Utils {
@@ -25,5 +29,11 @@ object Utils {
         } else {
             randomInt - 1
         }
+    }
+
+    fun formatNumberToRupiah(value: Int, context: Context): String {
+        val nf: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
+        val decimalFormat = nf as DecimalFormat
+        return context.getString(R.string.rupiah, decimalFormat.format(value))
     }
 }

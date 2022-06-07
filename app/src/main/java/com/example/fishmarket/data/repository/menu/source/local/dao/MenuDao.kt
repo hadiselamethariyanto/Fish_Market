@@ -1,9 +1,6 @@
 package com.example.fishmarket.data.repository.menu.source.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -14,6 +11,12 @@ interface MenuDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMenu(menu: MenuEntity)
+
+    @Update
+    suspend fun updateMenu(menu: MenuEntity)
+
+    @Delete
+    suspend fun deleteMenu(menu: MenuEntity)
 
     @Query("SELECT * FROM menu WHERE id=:id")
     fun getMenu(id: String): Flow<MenuEntity>

@@ -5,10 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.databinding.ItemMenuBinding
+import com.example.fishmarket.utilis.Utils
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
     private val list = ArrayList<MenuEntity>()
+
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
 
     fun updateData(new: List<MenuEntity>) {
         list.clear()
@@ -17,9 +24,21 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     }
 
     class ViewHolder(private val binding: ItemMenuBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindItem(menuEntity: MenuEntity) {
+        fun bindItem(
+            menuEntity: MenuEntity,
+            onItemClickCallback: OnItemClickCallback
+        ) {
             binding.tvName.text = menuEntity.name
-            binding.tvPrice.text = menuEntity.price.toString()
+            binding.tvPrice.text = Utils.formatNumberToRupiah(menuEntity.price, itemView.context)
+
+            itemView.setOnLongClickListener {
+                onItemClickCallback.onItemLongClicked(menuEntity)
+                true
+            }
+
+            itemView.setOnClickListener {
+                onItemClickCallback.onItemClicked(menuEntity)
+            }
         }
     }
 
@@ -29,8 +48,13 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(list[position])
+        holder.bindItem(list[position], onItemClickCallback)
     }
 
     override fun getItemCount(): Int = list.size
+
+    interface OnItemClickCallback {
+        fun onItemLongClicked(menu: MenuEntity)
+        fun onItemClicked(menu: MenuEntity)
+    }
 }

@@ -18,7 +18,7 @@ interface RestaurantDao {
     suspend fun deleteRestaurant(restaurant: RestaurantEntity)
 
     @Update
-    suspend fun updateRestaurant(restaurant: RestaurantEntity): Int
+    suspend fun updateRestaurant(restaurant: RestaurantEntity)
 
     @Query("SELECT * FROM restaurant ORDER BY name ASC")
     fun getRestaurant(): Flow<List<RestaurantEntity>>

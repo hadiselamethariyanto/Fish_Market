@@ -10,7 +10,6 @@ import com.example.fishmarket.data.repository.status_transaction.source.remote.m
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.repository.table.source.remote.model.TableResponse
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 
 object DataMapper {
