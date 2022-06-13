@@ -6,14 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentHistoryBinding
 import com.example.fishmarket.domain.model.History
 import com.example.fishmarket.utilis.Utils
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryFragment : Fragment() {
@@ -35,6 +39,17 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         historyAdapter = HistoryAdapter()
+        historyAdapter.setOnItemClickCallback(object : HistoryAdapter.OnItemClickCallback {
+            override fun onItemClicked(transaction: TransactionWithDetailEntity) {
+                val jsonString = Gson().toJson(transaction)
+                val bundle = bundleOf("data" to jsonString)
+                findNavController().navigate(
+                    R.id.action_historyFragment_to_detailHistoryFragment,
+                    bundle
+                )
+            }
+        })
+
         binding.rvHistory.adapter = historyAdapter
         binding.rvHistory.addItemDecoration(
             DividerItemDecoration(
@@ -65,10 +80,10 @@ class HistoryFragment : Fragment() {
                             val newHistory = History(1, x)
                             listHistory.add(newHistory)
                             previousDate = date
-                        } else {
-                            val newHistory = History(0, x)
-                            listHistory.add(newHistory)
                         }
+
+                        val newHistory = History(0, x)
+                        listHistory.add(newHistory)
                     }
                     historyAdapter.updateData(listHistory)
                 }

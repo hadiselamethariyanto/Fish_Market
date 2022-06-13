@@ -9,5 +9,17 @@
         android:id="@+id/historyFragment"
         android:name="com.example.fishmarket.ui.history.list_history.HistoryFragment"
         android:label="@string/title_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_historyFragment_to_detailHistoryFragment"
+            app:destination="@id/detailHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailHistoryFragment"
+        android:name="com.example.fishmarket.ui.history.detail_history.DetailHistoryFragment"
+        android:label="@string/title_transaction_detail"
+        tools:layout="@layout/fragment_detail_history" />
+
+
 </navigation>

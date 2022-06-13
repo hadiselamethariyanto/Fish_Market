@@ -48,5 +48,7 @@
     <string name="title_report">Laporan</string>
     <string name="title_history">Riwayat</string>
     <string name="time">Waktu</string>
+    <string name="information_transaction">Informasi Transaksi</string>
+    <string name="title_transaction_detail">Detail Transaksi</string>
 
 </resources>

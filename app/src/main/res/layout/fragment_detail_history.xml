@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.history.detail_history.DetailHistoryFragment">
+
+    <TextView
+        android:id="@+id/informasiTransaksi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_100"
+        android:fontFamily="sans-serif"
+        android:padding="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/information_transaction"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/v1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/gray_200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/informasiTransaksi" />
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:drawablePadding="16dp"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_receipt_24"
+        app:layout_constraintEnd_toStartOf="@id/time"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v1" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawablePadding="16dp"
+        android:fontFamily="sans-serif"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_access_time_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/id"
+        app:layout_constraintTop_toBottomOf="@id/v1" />
+
+
+    <TextView
+        android:id="@+id/totalFee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:drawablePadding="16dp"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_money_dollar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id" />
+
+    <View
+        android:id="@+id/v2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/gray_200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/totalFee" />
+
+    <TextView
+        android:id="@+id/pesanan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_100"
+        android:fontFamily="sans-serif"
+        android:padding="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/detail_item"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v2" />
+
+    <View
+        android:id="@+id/v3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/gray_200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pesanan" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDetail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v3"
+        tools:listitem="@layout/item_history_detail" />
+
+    <include
+        android:id="@+id/emptyData"
+        layout="@layout/view_data_empty"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

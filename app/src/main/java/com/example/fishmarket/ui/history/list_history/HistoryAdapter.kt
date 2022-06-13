@@ -22,6 +22,12 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     inner class ViewHolderItem(private val binding: ItemHistoryBinding) :
@@ -97,6 +103,10 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
                 itemView.context
             )
             binding.tvJam.text = Utils.formatTime(transaction.transactionEntity.created_date)
+
+            itemView.setOnClickListener {
+                onItemClickCallback.onItemClicked(transaction)
+            }
         }
     }
 
@@ -133,4 +143,8 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     override fun getItemCount(): Int = list.size
 
     override fun getItemViewType(position: Int): Int = list[position].viewType
+
+    interface OnItemClickCallback {
+        fun onItemClicked(transaction: TransactionWithDetailEntity)
+    }
 }

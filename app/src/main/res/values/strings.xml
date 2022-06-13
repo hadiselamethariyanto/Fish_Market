@@ -59,5 +59,11 @@
     <string name="total" translatable="false">Total</string>
     <string name="status" translatable="false">Status</string>
     <string name="time">Time</string>
+    <string name="information_transaction">Transaction Information</string>
+    <string name="title_transaction_detail">Transaction Detail</string>
+    <string name="detail_item" translatable="false">Detail Item</string>
+    <string name="placeholder_quantity" translatable="false">1</string>
+    <string name="placeholder_menu" translatable="false">Nasi Goreng</string>
+    <string name="placeholder_price" translatable="false">Rp 1.000</string>
 
 </resources>

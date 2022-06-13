@@ -11,9 +11,11 @@
         <entry key="app/src/main/res/drawable/background_table_transaction.xml" value="0.1235" />
         <entry key="app/src/main/res/drawable/background_textview_add_transaction_rounded.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/badge_background.xml" value="0.1335" />
+        <entry key="app/src/main/res/drawable/circle_border.xml" value="0.1085" />
         <entry key="app/src/main/res/drawable/circle_highlighted_table.xml" value="0.1095" />
         <entry key="app/src/main/res/drawable/circle_not_highlicted_table.xml" value="0.1095" />
         <entry key="app/src/main/res/drawable/circle_table.xml" value="0.1095" />
+        <entry key="app/src/main/res/drawable/ic_access_time_24.xml" value="0.1085" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1095" />
         <entry key="app/src/main/res/drawable/ic_cart.xml" value="0.1095" />
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1095" />
@@ -22,8 +24,12 @@
         <entry key="app/src/main/res/drawable/ic_dibersihkan_white.xml" value="0.1085" />
         <entry key="app/src/main/res/drawable/ic_fire_fish.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_fire_fish_12.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_money.xml" value="0.1095" />
+        <entry key="app/src/main/res/drawable/ic_money_dollar.xml" value="0.1095" />
+        <entry key="app/src/main/res/drawable/ic_money_gray_24.xml" value="0.1085" />
         <entry key="app/src/main/res/drawable/ic_payment.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_payment_12.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_receipt_24.xml" value="0.1085" />
         <entry key="app/src/main/res/drawable/ic_served.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_served_12.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_store.xml" value="0.1335" />
@@ -50,6 +56,7 @@
         <entry key="app/src/main/res/layout/fragment_add_restaurant.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_add_table.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_add_transaction.xml" value="0.25510204081632654" />
+        <entry key="app/src/main/res/layout/fragment_detail_history.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_edit_category.xml" value="0.182518115942029" />
         <entry key="app/src/main/res/layout/fragment_edit_menu.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_edit_restaurant.xml" value="0.182518115942029" />
@@ -69,6 +76,7 @@
         <entry key="app/src/main/res/layout/item_change_status_transaction.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_history.xml" value="0.182518115942029" />
         <entry key="app/src/main/res/layout/item_history_date.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_history_detail.xml" value="0.37760162353515625" />
         <entry key="app/src/main/res/layout/item_menu.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_restaurant.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_restaurant_transaction.xml" value="0.1" />
@@ -77,6 +85,7 @@
         <entry key="app/src/main/res/layout/item_table.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_transactions.xml" value="0.303497314453125" />
         <entry key="app/src/main/res/layout/loading_view.xml" value="0.3245285034179688" />
+        <entry key="app/src/main/res/layout/view_data_empty.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_home.xml" value="0.15416666666666667" />
         <entry key="app/src/main/res/menu/sidebar_menu.xml" value="0.1" />
