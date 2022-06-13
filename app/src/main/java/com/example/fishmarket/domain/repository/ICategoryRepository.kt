@@ -14,5 +14,5 @@ interface ICategoryRepository {
 
     fun getCategories(): Flow<Resource<List<CategoryEntity>>>
 
-    fun getCategory(id: String): Flow<CategoryEntity>
+    fun getCategory(id: String): Flow<Resource<CategoryEntity>>
 }

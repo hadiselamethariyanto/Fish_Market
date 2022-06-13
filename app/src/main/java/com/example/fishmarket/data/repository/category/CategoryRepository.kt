@@ -79,7 +79,21 @@ class CategoryRepository(
         }.asFlow()
     }
 
-    override fun getCategory(id: String): Flow<CategoryEntity> = localDataSource.getCategory(id)
+    override fun getCategory(id: String): Flow<Resource<CategoryEntity>> {
+        return object : NetworkBoundResource<CategoryEntity, List<CategoryResponse>>() {
+            override fun loadFromDB(): Flow<CategoryEntity> = localDataSource.getCategory(id)
+
+            override fun shouldFetch(data: CategoryEntity?): Boolean = data == null
+
+            override suspend fun createCall(): Flow<ApiResponse<List<CategoryResponse>>> =
+                remoteDataSource.getCategories()
+
+            override suspend fun saveCallResult(data: List<CategoryResponse>) {
+                localDataSource.addCategories(DataMapper.mapCategoriesResponseToEntity(data))
+            }
+
+        }.asFlow()
+    }
 
 
 }
