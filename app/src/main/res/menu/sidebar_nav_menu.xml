@@ -2,12 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/transaction"
+        android:id="@+id/home"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/menuFragment"
+        android:id="@+id/history"
+        android:icon="@drawable/ic_transaction"
+        android:title="@string/title_history"/>
+
+    <item
+        android:id="@+id/menu"
         android:icon="@drawable/ic_food"
         android:title="@string/title_menu" />
 
@@ -15,5 +20,10 @@
         android:id="@+id/table"
         android:icon="@drawable/ic_table"
         android:title="@string/title_table" />
+
+    <item
+        android:id="@+id/reportFragment"
+        android:icon="@drawable/ic_baseline_show_chart_24"
+        android:title="@string/title_report" />
 
 </menu>

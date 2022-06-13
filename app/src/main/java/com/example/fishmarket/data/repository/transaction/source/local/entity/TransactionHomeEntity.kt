@@ -10,5 +10,6 @@ data class TransactionHomeEntity(
     val dibakar_date: Long,
     val disajikan_date: Long,
     val finished_date: Long,
-    val status: Int
+    val status: Int,
+    val total_fee: Int
 )

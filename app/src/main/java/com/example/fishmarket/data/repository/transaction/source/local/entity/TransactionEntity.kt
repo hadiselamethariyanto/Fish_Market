@@ -13,5 +13,6 @@ data class TransactionEntity(
     @ColumnInfo(name = "dibakar_date") var dibakar_date: Long,
     @ColumnInfo(name = "disajikan_date") var disajikan_date: Long,
     @ColumnInfo(name = "finished_date") var finished_date: Long,
-    @ColumnInfo(name = "status") var status: Int
+    @ColumnInfo(name = "status") var status: Int,
+    @ColumnInfo(name = "total_fee") var total_fee: Int
 )

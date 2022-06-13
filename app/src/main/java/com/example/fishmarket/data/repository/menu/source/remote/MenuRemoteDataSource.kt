@@ -13,7 +13,7 @@ import kotlinx.coroutines.tasks.await
 class MenuRemoteDataSource(private val firebaseFirestore: FirebaseFirestore) {
     suspend fun addMenu(menu: MenuEntity) = flow<ApiResponse<MenuEntity>> {
         val menuReference = firebaseFirestore.collection("menu").document(menu.id)
-        menuReference.set(menu)
+        menuReference.set(menu).await()
         emit(ApiResponse.Success(menu))
     }.catch {
         emit(ApiResponse.Error(it.message.toString()))
@@ -21,7 +21,7 @@ class MenuRemoteDataSource(private val firebaseFirestore: FirebaseFirestore) {
 
     suspend fun editMenu(menu: MenuEntity) = flow<ApiResponse<MenuEntity>> {
         val menuReference = firebaseFirestore.collection("menu").document(menu.id)
-        menuReference.set(menu)
+        menuReference.set(menu).await()
         emit(ApiResponse.Success(menu))
     }.catch {
         emit(ApiResponse.Error(it.message.toString()))

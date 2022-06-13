@@ -20,7 +20,7 @@ class SelectRestaurantFragment : DialogFragment() {
     private var _binding: DialogSelectRestaurantBinding? = null
     private val binding get() = _binding!!
     private val viewModel: RestaurantViewModel by viewModel()
-    private val addRestaurantViewModel: AddTransactionViewModel by koinNavGraphViewModel(R.id.transaction)
+    private val addRestaurantViewModel: AddTransactionViewModel by koinNavGraphViewModel(R.id.home)
 
     override fun onCreateView(
         inflater: LayoutInflater,

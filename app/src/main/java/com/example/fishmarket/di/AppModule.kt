@@ -1,12 +1,16 @@
 package com.example.fishmarket.di
 
+import com.example.fishmarket.ui.history.list_history.HistoryViewModel
 import com.example.fishmarket.ui.home.transaction.HomeViewModel
 import com.example.fishmarket.ui.home.add_transaction.AddTransactionViewModel
 import com.example.fishmarket.ui.main.MainViewModel
 import com.example.fishmarket.ui.menu.MenuViewModel
+import com.example.fishmarket.ui.menu.add_category.AddCategoryViewModel
 import com.example.fishmarket.ui.menu.add_menu.AddMenuViewModel
-import com.example.fishmarket.ui.menu.edit_menu.EditMenuViewModel
+import com.example.fishmarket.ui.menu.edit_category.EditCategoryViewModel
+import com.example.fishmarket.ui.menu.list_category.ListCategoryViewModel
 import com.example.fishmarket.ui.menu.list_menu.ListMenuViewModel
+import com.example.fishmarket.ui.report.ReportViewModel
 import com.example.fishmarket.ui.restaurant.add_restaurant.AddRestaurantViewModel
 import com.example.fishmarket.ui.restaurant.edit_restaurant.EditRestaurantViewModel
 import com.example.fishmarket.ui.restaurant.list_restaurant.RestaurantViewModel
@@ -23,11 +27,15 @@ val viewModelModule = module {
     viewModel { AddTableViewModel(get()) }
     viewModel { TableViewModel(get()) }
     viewModel { EditTableViewModel(get()) }
-    viewModel { AddTransactionViewModel(get(), get()) }
+    viewModel { AddTransactionViewModel(get(), get(),get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get()) }
     viewModel { MenuViewModel(get()) }
-    viewModel { AddMenuViewModel(get()) }
-    viewModel { EditMenuViewModel(get()) }
+    viewModel { AddMenuViewModel(get(), get()) }
     viewModel { ListMenuViewModel(get()) }
+    viewModel { AddCategoryViewModel(get()) }
+    viewModel { EditCategoryViewModel(get()) }
+    viewModel { ListCategoryViewModel(get()) }
+    viewModel { ReportViewModel(get())}
+    viewModel { HistoryViewModel(get()) }
 }

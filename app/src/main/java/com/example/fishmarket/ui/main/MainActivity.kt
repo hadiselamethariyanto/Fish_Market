@@ -33,18 +33,22 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
+                R.id.navigation_add_transaction,
+                R.id.historyFragment,
                 R.id.navigation_home,
                 R.id.navigation_dashboard,
                 R.id.navigation_table,
-                R.id.menuFragment
+                R.id.menuFragment,
+                R.id.reportFragment
             ), binding.drawerLayout
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNav.setupWithNavController(navController)
         binding.sidebarNav.setupWithNavController(navController)
 
-        mainViewModel.getRestaurants().observe(this) {}
-        mainViewModel.getTables().observe(this) {}
+//        mainViewModel.getRestaurants().observe(this) {}
+//        mainViewModel.getTables().observe(this) {}
         mainViewModel.getStatus().observe(this) {}
     }
 

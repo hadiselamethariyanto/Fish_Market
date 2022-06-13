@@ -22,7 +22,7 @@ interface TableDao {
     @Query("SELECT * FROM table_restaurant WHERE id=:id")
     fun getTable(id: String): Flow<TableEntity>
 
-    @Query("SELECT * FROM table_restaurant WHERE status =0")
+    @Query("SELECT * FROM table_restaurant WHERE status =0 ORDER BY LENGTH(name),name")
     fun getAvailableTable(): Flow<List<TableEntity>>
 
     @Query("SELECT * FROM table_restaurant ORDER BY LENGTH(name),name")

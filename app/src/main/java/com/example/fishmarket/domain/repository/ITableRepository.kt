@@ -13,7 +13,7 @@ interface ITableRepository {
 
     fun getTables(): Flow<Resource<List<TableEntity>>>
 
-    fun getAvailableTable(): Flow<List<TableEntity>>
+    fun getAvailableTable(): Flow<Resource<List<TableEntity>>>
 
     fun getTable(id: String): Flow<TableEntity>
 }

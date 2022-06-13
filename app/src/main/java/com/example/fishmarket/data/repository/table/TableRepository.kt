@@ -76,7 +76,22 @@ class TableRepository(
         }.asFlow()
     }
 
-    override fun getAvailableTable(): Flow<List<TableEntity>> = localDataSource.getAvailableTable()
+    override fun getAvailableTable(): Flow<Resource<List<TableEntity>>> {
+        return object : NetworkBoundResource<List<TableEntity>, List<TableResponse>>() {
+            override fun loadFromDB(): Flow<List<TableEntity>> = localDataSource.getAvailableTable()
+
+            override fun shouldFetch(data: List<TableEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            override suspend fun createCall(): Flow<ApiResponse<List<TableResponse>>> =
+                remoteDataSource.getTables()
+
+            override suspend fun saveCallResult(data: List<TableResponse>) {
+                localDataSource.addTables(DataMapper.mapTableResponseToEntity(data))
+            }
+
+        }.asFlow()
+    }
 
     override fun getTable(id: String): Flow<TableEntity> = localDataSource.getTable(id)
 

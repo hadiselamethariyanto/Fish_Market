@@ -35,5 +35,18 @@
     <string name="title_edit_menu">Ubah Menu</string>
     <string name="title_add_category">Tambah Kategori</string>
     <string name="title_edit_category">Ubah Kategori</string>
+    <string name="warning_category_name_empty">Mohon isi nama kategory</string>
+    <string name="delete_category">Hapus Kategori</string>
+    <string name="select_category">Pilih Kategori</string>
+    <string name="warning_menu_name_empty">Mohon isi nama menu</string>
+    <string name="warning_price_menu_empty">Mohon isi harga menu</string>
+    <string name="warning_category_menu_empty">Mohon isi kategori menu</string>
+    <string name="title_transaction">Transaksi</string>
+    <string name="select_date">Pilih Tanggal</string>
+    <string name="total_sales">Total Penjualan</string>
+    <string name="total_income">Total Pendapatan</string>
+    <string name="title_report">Laporan</string>
+    <string name="title_history">Riwayat</string>
+    <string name="time">Waktu</string>
 
 </resources>

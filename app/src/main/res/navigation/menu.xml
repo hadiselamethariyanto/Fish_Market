@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.fishmarket.ui.menu.MenuFragment"
+        android:label="@string/title_menu"
+        tools:layout="@layout/fragment_menu">
+        <action
+            android:id="@+id/action_menuFragment_to_addMenuFragment"
+            app:destination="@id/addMenuFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_editMenuFragment"
+            app:destination="@id/editMenuFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_addCategoryFragment"
+            app:destination="@id/addCategoryFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_editCategoryFragment"
+            app:destination="@id/editCategoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addMenuFragment"
+        android:name="com.example.fishmarket.ui.menu.add_menu.AddMenuFragment"
+        android:label="@string/title_add_menu"
+        tools:layout="@layout/fragment_add_menu">
+        <action
+            android:id="@+id/action_addMenuFragment_to_selectCategoryDialog"
+            app:destination="@id/selectCategoryDialog" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editMenuFragment"
+        android:name="com.example.fishmarket.ui.menu.edit_menu.EditMenuFragment"
+        android:label="@string/title_edit_menu"
+        tools:layout="@layout/fragment_edit_menu" />
+
+    <fragment
+        android:id="@+id/listMenuFragment"
+        android:name="com.example.fishmarket.ui.menu.list_menu.ListMenuFragment"
+        android:label="@string/title_menu"
+        tools:layout="@layout/fragment_list_menu" />
+
+    <dialog
+        android:id="@+id/addCategoryFragment"
+        android:name="com.example.fishmarket.ui.menu.add_category.AddCategoryFragment"
+        android:label="fragment_add_category"
+        tools:layout="@layout/fragment_add_category" />
+
+    <dialog
+        android:id="@+id/editCategoryFragment"
+        android:name="com.example.fishmarket.ui.menu.edit_category.EditCategoryFragment"
+        android:label="fragment_edit_category"
+        tools:layout="@layout/fragment_edit_category" />
+
+    <dialog
+        android:id="@+id/selectCategoryDialog"
+        android:name="com.example.fishmarket.ui.menu.add_menu.SelectCategoryDialog"
+        android:label="fragment_select_category_dialog"
+        tools:layout="@layout/fragment_select_category_dialog" />
+
+
+</navigation>

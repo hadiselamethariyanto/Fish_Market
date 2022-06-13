@@ -3,51 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/transaction">
+    app:startDestination="@+id/home">
 
+    <include app:graph="@navigation/home" />
+    <include app:graph="@navigation/history"/>
     <include app:graph="@navigation/transaction" />
     <include app:graph="@navigation/restaurant" />
     <include app:graph="@navigation/table" />
+    <include app:graph="@navigation/menu" />
 
     <fragment
-        android:id="@+id/menuFragment"
-        android:name="com.example.fishmarket.ui.menu.MenuFragment"
-        android:label="@string/title_menu"
-        tools:layout="@layout/fragment_menu" >
-        <action
-            android:id="@+id/action_menuFragment_to_addMenuFragment"
-            app:destination="@id/addMenuFragment" />
-        <action
-            android:id="@+id/action_menuFragment_to_editMenuFragment"
-            app:destination="@id/editMenuFragment" />
-        <action
-            android:id="@+id/action_menuFragment_to_addCategoryFragment"
-            app:destination="@id/addCategoryFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/addMenuFragment"
-        android:name="com.example.fishmarket.ui.menu.add_menu.AddMenuFragment"
-        android:label="@string/title_add_menu"
-        tools:layout="@layout/fragment_add_menu" />
-
-    <fragment
-        android:id="@+id/editMenuFragment"
-        android:name="com.example.fishmarket.ui.menu.edit_menu.EditMenuFragment"
-        android:label="@string/title_edit_menu"
-        tools:layout="@layout/fragment_edit_menu" />
-
-    <fragment
-        android:id="@+id/listMenuFragment"
-        android:name="com.example.fishmarket.ui.menu.list_menu.ListMenuFragment"
-        android:label="@string/title_menu"
-        tools:layout="@layout/fragment_list_menu" />
-
-    <dialog
-        android:id="@+id/addCategoryFragment"
-        android:name="com.example.fishmarket.ui.menu.add_category.AddCategoryFragment"
-        android:label="fragment_add_category"
-        tools:layout="@layout/fragment_add_category" />
-
+        android:id="@+id/reportFragment"
+        android:name="com.example.fishmarket.ui.report.ReportFragment"
+        android:label="@string/title_report"
+        tools:layout="@layout/fragment_report" />
 
 </navigation>

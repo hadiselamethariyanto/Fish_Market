@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.fishmarket.R
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 object Utils {
@@ -31,9 +32,31 @@ object Utils {
         }
     }
 
+    fun formatDate(date: Long): String {
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
+    fun formatTime(date:Long):String{
+        val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
     fun formatNumberToRupiah(value: Int, context: Context): String {
         val nf: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
         val decimalFormat = nf as DecimalFormat
         return context.getString(R.string.rupiah, decimalFormat.format(value))
     }
+
+    fun getEndOfDayTimeInMillis(timeInMillis: Long): Long {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timeInMillis
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        return calendar.timeInMillis
+    }
+
+    fun String.capitalizeWords(): String = split(" ").map { it.capitalize() }.joinToString(" ")
 }

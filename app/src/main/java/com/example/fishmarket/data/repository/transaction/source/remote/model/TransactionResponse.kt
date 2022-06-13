@@ -1,12 +1,14 @@
 package com.example.fishmarket.data.repository.transaction.source.remote.model
 
 data class TransactionResponse(
-    var id: String? = null,
-    var id_table: String? = null,
-    var id_restaurant: String? = null,
-    var created_date: Long? = null,
-    var dibakar_date: Long? = null,
-    var disajikan_date: Long? = null,
-    var finished_date: Long? = null,
-    var status: Int? = null
+    var id: String? = "",
+    var id_table: String? = "",
+    var id_restaurant: String? = "",
+    var created_date: Long? = 0,
+    var dibakar_date: Long? = 0,
+    var disajikan_date: Long? = 0,
+    var finished_date: Long? = 0,
+    var status: Int? = 0,
+    var total_fee: Int? = 0,
+    var detail: List<DetailTransactionResponse>? = listOf()
 )

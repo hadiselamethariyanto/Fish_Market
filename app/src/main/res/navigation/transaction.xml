@@ -11,35 +11,10 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_navigation_home_to_navigation_add_transaction"
-            app:destination="@id/navigation_add_transaction" />
-        <action
             android:id="@+id/action_navigation_home_to_navigation_dialog_change_status_transaction"
             app:destination="@id/navigation_dialog_change_status_transaction" />
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_add_transaction"
-        android:name="com.example.fishmarket.ui.home.add_transaction.AddTransactionFragment"
-        android:label="@string/title_add_transaction"
-        tools:layout="@layout/fragment_add_transaction">
-        <action
-            android:id="@+id/action_navigation_add_transaction_to_navigation_dialog_select_table"
-            app:destination="@id/navigation_dialog_select_table" />
-        <action
-            android:id="@+id/action_navigation_add_transaction_to_navigation_dialog_select_restaurant"
-            app:destination="@id/navigation_dialog_select_restaurant" />
-    </fragment>
-
-    <dialog
-        android:id="@+id/navigation_dialog_select_table"
-        android:name="com.example.fishmarket.ui.home.add_transaction.SelectTableFragment"
-        tools:layout="@layout/dialog_select_table" />
-
-    <dialog
-        android:id="@+id/navigation_dialog_select_restaurant"
-        android:name="com.example.fishmarket.ui.home.add_transaction.SelectRestaurantFragment"
-        tools:layout="@layout/dialog_select_restaurant" />
 
     <dialog
         android:id="@+id/navigation_dialog_change_status_transaction"

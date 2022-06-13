@@ -4,60 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="0dp"
+    android:paddingBottom="0dp"
     tools:context=".ui.home.add_transaction.AddTransactionFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilTable"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/etTable"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:hint="@string/title_table"
-            android:importantForAutofill="no"
-            android:inputType="none" />
+            android:clipToPadding="false"
+            android:paddingBottom="90dp"
+            android:scrollbars="vertical" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilRestaurant"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <LinearLayout
+        android:id="@+id/llSaveTransaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilTable">
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_linearlayout_add_transaction"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <EditText
-            android:id="@+id/etRestaurant"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvTotalItem"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:hint="@string/title_restaurant"
-            android:importantForAutofill="no"
-            android:inputType="none" />
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-black"
+            android:gravity="start"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/tvTotalFee"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="8dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="end"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:drawableEndCompat="@drawable/ic_cart" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:text="@string/btn_save"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilRestaurant" />
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/white"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

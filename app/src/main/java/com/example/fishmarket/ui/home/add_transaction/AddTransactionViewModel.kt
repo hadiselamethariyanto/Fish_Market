@@ -4,14 +4,18 @@ import androidx.lifecycle.*
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
+import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
+import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
+import com.example.fishmarket.domain.repository.IMenuRepository
 import com.example.fishmarket.domain.repository.ITableRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
 import com.example.fishmarket.utilis.Utils
 
 class AddTransactionViewModel(
     private val repository: ITransactionRepository,
-    private val tableRepository: ITableRepository
+    private val tableRepository: ITableRepository,
+    private val menuRepository: IMenuRepository
 ) : ViewModel() {
 
     private var _table = MutableLiveData<TableEntity>()
@@ -33,14 +37,17 @@ class AddTransactionViewModel(
         _restaurant.value = RestaurantEntity("", "", 0)
     }
 
-    fun addTransaction(): LiveData<Resource<TransactionEntity>> {
+    fun addTransaction(
+        totalFee: Int,
+        detail: List<DetailTransactionResponse>
+    ): LiveData<Resource<TransactionEntity>> {
         val id = Utils.getRandomString()
         val createdDate = System.currentTimeMillis()
         val status = 1
         val idTable = table.value?.id
         val idRestaurant = restaurant.value?.id
 
-        val transaction = TransactionEntity(
+        val transaction = TransactionResponse(
             id = id,
             id_table = idTable ?: "",
             id_restaurant = idRestaurant ?: "",
@@ -48,11 +55,15 @@ class AddTransactionViewModel(
             dibakar_date = 0,
             disajikan_date = 0,
             status = status,
-            finished_date = 0
+            finished_date = 0,
+            total_fee = totalFee,
+            detail = detail
         )
 
         return repository.addTransaction(transaction).asLiveData()
     }
+
+    fun getMenus() = menuRepository.getMenus().asLiveData()
 
     fun getAvailableTable() = tableRepository.getAvailableTable().asLiveData()
 }

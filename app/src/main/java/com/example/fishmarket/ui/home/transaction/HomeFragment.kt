@@ -127,10 +127,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.fabAddTransaction.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_home_to_navigation_add_transaction)
-        }
-
         binding.btnAll.setOnClickListener {
             viewModel.changeFilter()
         }

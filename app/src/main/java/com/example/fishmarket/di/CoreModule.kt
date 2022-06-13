@@ -1,6 +1,9 @@
 package com.example.fishmarket.di
 
 import androidx.room.Room
+import com.example.fishmarket.data.repository.category.CategoryRepository
+import com.example.fishmarket.data.repository.category.source.local.CategoryLocalDataSource
+import com.example.fishmarket.data.repository.category.source.remote.CategoryRemoteDataSource
 import com.example.fishmarket.data.repository.menu.MenuRepository
 import com.example.fishmarket.data.repository.menu.source.local.MenuLocalDataSource
 import com.example.fishmarket.data.repository.menu.source.remote.MenuRemoteDataSource
@@ -28,6 +31,7 @@ val databaseModule = module {
     factory { get<FishMarketDatabase>().transactionDao() }
     factory { get<FishMarketDatabase>().statusTransactionDao() }
     factory { get<FishMarketDatabase>().menuDao() }
+    factory { get<FishMarketDatabase>().categoryDao() }
 
     single {
         Room.databaseBuilder(
@@ -50,12 +54,15 @@ val repositoryModule = module {
     single { TransactionRemoteDataSource(get()) }
     single { LocalStatusTransactionDataSource(get()) }
     single { StatusTransactionRemoteDataSource(get()) }
-    single { MenuLocalDataSource(get())}
+    single { MenuLocalDataSource(get()) }
     single { MenuRemoteDataSource(get()) }
+    single { CategoryLocalDataSource(get()) }
+    single { CategoryRemoteDataSource(get()) }
 
     single<IRestaurantRepository> { RestaurantRepository(get(), get()) }
     single<ITableRepository> { TableRepository(get(), get()) }
     single<ITransactionRepository> { TransactionRepository(get(), get()) }
     single<IStatusTransactionRepository> { StatusTransactionRepository(get(), get()) }
-    single<IMenuRepository> { MenuRepository(get(),get()) }
+    single<IMenuRepository> { MenuRepository(get(), get()) }
+    single<ICategoryRepository> { CategoryRepository(get(), get()) }
 }
