@@ -14,6 +14,7 @@ import com.example.fishmarket.data.repository.table.source.local.dao.TableDao
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.repository.transaction.source.local.dao.TransactionDao
 import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
+import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionHistoryEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionFireEntity
 
@@ -21,7 +22,7 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.Tr
     entities = [RestaurantEntity::class, TableEntity::class, TransactionEntity::class,
         StatusTransactionEntity::class, MenuEntity::class, CategoryEntity::class,
         DetailTransactionEntity::class],
-    views = [TransactionFireEntity::class],
+    views = [TransactionFireEntity::class, DetailTransactionHistoryEntity::class],
     version = 4,
     exportSchema = false
 )

@@ -7,8 +7,8 @@ data class TransactionWithDetailEntity(
     @Embedded val transactionEntity: TransactionEntity,
     @Relation(
         parentColumn = "id",
-        entity = DetailTransactionEntity::class,
+        entity = DetailTransactionHistoryEntity::class,
         entityColumn = "id_transaction"
     )
-    val detailTransactionEntity: List<DetailTransactionEntity>
+    val detailTransactionEntity: List<DetailTransactionHistoryEntity>
 )

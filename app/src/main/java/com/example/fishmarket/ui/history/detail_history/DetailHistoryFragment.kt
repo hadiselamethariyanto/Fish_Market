@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
+import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionHistoryEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
 import com.example.fishmarket.databinding.FragmentDetailHistoryBinding
 import com.example.fishmarket.utilis.Utils
@@ -41,7 +42,7 @@ class DetailHistoryFragment : Fragment() {
 
     }
 
-    private fun setupAdapter(list: List<DetailTransactionEntity>) {
+    private fun setupAdapter(list: List<DetailTransactionHistoryEntity>) {
         val detailHistoryAdapter = DetailHistoryAdapter(list)
         binding.rvDetail.adapter = detailHistoryAdapter
         binding.rvDetail.addItemDecoration(
