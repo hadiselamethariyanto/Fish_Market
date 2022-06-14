@@ -93,6 +93,7 @@ object DataMapper {
             name = it.name.toString(),
             price = it.price ?: 0,
             unit = it.unit.toString(),
+            image = it.image.toString(),
             id_category = it.id_category.toString(),
             created_date = it.created_date ?: 0
         )

@@ -5,6 +5,7 @@ data class MenuResponse(
     var name: String? = "",
     var price: Int? = 0,
     var unit:String? ="",
+    var image:String? = "",
     var id_category: String? = "",
     var created_date: Long? = 0
 )

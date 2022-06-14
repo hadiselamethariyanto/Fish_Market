@@ -13,6 +13,8 @@ data class MenuEntity(
     val price: Int,
     @ColumnInfo(name = "unit")
     val unit:String,
+    @ColumnInfo(name = "image")
+    val image:String,
     @ColumnInfo(name = "id_category")
     val id_category: String,
     @ColumnInfo(name = "created_date")

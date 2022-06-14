@@ -71,6 +71,7 @@ class EditMenuFragment : Fragment() {
                     name = mName,
                     price = mPrice.toInt(),
                     unit = "",
+                    image = "",
                     id_category = mIdCategory.toString(),
                     created_date = createdDate ?: 0
                 )

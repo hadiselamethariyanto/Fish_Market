@@ -51,5 +51,6 @@
     <string name="information_transaction">Informasi Transaksi</string>
     <string name="title_transaction_detail">Detail Transaksi</string>
     <string name="warning_unit_menu_empty">Mohon isi satuan menu</string>
+    <string name="unit">Satuan</string>
 
 </resources>

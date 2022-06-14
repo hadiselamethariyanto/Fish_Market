@@ -71,5 +71,7 @@
         <item>Decimal</item>
     </string-array>
     <string name="warning_unit_menu_empty">Please fill unit menu</string>
+    <string name="kampung_mandar" translatable="false">Kampung Mandar</string>
+    <string name="unit">Unit</string>
 
 </resources>

@@ -72,21 +72,32 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilUnit"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Unit"
+            android:hint="@string/unit"
             android:orientation="horizontal"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             app:layout_constraintTop_toBottomOf="@id/tilIdCategory">
 
             <AutoCompleteTextView
                 android:id="@+id/atvUnit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"/>
+                android:inputType="none" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/imgMenu"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="24dp"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/image_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilUnit" />
 
         <Button
             android:id="@+id/btnSave"
@@ -98,7 +109,7 @@
             android:text="@string/btn_save"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilUnit" />
+            app:layout_constraintTop_toBottomOf="@id/imgMenu" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
