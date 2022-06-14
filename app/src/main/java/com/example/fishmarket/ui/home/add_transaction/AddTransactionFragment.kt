@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +16,7 @@ import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntit
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTransactionBinding
+import com.example.fishmarket.ui.home.edit_transaction.EditTransactionFragment
 import com.example.fishmarket.utilis.Utils
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
@@ -40,9 +42,32 @@ class AddTransactionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setTable()
+        setDismissObserver()
 
         val gridLayoutManager = GridLayoutManager(requireActivity(), 2)
         addTransactionAdapter = AddTransactionAdapter(ct, this)
+        addTransactionAdapter.setOnItemClickCallback(object :
+            AddTransactionAdapter.OnItemClickCallback {
+            override fun onItemEdit(menu: MenuEntity) {
+                for (i in 0 until ct.getCart().cartSize) {
+                    val product = ct.getCart().getProduct(i)
+                    if (product.id == menu.id) {
+                        val bundle = bundleOf(
+                            "position" to i,
+                            "name" to product.name,
+                            "price" to product.price,
+                            "quantity" to product.quantity,
+                            "unit" to menu.unit
+                        )
+
+                        findNavController().navigate(
+                            R.id.action_navigation_add_transaction_to_editTransactionFragment,
+                            bundle
+                        )
+                    }
+                }
+            }
+        })
 
         binding.rvMenu.adapter = addTransactionAdapter
         binding.rvMenu.layoutManager = gridLayoutManager
@@ -109,6 +134,17 @@ class AddTransactionFragment : Fragment() {
             } else {
                 tvBadge.visibility = View.VISIBLE
                 tvBadge.text = it.name
+            }
+        }
+    }
+
+    fun setDismissObserver() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
+            "DISMISS"
+        )?.observe(viewLifecycleOwner) {
+            it?.let {
+                checkCart()
+                addTransactionAdapter.notifyDataSetChanged()
             }
         }
     }

@@ -48,6 +48,12 @@ object Utils {
         return context.getString(R.string.rupiah, decimalFormat.format(value))
     }
 
+    fun formatDoubleToRupiah(value: Double, context: Context):String{
+        val nf: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
+        val decimalFormat = nf as DecimalFormat
+        return context.getString(R.string.rupiah, decimalFormat.format(value))
+    }
+
     fun getEndOfDayTimeInMillis(timeInMillis: Long): Long {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMillis

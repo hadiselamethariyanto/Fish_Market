@@ -17,7 +17,7 @@ class DetailHistoryAdapter(private val list: List<DetailTransactionEntity>) : Re
             binding.tvQuantity.text = data.quantity.toString()
             binding.tvPrice.text = Utils.formatNumberToRupiah(data.price, itemView.context)
             binding.tvFee.text =
-                Utils.formatNumberToRupiah(data.price * data.quantity, itemView.context)
+                Utils.formatDoubleToRupiah(data.price * data.quantity, itemView.context)
         }
 
     }

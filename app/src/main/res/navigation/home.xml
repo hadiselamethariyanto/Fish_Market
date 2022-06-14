@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_add_transaction_to_navigation_dialog_select_restaurant"
             app:destination="@id/navigation_dialog_select_restaurant" />
+        <action
+            android:id="@+id/action_navigation_add_transaction_to_editTransactionFragment"
+            app:destination="@id/editTransactionFragment" />
     </fragment>
 
     <dialog
@@ -27,5 +30,11 @@
         android:id="@+id/navigation_dialog_select_restaurant"
         android:name="com.example.fishmarket.ui.home.add_transaction.SelectRestaurantFragment"
         tools:layout="@layout/dialog_select_restaurant" />
+    <dialog
+        android:id="@+id/editTransactionFragment"
+        android:name="com.example.fishmarket.ui.home.edit_transaction.EditTransactionFragment"
+        android:label="fragment_edit_transaction"
+        tools:layout="@layout/fragment_edit_transaction" />
+
 
 </navigation>

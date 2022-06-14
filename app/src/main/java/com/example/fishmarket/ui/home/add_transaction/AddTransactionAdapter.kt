@@ -11,6 +11,7 @@ import com.example.fishmarket.App
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.databinding.ItemAddTransactionBinding
+import com.example.fishmarket.ui.menu.MenuAdapter
 import com.example.fishmarket.utilis.Product
 import com.example.fishmarket.utilis.Utils
 import com.example.fishmarket.utilis.Utils.capitalizeWords
@@ -18,6 +19,12 @@ import com.example.fishmarket.utilis.Utils.capitalizeWords
 class AddTransactionAdapter(private val ct: App, private val fragment: AddTransactionFragment) :
     RecyclerView.Adapter<AddTransactionAdapter.ViewHolder>() {
     private val list = ArrayList<MenuEntity>()
+
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
 
     fun updateData(new: List<MenuEntity>) {
         list.clear()
@@ -35,7 +42,12 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
                     if (product.id == menu.id) {
                         binding.btnAdd.visibility = View.GONE
                         binding.llPlusMinusData.visibility = View.VISIBLE
-                        binding.tvQuantity.text = product.quantity.toString()
+
+                        if (menu.unit == "Decimal") {
+                            binding.tvQuantity.text = product.quantity.toString()
+                        } else {
+                            binding.tvQuantity.text = product.quantity.toInt().toString()
+                        }
                     }
                 }
             } else {
@@ -67,8 +79,12 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
 
             }
 
+            binding.btnEdit.setOnClickListener {
+                onItemClickCallback.onItemEdit(menu)
+            }
+
             binding.tvMinus.setOnClickListener {
-                var jumlah: Int = binding.tvQuantity.text.toString().toInt()
+                var jumlah: Double = binding.tvQuantity.text.toString().toDouble()
                 jumlah--
 
                 if (jumlah <= 0) {
@@ -94,8 +110,8 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
                 fragment.checkCart()
             }
 
-            itemView.setOnClickListener {
-                var quantity = 0
+            binding.btnAdd.setOnClickListener {
+                var quantity = 0.0
                 quantity++
 
                 val product =
@@ -131,4 +147,8 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
     }
 
     override fun getItemCount(): Int = list.size
+
+    interface OnItemClickCallback {
+        fun onItemEdit(menu: MenuEntity)
+    }
 }

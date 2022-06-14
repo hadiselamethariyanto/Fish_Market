@@ -81,7 +81,7 @@ object DataMapper {
             DetailTransactionEntity(
                 id = it.id.toString(),
                 id_menu = it.id_menu.toString(),
-                quantity = it.quantity ?: 0,
+                quantity = it.quantity ?: 0.0,
                 price = it.price ?: 0,
                 id_transaction = id
             )
