@@ -66,4 +66,10 @@
     <string name="placeholder_menu" translatable="false">Nasi Goreng</string>
     <string name="placeholder_price" translatable="false">Rp 1.000</string>
 
+    <string-array name="unit_array">
+        <item>Bulat</item>
+        <item>Decimal</item>
+    </string-array>
+    <string name="warning_unit_menu_empty">Please fill unit menu</string>
+
 </resources>

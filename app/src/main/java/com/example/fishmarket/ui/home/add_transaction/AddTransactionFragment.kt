@@ -133,6 +133,13 @@ class AddTransactionFragment : Fragment() {
             is Resource.Success -> {
                 binding.refresh.isRefreshing = false
                 if (res.data != null) {
+                    if (res.data.isEmpty()) {
+                        binding.rvMenu.visibility = View.GONE
+                        binding.llNoData.visibility = View.VISIBLE
+                    } else {
+                        binding.rvMenu.visibility = View.VISIBLE
+                        binding.llNoData.visibility = View.GONE
+                    }
                     addTransactionAdapter.updateData(res.data)
                 }
             }

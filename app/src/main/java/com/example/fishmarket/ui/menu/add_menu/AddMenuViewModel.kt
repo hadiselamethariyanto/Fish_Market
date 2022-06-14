@@ -2,6 +2,7 @@ package com.example.fishmarket.ui.menu.add_menu
 
 import androidx.lifecycle.*
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.repository.ICategoryRepository
 import com.example.fishmarket.domain.repository.IMenuRepository
 import kotlinx.coroutines.flow.collect
@@ -23,11 +24,22 @@ class AddMenuViewModel(
     fun editMenu(menuEntity: MenuEntity) = menuRepository.editMenu(menuEntity).asLiveData()
 
     fun getCategory(id: String) = viewModelScope.launch {
-        categoryRepository.getCategory(id).collect {
-            if (it != null) {
-                _categoryId.value = it.id
-                _categoryName.value = it.name
+        categoryRepository.getCategory(id).collect { res ->
+            when (res) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    if (res.data != null) {
+                        _categoryId.value = res.data.id
+                        _categoryName.value = res.data.name
+                    }
+                }
+                is Resource.Error -> {
+
+                }
             }
+
         }
     }
 

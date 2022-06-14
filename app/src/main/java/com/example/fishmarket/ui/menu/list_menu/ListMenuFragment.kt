@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -72,20 +73,30 @@ class ListMenuFragment : Fragment() {
             findNavController().navigate(R.id.action_menuFragment_to_addMenuFragment)
         }
 
-        viewModel.getMenus().observe(viewLifecycleOwner) { res ->
-            when (res) {
-                is Resource.Loading -> {
-                    binding.refresh.isRefreshing = true
-                }
-                is Resource.Success -> {
-                    if (res.data != null) {
-                        menuAdapter.updateData(res.data)
+        viewModel.getMenus().observe(viewLifecycleOwner, menuObserver)
+    }
+
+    private val menuObserver = Observer<Resource<List<MenuEntity>>> { res ->
+        when (res) {
+            is Resource.Loading -> {
+                binding.refresh.isRefreshing = true
+            }
+            is Resource.Success -> {
+                if (res.data != null) {
+                    if (res.data.isEmpty()) {
+                        binding.rvMenu.visibility = View.GONE
+                        binding.llNoData.visibility = View.VISIBLE
+                    } else {
+                        binding.rvMenu.visibility = View.VISIBLE
+                        binding.llNoData.visibility = View.GONE
                     }
-                    binding.refresh.isRefreshing = false
+
+                    menuAdapter.updateData(res.data)
                 }
-                is Resource.Error -> {
-                    binding.refresh.isRefreshing = false
-                }
+                binding.refresh.isRefreshing = false
+            }
+            is Resource.Error -> {
+                binding.refresh.isRefreshing = false
             }
         }
 

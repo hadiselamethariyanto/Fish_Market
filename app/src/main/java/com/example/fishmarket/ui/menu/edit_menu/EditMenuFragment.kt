@@ -70,6 +70,7 @@ class EditMenuFragment : Fragment() {
                     id = id.toString(),
                     name = mName,
                     price = mPrice.toInt(),
+                    unit = "",
                     id_category = mIdCategory.toString(),
                     created_date = createdDate ?: 0
                 )

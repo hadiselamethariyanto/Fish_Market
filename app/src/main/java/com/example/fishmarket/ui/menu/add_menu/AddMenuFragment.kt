@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.R
@@ -47,11 +48,21 @@ class AddMenuFragment : Fragment() {
             binding.etIdCategory.setText(it)
         }
 
+        val array = resources.getStringArray(R.array.unit_array)
+        val adapter = ArrayAdapter(
+            requireActivity(),
+            android.R.layout.simple_spinner_dropdown_item,
+            array
+        )
+
+        binding.atvUnit.setAdapter(adapter)
+
         binding.btnSave.setOnClickListener {
             val id = Utils.getRandomString()
             val name = binding.etMenuName.text.toString()
             val price = binding.etMenuPrice.text.toString()
             val idCategory = viewModel.categoryId.value
+            val unit = binding.atvUnit.text.toString()
             val createdDate = System.currentTimeMillis()
 
             if (name == "") {
@@ -61,11 +72,14 @@ class AddMenuFragment : Fragment() {
             } else if (idCategory == "") {
                 binding.etIdCategory.error =
                     resources.getString(R.string.warning_category_menu_empty)
+            } else if (unit == "") {
+                binding.atvUnit.error = resources.getString(R.string.warning_unit_menu_empty)
             } else {
                 val menu = MenuEntity(
                     id = id,
                     name = name,
                     price = price.toInt(),
+                    unit = unit,
                     id_category = idCategory ?: "",
                     created_date = createdDate
                 )
