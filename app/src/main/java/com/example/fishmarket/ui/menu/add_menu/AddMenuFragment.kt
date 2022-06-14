@@ -29,11 +29,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.navigation.koinNavGraphViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.lang.Math.log10
-import java.net.URL
-import java.text.DecimalFormat
 import java.util.*
-import kotlin.math.pow
 
 class AddMenuFragment : Fragment() {
 
@@ -41,17 +37,12 @@ class AddMenuFragment : Fragment() {
     private var _binding: FragmentAddMenuBinding? = null
     private val binding get() = _binding!!
 
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.setCategoryName("")
-        viewModel.setCategoryId("")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel.setCategoryId("")
+        viewModel.setCategoryName("")
         _binding = FragmentAddMenuBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -101,6 +92,8 @@ class AddMenuFragment : Fragment() {
             } else if (unit == "") {
                 binding.atvUnit.error = resources.getString(R.string.warning_unit_menu_empty)
             } else {
+                binding.btnSave.isEnabled = false
+
                 val storage = Firebase.storage
                 val storageRef = storage.reference
 
@@ -137,6 +130,7 @@ class AddMenuFragment : Fragment() {
 
                         viewModel.insertMenu(menu).observe(viewLifecycleOwner, insertMenuObserver)
                     } else {
+                        binding.btnSave.isEnabled = true
                         Toast.makeText(
                             requireActivity(),
                             task.exception?.message.toString(),
@@ -158,11 +152,6 @@ class AddMenuFragment : Fragment() {
     private fun compressImage(file: File) {
         lifecycleScope.launch {
             val compressedImage = Compressor.compress(requireActivity(), file)
-            Toast.makeText(
-                requireActivity(),
-                getReadableFileSize(compressedImage.length()),
-                Toast.LENGTH_LONG
-            ).show()
             binding.imgMenu.setImageBitmap(BitmapFactory.decodeFile(compressedImage.absolutePath))
         }
     }
@@ -187,15 +176,6 @@ class AddMenuFragment : Fragment() {
             }
         }
 
-    }
-
-    private fun getReadableFileSize(size: Long): String {
-        if (size <= 0) {
-            return "0"
-        }
-        val units = arrayOf("B", "KB", "MB", "GB", "TB")
-        val digitGroups = (log10(size.toDouble()) / log10(1024.0)).toInt()
-        return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble())) + " " + units[digitGroups]
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

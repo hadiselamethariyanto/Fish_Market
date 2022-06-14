@@ -46,7 +46,7 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
             binding.tvMenuName.text = menu.name.capitalizeWords()
             binding.tvMenuPrice.text = Utils.formatNumberToRupiah(menu.price, itemView.context)
 
-            Glide.with(itemView.context).load(R.mipmap.image_placeholder)
+            Glide.with(itemView.context).load(menu.image)
                 .error(R.mipmap.image_placeholder).placeholder(R.mipmap.image_placeholder)
                 .transform(CenterCrop(), RoundedCorners(24))
                 .into(binding.imgMenu)
