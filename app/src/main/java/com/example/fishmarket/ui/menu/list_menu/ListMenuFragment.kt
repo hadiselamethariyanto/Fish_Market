@@ -49,6 +49,8 @@ class ListMenuFragment : Fragment() {
                     "id" to menu.id,
                     "name" to menu.name,
                     "price" to menu.price,
+                    "unit" to menu.unit,
+                    "image" to menu.image,
                     "idCategory" to menu.id_category,
                     "createdDate" to menu.created_date
                 )
