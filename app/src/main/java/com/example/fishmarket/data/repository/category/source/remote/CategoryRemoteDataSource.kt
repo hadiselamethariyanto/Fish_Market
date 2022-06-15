@@ -28,8 +28,7 @@ class CategoryRemoteDataSource(private val firebaseFirestore: FirebaseFirestore)
     }.flowOn(Dispatchers.IO)
 
     suspend fun deleteCategory(categoryEntity: CategoryEntity) = flow<ApiResponse<CategoryEntity>> {
-        val categoryReference =
-            firebaseFirestore.collection("category").document(categoryEntity.id).delete().await()
+        firebaseFirestore.collection("category").document(categoryEntity.id).delete().await()
         emit(ApiResponse.Success(categoryEntity))
     }.catch {
         emit(ApiResponse.Error(it.message.toString()))

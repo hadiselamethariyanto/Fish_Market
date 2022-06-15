@@ -1,12 +1,13 @@
 package com.example.fishmarket.data.repository.menu.source.local.dao
 
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MenuDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMenus(list: List<MenuEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -23,4 +24,7 @@ interface MenuDao {
 
     @Query("SELECT * FROM menu ORDER BY name ASC")
     fun getMenus(): Flow<List<MenuEntity>>
+
+    @RawQuery(observedEntities = [MenuEntity::class])
+    fun getMenusByCategory(sqLiteQuery: SupportSQLiteQuery): Flow<List<MenuEntity>>
 }

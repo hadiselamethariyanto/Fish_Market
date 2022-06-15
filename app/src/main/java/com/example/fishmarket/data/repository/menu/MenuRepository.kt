@@ -79,4 +79,22 @@ class MenuRepository(
         }.asFlow()
     }
 
+    override fun getMenusByCategory(id: String): Flow<Resource<List<MenuEntity>>> {
+        return object : NetworkBoundResource<List<MenuEntity>, List<MenuResponse>>() {
+            override fun loadFromDB(): Flow<List<MenuEntity>> =
+                localDataSource.getMenusByCategory(id)
+
+            override fun shouldFetch(data: List<MenuEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            override suspend fun createCall(): Flow<ApiResponse<List<MenuResponse>>> =
+                remoteDataSource.getMenus()
+
+            override suspend fun saveCallResult(data: List<MenuResponse>) {
+                localDataSource.insertMenus(DataMapper.mapMenuResponseToEntity(data))
+            }
+
+        }.asFlow()
+    }
+
 }

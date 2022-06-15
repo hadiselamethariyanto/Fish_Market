@@ -7,6 +7,7 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.Tr
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
+import com.example.fishmarket.domain.repository.ICategoryRepository
 import com.example.fishmarket.domain.repository.IMenuRepository
 import com.example.fishmarket.domain.repository.ITableRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
@@ -15,7 +16,8 @@ import com.example.fishmarket.utilis.Utils
 class AddTransactionViewModel(
     private val repository: ITransactionRepository,
     private val tableRepository: ITableRepository,
-    private val menuRepository: IMenuRepository
+    private val menuRepository: IMenuRepository,
+    private val categoryRepository: ICategoryRepository
 ) : ViewModel() {
 
     private var _table = MutableLiveData<TableEntity>()
@@ -63,7 +65,9 @@ class AddTransactionViewModel(
         return repository.addTransaction(transaction).asLiveData()
     }
 
-    fun getMenus() = menuRepository.getMenus().asLiveData()
+    fun getMenus(id: String) = menuRepository.getMenusByCategory(id).asLiveData()
 
     fun getAvailableTable() = tableRepository.getAvailableTable().asLiveData()
+
+    fun getCategories() = categoryRepository.getCategories().asLiveData()
 }

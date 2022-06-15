@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_navigation_add_transaction_to_editTransactionFragment"
             app:destination="@id/editTransactionFragment" />
+        <action
+            android:id="@+id/action_navigation_add_transaction_to_reviewTransactionFragment"
+            app:destination="@id/reviewTransactionFragment" />
     </fragment>
 
     <dialog
@@ -35,6 +38,12 @@
         android:name="com.example.fishmarket.ui.home.edit_transaction.EditTransactionFragment"
         android:label="fragment_edit_transaction"
         tools:layout="@layout/fragment_edit_transaction" />
+
+    <fragment
+        android:id="@+id/reviewTransactionFragment"
+        android:name="com.example.fishmarket.ui.home.review_transaction.ReviewTransactionFragment"
+        android:label="@string/review_transaction"
+        tools:layout="@layout/fragment_review_transaction" />
 
 
 </navigation>

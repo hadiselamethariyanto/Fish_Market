@@ -54,4 +54,7 @@
     <string name="unit">Satuan</string>
     <string name="add">Tambah</string>
     <string name="et_quantity">Jumlah</string>
+    <string name="all">Semua</string>
+    <string name="total_fee">Total Biaya</string>
+    <string name="review_transaction">Review Transaksi</string>
 </resources>

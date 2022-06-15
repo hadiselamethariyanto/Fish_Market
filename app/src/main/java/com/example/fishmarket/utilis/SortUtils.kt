@@ -14,4 +14,15 @@ object SortUtils {
         }
         return SimpleSQLiteQuery(simpleQuery.toString())
     }
+
+    fun getSortedQueryMenu(id: String): SimpleSQLiteQuery {
+        val simpleQuery =
+            StringBuilder().append("SELECT * FROM menu ")
+        if (id == "0") {
+            simpleQuery.append("ORDER BY name ASC")
+        } else {
+            simpleQuery.append("WHERE id_category = '$id' ORDER by name ASC")
+        }
+        return SimpleSQLiteQuery(simpleQuery.toString())
+    }
 }

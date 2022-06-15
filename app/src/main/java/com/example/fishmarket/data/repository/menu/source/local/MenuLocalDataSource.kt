@@ -2,6 +2,7 @@ package com.example.fishmarket.data.repository.menu.source.local
 
 import com.example.fishmarket.data.repository.menu.source.local.dao.MenuDao
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
+import com.example.fishmarket.utilis.SortUtils
 
 class MenuLocalDataSource(private val menuDao: MenuDao) {
 
@@ -16,4 +17,7 @@ class MenuLocalDataSource(private val menuDao: MenuDao) {
     fun getMenu(id: String) = menuDao.getMenu(id)
 
     fun getMenus() = menuDao.getMenus()
+
+    fun getMenusByCategory(id: String) =
+        menuDao.getMenusByCategory(SortUtils.getSortedQueryMenu(id))
 }

@@ -77,5 +77,8 @@
     <string name="plus" translatable="false">+</string>
     <string name="minus" translatable="false">-</string>
     <string name="et_quantity">Quantity</string>
+    <string name="all">all</string>
+    <string name="total_fee">Total fee</string>
+    <string name="review_transaction">Review Transaction</string>
 
 </resources>

@@ -27,7 +27,7 @@ val viewModelModule = module {
     viewModel { AddTableViewModel(get()) }
     viewModel { TableViewModel(get()) }
     viewModel { EditTableViewModel(get()) }
-    viewModel { AddTransactionViewModel(get(), get(),get()) }
+    viewModel { AddTransactionViewModel(get(), get(), get(), get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get(), get(), get()) }
     viewModel { MenuViewModel(get()) }
@@ -36,6 +36,6 @@ val viewModelModule = module {
     viewModel { AddCategoryViewModel(get()) }
     viewModel { EditCategoryViewModel(get()) }
     viewModel { ListCategoryViewModel(get()) }
-    viewModel { ReportViewModel(get())}
+    viewModel { ReportViewModel(get()) }
     viewModel { HistoryViewModel(get()) }
 }

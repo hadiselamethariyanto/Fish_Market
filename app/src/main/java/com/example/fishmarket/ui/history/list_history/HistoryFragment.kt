@@ -71,7 +71,7 @@ class HistoryFragment : Fragment() {
                 binding.refresh.isRefreshing = false
                 if (res.data != null) {
                     var previousDate = ""
-                    var date = ""
+                    var date: String
 
                     val listHistory = mutableListOf<History>()
                     for (x in res.data) {

@@ -14,4 +14,7 @@ interface IMenuRepository {
 
     fun getMenus(): Flow<Resource<List<MenuEntity>>>
 
+    fun getMenusByCategory(id:String): Flow<Resource<List<MenuEntity>>>
+
+
 }

@@ -36,8 +36,7 @@ class MenuRemoteDataSource(private val firebaseFirestore: FirebaseFirestore) {
     }.flowOn(Dispatchers.IO)
 
     fun deleteMenu(menuEntity: MenuEntity) = flow<ApiResponse<MenuEntity>> {
-        val menusReference =
-            firebaseFirestore.collection("menu").document(menuEntity.id).delete().await()
+        firebaseFirestore.collection("menu").document(menuEntity.id).delete().await()
         emit(ApiResponse.Success(menuEntity))
     }.catch {
         emit(ApiResponse.Error(it.message.toString()))

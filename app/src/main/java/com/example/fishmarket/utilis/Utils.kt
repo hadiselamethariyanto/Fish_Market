@@ -1,6 +1,7 @@
 package com.example.fishmarket.utilis
 
 import android.content.Context
+import android.widget.Toast
 import com.example.fishmarket.R
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -37,7 +38,7 @@ object Utils {
         return dateFormat.format(date)
     }
 
-    fun formatTime(date:Long):String{
+    fun formatTime(date: Long): String {
         val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         return dateFormat.format(date)
     }
@@ -48,7 +49,7 @@ object Utils {
         return context.getString(R.string.rupiah, decimalFormat.format(value))
     }
 
-    fun formatDoubleToRupiah(value: Double, context: Context):String{
+    fun formatDoubleToRupiah(value: Double, context: Context): String {
         val nf: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
         val decimalFormat = nf as DecimalFormat
         return context.getString(R.string.rupiah, decimalFormat.format(value))
@@ -65,4 +66,8 @@ object Utils {
     }
 
     fun String.capitalizeWords(): String = split(" ").map { it.capitalize() }.joinToString(" ")
+
+    fun showMessage(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
 }

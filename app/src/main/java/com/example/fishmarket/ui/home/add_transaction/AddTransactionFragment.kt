@@ -1,7 +1,6 @@
 package com.example.fishmarket.ui.home.add_transaction
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -10,13 +9,13 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishmarket.App
 import com.example.fishmarket.R
+import com.example.fishmarket.data.repository.category.source.local.entity.CategoryEntity
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
-import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTransactionBinding
-import com.example.fishmarket.ui.home.edit_transaction.EditTransactionFragment
 import com.example.fishmarket.utilis.Utils
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
@@ -43,6 +42,7 @@ class AddTransactionFragment : Fragment() {
 
         setTable()
         setDismissObserver()
+        getCategories()
 
         val gridLayoutManager = GridLayoutManager(requireActivity(), 2)
         addTransactionAdapter = AddTransactionAdapter(ct, this)
@@ -77,53 +77,11 @@ class AddTransactionFragment : Fragment() {
             if (tableId == "") {
                 Toast.makeText(requireActivity(), "mohon pilih meja", Toast.LENGTH_LONG).show()
             } else {
-                val totalFee = ct.getCart().totalFee
-                val detailList = ArrayList<DetailTransactionResponse>()
-                for (x in 0 until ct.getCart().cartSize) {
-                    val menu = ct.getCart().getProduct(x)
-                    val detail = DetailTransactionResponse(
-                        id = Utils.getRandomString(),
-                        id_menu = menu.id,
-                        quantity = menu.quantity,
-                        price = menu.price
-                    )
-                    detailList.add(detail)
-                }
-                viewModel.addTransaction(totalFee, detailList).observe(viewLifecycleOwner) { res ->
-                    when (res) {
-                        is Resource.Loading -> {
-                            binding.tvTotalFee.visibility = View.GONE
-                            binding.tvTotalItem.visibility = View.GONE
-                            binding.progress.visibility = View.VISIBLE
-                            binding.llSaveTransaction.isEnabled = false
-                        }
-                        is Resource.Success -> {
-                            binding.tvTotalFee.visibility = View.VISIBLE
-                            binding.tvTotalItem.visibility = View.VISIBLE
-                            binding.progress.visibility = View.GONE
-                            binding.llSaveTransaction.isEnabled = true
-                            viewModel.resetTransaction()
-                            ct.getCart().clearArray()
-                            checkCart()
-                            addTransactionAdapter.notifyDataSetChanged()
-                        }
-                        is Resource.Error -> {
-                            binding.tvTotalFee.visibility = View.VISIBLE
-                            binding.tvTotalItem.visibility = View.VISIBLE
-                            binding.progress.visibility = View.GONE
-                            binding.llSaveTransaction.isEnabled = true
-
-                            Toast.makeText(
-                                requireActivity(),
-                                res.message.toString(),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                }
+                findNavController().navigate(R.id.action_navigation_add_transaction_to_reviewTransactionFragment)
             }
         }
-        viewModel.getMenus().observe(viewLifecycleOwner, menusObserver)
+
+        viewModel.getMenus("0").observe(viewLifecycleOwner, menusObserver)
     }
 
     private fun setTable() {
@@ -138,7 +96,7 @@ class AddTransactionFragment : Fragment() {
         }
     }
 
-    fun setDismissObserver() {
+    private fun setDismissObserver() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
             "DISMISS"
         )?.observe(viewLifecycleOwner) {
@@ -186,6 +144,42 @@ class AddTransactionFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun getCategories() {
+        val categoryTransactionAdapter = CategoryTransactionAdapter(requireActivity())
+        categoryTransactionAdapter.setOnItemClickCallback(object :
+            CategoryTransactionAdapter.OnItemClickCallback {
+            override fun onItemClicked(categoryEntity: CategoryEntity) {
+                viewModel.getMenus(categoryEntity.id).observe(viewLifecycleOwner, menusObserver)
+            }
+        })
+
+        binding.rvCategory.adapter = categoryTransactionAdapter
+        binding.rvCategory.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+
+        viewModel.getCategories().observe(viewLifecycleOwner) { res ->
+            when (res) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    if (res.data != null) {
+                        if (res.data.isEmpty()) {
+                            binding.rvCategory.visibility = View.GONE
+                        } else {
+                            binding.rvCategory.visibility = View.VISIBLE
+                        }
+                        categoryTransactionAdapter.updateData(res.data)
+                    }
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
