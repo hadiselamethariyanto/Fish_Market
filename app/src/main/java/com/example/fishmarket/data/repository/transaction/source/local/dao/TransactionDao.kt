@@ -3,10 +3,8 @@ package com.example.fishmarket.data.repository.transaction.source.local.dao
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
+import com.example.fishmarket.data.repository.transaction.source.local.entity.*
+import com.example.fishmarket.data.source.remote.Resource
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -48,5 +46,8 @@ interface TransactionDao {
 
     @Query("UPDATE table_restaurant SET status =:status WHERE id=:id")
     suspend fun setStatusTable(status: Boolean, id: String)
+
+    @Query("SELECT dt.id, dt.id_transaction,m.name,dt.quantity,dt.price,m.unit from detail_transaction dt INNER JOIN menu m ON dt.id_menu = m.id WHERE dt.id_transaction = :id")
+    fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistoryEntity>>
 
 }

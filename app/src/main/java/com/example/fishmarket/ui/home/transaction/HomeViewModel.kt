@@ -85,4 +85,5 @@ class HomeViewModel(
 
     fun getRestaurant() = restaurantRepository.getRestaurant().asLiveData()
 
+    fun getDetailTransaction(id: String) = transactionRepository.getDetailTransaction(id).asLiveData()
 }

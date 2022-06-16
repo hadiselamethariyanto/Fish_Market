@@ -1,5 +1,6 @@
 package com.example.fishmarket.domain.repository
 
+import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionHistoryEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
@@ -20,4 +21,6 @@ interface ITransactionRepository {
     fun getTransactionWithDetail(): Flow<Resource<List<TransactionWithDetailEntity>>>
 
     fun getRangeTransaction(first: Long, second: Long): Flow<Resource<List<TransactionEntity>>>
+
+    fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistoryEntity>>
 }

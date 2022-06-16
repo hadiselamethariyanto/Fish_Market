@@ -8,13 +8,17 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.DialogChangeStatusTransactionBinding
+import com.example.fishmarket.ui.history.detail_history.DetailHistoryAdapter
 import com.example.fishmarket.ui.home.add_transaction.SelectRestaurantAdapter
+import com.example.fishmarket.utilis.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import org.koin.androidx.navigation.koinNavGraphViewModel
@@ -40,18 +44,27 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         val json = arguments?.getString("transaction")
         val transaction = Gson().fromJson(json, TransactionHomeEntity::class.java)
 
+        getDetailTransaction(transaction.id)
+
         val changeStatusAdapter = ChangeStatusTransactionAdapter(requireActivity())
 
         binding.rvStatus.adapter = changeStatusAdapter
         changeStatusAdapter.setOnItemClickCallBack(object :
             ChangeStatusTransactionAdapter.OnItemClickCallback {
             override fun onItemClicked(id: Int) {
-                if (id == 2) {
-                    binding.rvRestaurant.visibility = View.VISIBLE
-                    binding.tvSelectRestaurant.visibility = View.VISIBLE
-                } else {
-                    binding.rvRestaurant.visibility = View.GONE
-                    binding.rvRestaurant.visibility = View.GONE
+                when (id) {
+                    2 -> {
+                        binding.llSelectRestaurant.visibility = View.VISIBLE
+                        binding.rlDetail.visibility = View.GONE
+                    }
+                    4 -> {
+                        binding.llSelectRestaurant.visibility = View.GONE
+                        binding.rlDetail.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        binding.llSelectRestaurant.visibility = View.GONE
+                        binding.rlDetail.visibility = View.GONE
+                    }
                 }
             }
         })
@@ -147,6 +160,24 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
             }
             is Resource.Error -> {
 
+            }
+        }
+    }
+
+    private fun getDetailTransaction(id: String) {
+        homeViewModel.getDetailTransaction(id).observe(viewLifecycleOwner) { list ->
+            if (list.isNotEmpty()) {
+                val detailAdapter = DetailHistoryAdapter(list)
+                binding.rvDetailTransaction.adapter = detailAdapter
+                binding.rvDetailTransaction.addItemDecoration(
+                    DividerItemDecoration(
+                        requireActivity(),
+                        LinearLayoutManager.VERTICAL
+                    )
+                )
+
+                val totalFee = list.sumOf { it.quantity * it.price }
+                binding.tvTotalFee.text = Utils.formatDoubleToRupiah(totalFee, requireActivity())
             }
         }
     }

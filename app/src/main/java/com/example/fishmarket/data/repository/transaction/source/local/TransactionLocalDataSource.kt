@@ -1,10 +1,7 @@
 package com.example.fishmarket.data.repository.transaction.source.local
 
 import com.example.fishmarket.data.repository.transaction.source.local.dao.TransactionDao
-import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
+import com.example.fishmarket.data.repository.transaction.source.local.entity.*
 import com.example.fishmarket.utilis.SortUtils
 import kotlinx.coroutines.flow.Flow
 
@@ -38,4 +35,7 @@ class TransactionLocalDataSource(private val transactionDao: TransactionDao) {
 
     suspend fun setStatusTable(status: Boolean, id: String) =
         transactionDao.setStatusTable(status, id)
+
+    fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistoryEntity>> =
+        transactionDao.getDetailTransaction(id)
 }

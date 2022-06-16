@@ -1,6 +1,7 @@
 package com.example.fishmarket.data.repository.transaction
 
 import com.example.fishmarket.data.repository.transaction.source.local.TransactionLocalDataSource
+import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionHistoryEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
@@ -144,6 +145,9 @@ class TransactionRepository(
 
         }.asFlow()
     }
+
+    override fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistoryEntity>> =
+        localDataSource.getDetailTransaction(id)
 
 
 }
