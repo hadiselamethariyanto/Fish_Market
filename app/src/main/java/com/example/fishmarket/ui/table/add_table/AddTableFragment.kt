@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTableBinding
@@ -34,22 +36,31 @@ class AddTableFragment : Fragment() {
             val name = binding.etTableName.text.toString()
             val id = Utils.getRandomString()
             val createdDate = System.currentTimeMillis()
-            val table = TableEntity(id = id, name = name, status = false, createdDate = createdDate)
-            viewModel.addTable(table).observe(viewLifecycleOwner){res->
-                when(res){
-                    is Resource.Loading->{
-                        binding.btnSave.isEnabled = false
-                    }
-                    is Resource.Success->{
-                        findNavController().navigateUp()
-                        binding.btnSave.isEnabled = true
-                    }
-                    is Resource.Error->{
-                        binding.btnSave.isEnabled = true
-                    }
-                }
+
+            if (name == "") {
+                binding.etTableName.error = resources.getString(R.string.empty_data)
+            } else {
+                val table =
+                    TableEntity(id = id, name = name, status = false, createdDate = createdDate)
+                viewModel.addTable(table).observe(viewLifecycleOwner, addTableObserver)
             }
         }
+    }
+
+    private val addTableObserver = Observer<Resource<TableEntity>> { res ->
+        when (res) {
+            is Resource.Loading -> {
+                binding.btnSave.isEnabled = false
+            }
+            is Resource.Success -> {
+                findNavController().navigateUp()
+                binding.btnSave.isEnabled = true
+            }
+            is Resource.Error -> {
+                binding.btnSave.isEnabled = true
+            }
+        }
+
     }
 
     override fun onDestroy() {

@@ -80,5 +80,6 @@
     <string name="all">all</string>
     <string name="total_fee">Total fee</string>
     <string name="review_transaction">Review Transaction</string>
+    <string name="warning_empty_table_name">Please fill table name</string>
 
 </resources>

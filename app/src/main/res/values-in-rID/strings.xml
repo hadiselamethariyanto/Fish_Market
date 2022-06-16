@@ -57,4 +57,5 @@
     <string name="all">Semua</string>
     <string name="total_fee">Total Biaya</string>
     <string name="review_transaction">Review Transaksi</string>
+    <string name="warning_empty_table_name">Mohon isi nomor meja</string>
 </resources>

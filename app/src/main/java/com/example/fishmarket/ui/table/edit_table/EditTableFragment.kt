@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentEditTableBinding
@@ -38,29 +40,36 @@ class EditTableFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val name = binding.etTableName.text.toString()
-            val table = TableEntity(
-                id = id ?: "",
-                name = name,
-                status = status ?: false,
-                createdDate = createdDate ?: 0
-            )
-            viewModel.updateTable(table).observe(viewLifecycleOwner) { res ->
-                when (res) {
-                    is Resource.Loading -> {
-                        binding.btnSave.isEnabled = false
-                    }
-                    is Resource.Success -> {
-                        findNavController().navigateUp()
-                        binding.btnSave.isEnabled = false
-                    }
-                    is Resource.Error -> {
-                        Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
-                            .show()
-                        binding.btnSave.isEnabled = false
-                    }
-                }
+            if (name == "") {
+                binding.etTableName.error = resources.getString(R.string.warning_empty_table_name)
+            } else {
+                val table = TableEntity(
+                    id = id ?: "",
+                    name = name,
+                    status = status ?: false,
+                    createdDate = createdDate ?: 0
+                )
+                viewModel.updateTable(table).observe(viewLifecycleOwner, editTableObserver)
             }
         }
+    }
+
+    private val editTableObserver = Observer<Resource<TableEntity>> { res ->
+        when (res) {
+            is Resource.Loading -> {
+                binding.btnSave.isEnabled = false
+            }
+            is Resource.Success -> {
+                findNavController().navigateUp()
+                binding.btnSave.isEnabled = false
+            }
+            is Resource.Error -> {
+                Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                    .show()
+                binding.btnSave.isEnabled = false
+            }
+        }
+
     }
 
     private fun getTable(id: String) {
