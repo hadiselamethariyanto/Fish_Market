@@ -31,16 +31,17 @@ class EditTransactionFragment : BottomSheetDialogFragment() {
         val name = arguments?.getString("name") ?: ""
         val price = arguments?.getInt("price") ?: 0
         val quantity = arguments?.getDouble("quantity") ?: 0.0
-        val unit = arguments?.getString("unit") ?: ""
 
         binding.etMenuName.setText(name)
         binding.etMenuName.isEnabled = false
         binding.etMenuPrice.setText(price.toString())
 
-        if (unit == "Decimal") {
-            binding.etQuantity.setText(quantity.toString())
+        val check = quantity - quantity.toInt() == 0.0
+
+        if (!check) {
             binding.etQuantity.inputType =
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+            binding.etQuantity.setText(quantity.toString())
         } else {
             binding.etQuantity.setText(quantity.toInt().toString())
             binding.etQuantity.inputType =

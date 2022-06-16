@@ -43,7 +43,11 @@
         android:id="@+id/reviewTransactionFragment"
         android:name="com.example.fishmarket.ui.home.review_transaction.ReviewTransactionFragment"
         android:label="@string/review_transaction"
-        tools:layout="@layout/fragment_review_transaction" />
+        tools:layout="@layout/fragment_review_transaction" >
+        <action
+            android:id="@+id/action_reviewTransactionFragment_to_editTransactionFragment"
+            app:destination="@id/editTransactionFragment" />
+    </fragment>
 
 
 </navigation>

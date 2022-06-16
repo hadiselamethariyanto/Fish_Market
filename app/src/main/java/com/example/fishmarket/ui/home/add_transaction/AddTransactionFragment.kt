@@ -1,6 +1,7 @@
 package com.example.fishmarket.ui.home.add_transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -17,6 +18,9 @@ import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntit
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTransactionBinding
 import com.example.fishmarket.utilis.Utils
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 class AddTransactionFragment : Fragment() {
@@ -56,8 +60,7 @@ class AddTransactionFragment : Fragment() {
                             "position" to i,
                             "name" to product.name,
                             "price" to product.price,
-                            "quantity" to product.quantity,
-                            "unit" to menu.unit
+                            "quantity" to product.quantity
                         )
 
                         findNavController().navigate(
@@ -204,6 +207,26 @@ class AddTransactionFragment : Fragment() {
             }
             else -> {
                 super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    fun inAppReview() {
+        val reviewManager = ReviewManagerFactory.create(requireActivity())
+        val requestReviewFlow = reviewManager.requestReviewFlow()
+        requestReviewFlow.addOnCompleteListener { request ->
+            if (request.isSuccessful) {
+                // We got the ReviewInfo object
+                val reviewInfo = request.result
+                val flow = reviewManager.launchReviewFlow(requireActivity(), reviewInfo)
+                flow.addOnCompleteListener {
+                    // The flow has finished. The API does not indicate whether the user
+                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+                    // matter the result, we continue our app flow.
+                }
+            } else {
+                Log.d("Error: ", request.exception.toString())
+                // There was some problem, continue regardless of the result.
             }
         }
     }
