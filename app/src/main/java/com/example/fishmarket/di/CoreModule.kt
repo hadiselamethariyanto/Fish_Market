@@ -4,6 +4,8 @@ import androidx.room.Room
 import com.example.fishmarket.data.repository.category.CategoryRepository
 import com.example.fishmarket.data.repository.category.source.local.CategoryLocalDataSource
 import com.example.fishmarket.data.repository.category.source.remote.CategoryRemoteDataSource
+import com.example.fishmarket.data.repository.login.LoginRepository
+import com.example.fishmarket.data.repository.login.source.local.LoginLocalDataSource
 import com.example.fishmarket.data.repository.menu.MenuRepository
 import com.example.fishmarket.data.repository.menu.source.local.MenuLocalDataSource
 import com.example.fishmarket.data.repository.menu.source.remote.MenuRemoteDataSource
@@ -21,6 +23,7 @@ import com.example.fishmarket.data.repository.transaction.source.local.Transacti
 import com.example.fishmarket.data.repository.transaction.source.remote.TransactionRemoteDataSource
 import com.example.fishmarket.data.source.local.FishMarketDatabase
 import com.example.fishmarket.domain.repository.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -32,6 +35,7 @@ val databaseModule = module {
     factory { get<FishMarketDatabase>().statusTransactionDao() }
     factory { get<FishMarketDatabase>().menuDao() }
     factory { get<FishMarketDatabase>().categoryDao() }
+    factory { get<FishMarketDatabase>().userDao() }
 
     single {
         Room.databaseBuilder(
@@ -43,7 +47,9 @@ val databaseModule = module {
 
 val firebaseModule = module {
     single { FirebaseFirestore.getInstance() }
+    single { FirebaseAuth.getInstance() }
 }
+
 
 val repositoryModule = module {
     single { RestaurantLocalDataSource(get()) }
@@ -58,6 +64,7 @@ val repositoryModule = module {
     single { MenuRemoteDataSource(get()) }
     single { CategoryLocalDataSource(get()) }
     single { CategoryRemoteDataSource(get()) }
+    single { LoginLocalDataSource(get()) }
 
     single<IRestaurantRepository> { RestaurantRepository(get(), get()) }
     single<ITableRepository> { TableRepository(get(), get()) }
@@ -65,4 +72,5 @@ val repositoryModule = module {
     single<IStatusTransactionRepository> { StatusTransactionRepository(get(), get()) }
     single<IMenuRepository> { MenuRepository(get(), get()) }
     single<ICategoryRepository> { CategoryRepository(get(), get()) }
+    single<ILoginRepository> { LoginRepository(get(), get()) }
 }

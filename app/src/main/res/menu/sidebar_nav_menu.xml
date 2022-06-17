@@ -9,7 +9,7 @@
     <item
         android:id="@+id/history"
         android:icon="@drawable/ic_transaction"
-        android:title="@string/title_history"/>
+        android:title="@string/title_history" />
 
     <item
         android:id="@+id/menu"
@@ -24,6 +24,11 @@
     <item
         android:id="@+id/reportFragment"
         android:icon="@drawable/ic_baseline_show_chart_24"
+        android:title="@string/title_report" />
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/title_report" />
 
 </menu>

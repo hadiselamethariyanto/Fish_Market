@@ -1,5 +1,6 @@
 package com.example.fishmarket.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -9,7 +10,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.fishmarket.R
+import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.ActivityMainBinding
+import com.example.fishmarket.ui.login.LoginActivity
+import com.example.fishmarket.utilis.Utils
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -29,8 +33,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_controller) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_add_transaction,
@@ -39,7 +41,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_dashboard,
                 R.id.navigation_table,
                 R.id.menuFragment,
-                R.id.reportFragment
+                R.id.reportFragment,
+                R.id.settingsFragment
             ), binding.drawerLayout
         )
 
@@ -47,9 +50,24 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setupWithNavController(navController)
         binding.sidebarNav.setupWithNavController(navController)
 
-//        mainViewModel.getRestaurants().observe(this) {}
-//        mainViewModel.getTables().observe(this) {}
         mainViewModel.getStatus().observe(this) {}
+        mainViewModel.getCurrentUser().observe(this@MainActivity) { res ->
+            when (res) {
+                is Resource.Loading -> {
+                }
+                is Resource.Success -> {
+                }
+                is Resource.Error -> {
+                    if (res.message.toString() == "empty") {
+                        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                        finish()
+                    } else {
+                        Utils.showMessage(this@MainActivity, res.message.toString())
+                    }
+                }
+            }
+
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
