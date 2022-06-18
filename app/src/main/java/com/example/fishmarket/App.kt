@@ -1,10 +1,7 @@
 package com.example.fishmarket
 
 import android.app.Application
-import com.example.fishmarket.di.databaseModule
-import com.example.fishmarket.di.firebaseModule
-import com.example.fishmarket.di.repositoryModule
-import com.example.fishmarket.di.viewModelModule
+import com.example.fishmarket.di.*
 import com.example.fishmarket.utilis.ModelCart
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -34,7 +31,8 @@ class App : Application() {
                     databaseModule,
                     repositoryModule,
                     viewModelModule,
-                    firebaseModule
+                    firebaseModule,
+                    useCaseModule
                 )
             )
         }

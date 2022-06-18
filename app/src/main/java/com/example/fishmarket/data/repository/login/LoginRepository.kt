@@ -1,11 +1,11 @@
 package com.example.fishmarket.data.repository.login
 
 import com.example.fishmarket.data.repository.login.source.local.LoginLocalDataSource
-import com.example.fishmarket.data.repository.login.source.local.entity.UserEntity
 import com.example.fishmarket.data.source.remote.Resource
+import com.example.fishmarket.domain.model.User
 import com.example.fishmarket.domain.repository.ILoginRepository
+import com.example.fishmarket.utilis.DataMapper
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -17,20 +17,16 @@ class LoginRepository(
     private val localDataSource: LoginLocalDataSource
 ) : ILoginRepository {
 
-    override fun login(email: String, password: String): Flow<Resource<UserEntity>> = flow {
+    override fun login(email: String, password: String): Flow<Resource<User>> = flow {
         try {
             emit(Resource.Loading())
             val auth = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             val user = auth.user
             if (user != null) {
-                val userEntity = UserEntity(
-                    id = user.uid,
-                    email = user.email.toString(),
-                    display_name = user.displayName.toString(),
-                    photo_url = user.photoUrl.toString()
-                )
+                val userEntity = DataMapper.mapFirebaseUserToUserEntity(user)
+                val userDomain = DataMapper.mapFirebaseUserToUser(user)
                 localDataSource.insertUser(userEntity)
-                emit(Resource.Success(userEntity))
+                emit(Resource.Success(userDomain))
             } else {
                 emit(Resource.Error("User not found"))
             }
@@ -49,11 +45,12 @@ class LoginRepository(
         }
     }.flowOn(Dispatchers.IO)
 
-    override fun getCurrentUser(): Flow<Resource<FirebaseUser>> = flow {
+    override fun getCurrentUser(): Flow<Resource<User>> = flow {
         try {
             val user = firebaseAuth.currentUser
             if (user != null) {
-                emit(Resource.Success(user))
+                val userDomain = DataMapper.mapFirebaseUserToUser(user)
+                emit(Resource.Success(userDomain))
             } else {
                 emit(Resource.Error("empty"))
             }

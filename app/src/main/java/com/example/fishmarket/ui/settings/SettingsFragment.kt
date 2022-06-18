@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentSettingsBinding
+import com.example.fishmarket.domain.model.User
 import com.example.fishmarket.ui.login.LoginActivity
 import com.example.fishmarket.utilis.Utils
-import com.google.firebase.auth.FirebaseUser
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
@@ -40,11 +40,11 @@ class SettingsFragment : Fragment() {
         viewModel.getCurrentUser().observe(viewLifecycleOwner, currentUserObserver)
     }
 
-    private fun displayUser(user: FirebaseUser) {
+    private fun displayUser(user: User) {
         binding.tvEmail.text = user.email
     }
 
-    private val currentUserObserver = Observer<Resource<FirebaseUser>> { res ->
+    private val currentUserObserver = Observer<Resource<User>> { res ->
         when (res) {
             is Resource.Loading -> {
 

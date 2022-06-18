@@ -1,14 +1,15 @@
-package com.example.fishmarket.domain.repository
+package com.example.fishmarket.domain.usecase
 
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
-interface ILoginRepository {
+interface LoginUseCase {
 
-    fun login(email: String, password: String): Flow<Resource<User>>
+    fun login(email:String, password:String): Flow<Resource<User>>
 
     fun logout(): Flow<Resource<Boolean>>
 
     fun getCurrentUser(): Flow<Resource<User>>
+
 }

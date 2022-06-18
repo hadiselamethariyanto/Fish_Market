@@ -5,9 +5,9 @@ import androidx.lifecycle.Observer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.inputmethod.EditorInfo
-import com.example.fishmarket.data.repository.login.source.local.entity.UserEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.ActivityLoginBinding
+import com.example.fishmarket.domain.model.User
 import com.example.fishmarket.ui.main.MainActivity
 import com.example.fishmarket.utilis.Utils
 import com.example.fishmarket.utilis.Utils.afterTextChanged
@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private val userObserver = Observer<Resource<UserEntity>> { res ->
+    private val userObserver = Observer<Resource<User>> { res ->
         when (res) {
             is Resource.Loading -> {
                 binding.login.isEnabled = false

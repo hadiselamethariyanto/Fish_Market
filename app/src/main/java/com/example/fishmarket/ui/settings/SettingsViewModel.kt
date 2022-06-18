@@ -2,10 +2,10 @@ package com.example.fishmarket.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.example.fishmarket.domain.repository.ILoginRepository
+import com.example.fishmarket.domain.usecase.LoginUseCase
 
-class SettingsViewModel(private val loginRepository: ILoginRepository) : ViewModel() {
-    fun logout() = loginRepository.logout().asLiveData()
+class SettingsViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
+    fun logout() = loginUseCase.logout().asLiveData()
 
-    fun getCurrentUser() = loginRepository.getCurrentUser().asLiveData()
+    fun getCurrentUser() = loginUseCase.getCurrentUser().asLiveData()
 }

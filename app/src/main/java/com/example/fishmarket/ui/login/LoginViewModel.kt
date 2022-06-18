@@ -6,16 +6,16 @@ import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import androidx.lifecycle.asLiveData
 import com.example.fishmarket.R
-import com.example.fishmarket.domain.repository.ILoginRepository
+import com.example.fishmarket.domain.usecase.LoginUseCase
 
 
-class LoginViewModel(private val loginRepository: ILoginRepository) : ViewModel() {
+class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
     fun login(username: String, password: String) =
-        loginRepository.login(username, password).asLiveData()
+        loginUseCase.login(username, password).asLiveData()
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {

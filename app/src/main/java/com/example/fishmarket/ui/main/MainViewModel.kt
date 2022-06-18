@@ -6,14 +6,15 @@ import com.example.fishmarket.domain.repository.ILoginRepository
 import com.example.fishmarket.domain.repository.IRestaurantRepository
 import com.example.fishmarket.domain.repository.IStatusTransactionRepository
 import com.example.fishmarket.domain.repository.ITableRepository
+import com.example.fishmarket.domain.usecase.LoginUseCase
 
 class MainViewModel(
     private val statusRepository: IStatusTransactionRepository,
-    private val loginRepository: ILoginRepository
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     fun getStatus() = statusRepository.getStatusTransaction().asLiveData()
 
-    fun getCurrentUser() = loginRepository.getCurrentUser().asLiveData()
+    fun getCurrentUser() = loginUseCase.getCurrentUser().asLiveData()
 
 }

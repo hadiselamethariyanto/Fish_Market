@@ -3,6 +3,7 @@ package com.example.fishmarket.utilis
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.category.source.local.entity.CategoryEntity
 import com.example.fishmarket.data.repository.category.source.remote.model.CategoryResponse
+import com.example.fishmarket.data.repository.login.source.local.entity.UserEntity
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.data.repository.menu.source.remote.model.MenuResponse
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
@@ -15,8 +16,20 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.De
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
+import com.example.fishmarket.domain.model.User
+import com.google.firebase.auth.FirebaseUser
 
 object DataMapper {
+
+    fun mapFirebaseUserToUser(user: FirebaseUser) =
+        User(id = user.uid, email = user.email.toString())
+
+    fun mapFirebaseUserToUserEntity(user: FirebaseUser) = UserEntity(
+        id = user.uid,
+        email = user.email.toString(),
+        display_name = user.displayName.toString(),
+        photo_url = user.photoUrl.toString()
+    )
 
     fun mapRestaurantResponseToEntity(list: List<RestaurantResponse>): List<RestaurantEntity> =
         list.map {
