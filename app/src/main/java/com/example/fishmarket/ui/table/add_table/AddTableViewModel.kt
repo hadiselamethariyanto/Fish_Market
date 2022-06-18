@@ -3,8 +3,9 @@ package com.example.fishmarket.ui.table.add_table
 import androidx.lifecycle.*
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.domain.repository.ITableRepository
+import com.example.fishmarket.domain.usecase.TableUseCase
 
-class AddTableViewModel(private val repository: ITableRepository) : ViewModel() {
+class AddTableViewModel(private val tableUseCase: TableUseCase) : ViewModel() {
 
-    fun addTable(table: TableEntity) = repository.addTable(table).asLiveData()
+    fun addTable(table: TableEntity) = tableUseCase.addTable(table).asLiveData()
 }

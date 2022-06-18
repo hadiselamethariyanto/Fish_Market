@@ -8,18 +8,22 @@ import com.example.fishmarket.data.source.remote.NetworkBoundInternetOnly
 import com.example.fishmarket.data.source.remote.NetworkBoundResource
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.data.source.remote.network.ApiResponse
+import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.domain.repository.ITableRepository
 import com.example.fishmarket.utilis.DataMapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class TableRepository(
     private val localDataSource: TableLocalDataSource,
     private val remoteDataSource: TableRemoteDataSource
 ) : ITableRepository {
 
-    override fun addTable(table: TableEntity): Flow<Resource<TableEntity>> {
-        return object : NetworkBoundInternetOnly<TableEntity, TableEntity>() {
-            override fun loadFromDB(): Flow<TableEntity> = localDataSource.getTable(table.id)
+    override fun addTable(table: TableEntity): Flow<Resource<Table>> {
+        return object : NetworkBoundInternetOnly<Table, TableEntity>() {
+            override fun loadFromDB(): Flow<Table> = localDataSource.getTable(table.id).map {
+                DataMapper.mapTableEntityToDomain(it)
+            }
 
             override suspend fun createCall(): Flow<ApiResponse<TableEntity>> =
                 remoteDataSource.addTable(table)
@@ -31,9 +35,11 @@ class TableRepository(
         }.asFlow()
     }
 
-    override fun updateTable(table: TableEntity): Flow<Resource<TableEntity>> {
-        return object : NetworkBoundInternetOnly<TableEntity, TableEntity>() {
-            override fun loadFromDB(): Flow<TableEntity> = localDataSource.getTable(table.id)
+    override fun updateTable(table: TableEntity): Flow<Resource<Table>> {
+        return object : NetworkBoundInternetOnly<Table, TableEntity>() {
+            override fun loadFromDB(): Flow<Table> = localDataSource.getTable(table.id).map {
+                DataMapper.mapTableEntityToDomain(it)
+            }
 
             override suspend fun createCall(): Flow<ApiResponse<TableEntity>> =
                 remoteDataSource.updateTable(table)
@@ -45,9 +51,11 @@ class TableRepository(
         }.asFlow()
     }
 
-    override fun deleteTable(table: TableEntity): Flow<Resource<List<TableEntity>>> {
-        return object : NetworkBoundInternetOnly<List<TableEntity>, TableEntity>() {
-            override fun loadFromDB(): Flow<List<TableEntity>> = localDataSource.getTables()
+    override fun deleteTable(table: TableEntity): Flow<Resource<List<Table>>> {
+        return object : NetworkBoundInternetOnly<List<Table>, TableEntity>() {
+            override fun loadFromDB(): Flow<List<Table>> = localDataSource.getTables().map {
+                DataMapper.mapTableEntitiesToDomain(it)
+            }
 
             override suspend fun createCall(): Flow<ApiResponse<TableEntity>> =
                 remoteDataSource.deleteTable(table)
@@ -59,11 +67,13 @@ class TableRepository(
         }.asFlow()
     }
 
-    override fun getTables(): Flow<Resource<List<TableEntity>>> {
-        return object : NetworkBoundResource<List<TableEntity>, List<TableResponse>>() {
-            override fun loadFromDB(): Flow<List<TableEntity>> = localDataSource.getTables()
+    override fun getTables(): Flow<Resource<List<Table>>> {
+        return object : NetworkBoundResource<List<Table>, List<TableResponse>>() {
+            override fun loadFromDB(): Flow<List<Table>> = localDataSource.getTables().map {
+                DataMapper.mapTableEntitiesToDomain(it)
+            }
 
-            override fun shouldFetch(data: List<TableEntity>?): Boolean =
+            override fun shouldFetch(data: List<Table>?): Boolean =
                 data == null || data.isEmpty()
 
             override suspend fun createCall(): Flow<ApiResponse<List<TableResponse>>> =
@@ -76,11 +86,13 @@ class TableRepository(
         }.asFlow()
     }
 
-    override fun getAvailableTable(): Flow<Resource<List<TableEntity>>> {
-        return object : NetworkBoundResource<List<TableEntity>, List<TableResponse>>() {
-            override fun loadFromDB(): Flow<List<TableEntity>> = localDataSource.getAvailableTable()
+    override fun getAvailableTable(): Flow<Resource<List<Table>>> {
+        return object : NetworkBoundResource<List<Table>, List<TableResponse>>() {
+            override fun loadFromDB(): Flow<List<Table>> = localDataSource.getAvailableTable().map {
+                DataMapper.mapTableEntitiesToDomain(it)
+            }
 
-            override fun shouldFetch(data: List<TableEntity>?): Boolean =
+            override fun shouldFetch(data: List<Table>?): Boolean =
                 data == null || data.isEmpty()
 
             override suspend fun createCall(): Flow<ApiResponse<List<TableResponse>>> =
@@ -93,7 +105,9 @@ class TableRepository(
         }.asFlow()
     }
 
-    override fun getTable(id: String): Flow<TableEntity> = localDataSource.getTable(id)
+    override fun getTable(id: String): Flow<Table> = localDataSource.getTable(id).map {
+        DataMapper.mapTableEntityToDomain(it)
+    }
 
 
 }

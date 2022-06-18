@@ -10,9 +10,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.DialogSelectTableBinding
+import com.example.fishmarket.domain.model.Table
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 
@@ -58,7 +58,7 @@ class SelectTableFragment : DialogFragment() {
 
     }
 
-    private val availableTableObserver = Observer<Resource<List<TableEntity>>> { res ->
+    private val availableTableObserver = Observer<Resource<List<Table>>> { res ->
         when (res) {
             is Resource.Loading -> {
                 binding.refresh.isRefreshing = true

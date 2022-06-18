@@ -16,10 +16,23 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.De
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
+import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.domain.model.User
 import com.google.firebase.auth.FirebaseUser
 
 object DataMapper {
+
+
+    fun mapTableEntitiesToDomain(list: List<TableEntity>): List<Table> = list.map {
+        Table(id = it.id, name = it.name, status = it.status, createdDate = it.createdDate)
+    }
+
+    fun mapTableEntityToDomain(tableEntity: TableEntity) = Table(
+        id = tableEntity.id,
+        name = tableEntity.name,
+        status = tableEntity.status,
+        createdDate = tableEntity.createdDate
+    )
 
     fun mapFirebaseUserToUser(user: FirebaseUser) =
         User(id = user.uid, email = user.email.toString())

@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.databinding.ItemSelectTableBinding
+import com.example.fishmarket.domain.model.Table
 
 class SelectTableAdapter : RecyclerView.Adapter<SelectTableAdapter.ViewHolder>() {
 
-    private val list = ArrayList<TableEntity>()
+    private val list = ArrayList<Table>()
     var selectedItemPos = -1
     var lastItemSelectedPos = -1
 
-    fun updateData(new: List<TableEntity>) {
+    fun updateData(new: List<Table>) {
         list.clear()
         list.addAll(new)
         notifyDataSetChanged()
@@ -22,7 +23,7 @@ class SelectTableAdapter : RecyclerView.Adapter<SelectTableAdapter.ViewHolder>()
 
     fun getSelectedPosition(): Int = selectedItemPos
 
-    fun getSelectedTable(): TableEntity = list[selectedItemPos]
+    fun getSelectedTable(): Table = list[selectedItemPos]
 
     inner class ViewHolder(private val binding: ItemSelectTableBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -51,7 +52,7 @@ class SelectTableAdapter : RecyclerView.Adapter<SelectTableAdapter.ViewHolder>()
             )
         }
 
-        fun bindItem(table: TableEntity) {
+        fun bindItem(table: Table) {
             binding.tvTable.text = table.name
             itemView.setOnClickListener {
                 selectedItemPos = adapterPosition

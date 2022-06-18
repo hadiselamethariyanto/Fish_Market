@@ -11,6 +11,7 @@ import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTableBinding
+import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.utilis.Utils
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,7 +48,7 @@ class AddTableFragment : Fragment() {
         }
     }
 
-    private val addTableObserver = Observer<Resource<TableEntity>> { res ->
+    private val addTableObserver = Observer<Resource<Table>> { res ->
         when (res) {
             is Resource.Loading -> {
                 binding.btnSave.isEnabled = false

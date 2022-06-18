@@ -1,11 +1,11 @@
-package com.example.fishmarket.domain.repository
+package com.example.fishmarket.domain.usecase
 
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.model.Table
 import kotlinx.coroutines.flow.Flow
 
-interface ITableRepository {
+interface TableUseCase {
     fun addTable(table: TableEntity): Flow<Resource<Table>>
 
     fun updateTable(table: TableEntity): Flow<Resource<Table>>

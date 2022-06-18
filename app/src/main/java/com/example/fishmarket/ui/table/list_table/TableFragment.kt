@@ -15,6 +15,7 @@ import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentTableBinding
+import com.example.fishmarket.domain.model.Table
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TableFragment : Fragment() {
@@ -46,11 +47,11 @@ class TableFragment : Fragment() {
     private fun getTable() {
         tableAdapter = TableAdapter()
         tableAdapter.setOnItemClickCallback(object : TableAdapter.OnItemClickCallBack {
-            override fun onItemLongClicked(table: TableEntity) {
+            override fun onItemLongClicked(table: Table) {
                 setAlertDialog(table)
             }
 
-            override fun onItemClicked(table: TableEntity) {
+            override fun onItemClicked(table: Table) {
                 val bundle = bundleOf(
                     "id" to table.id,
                     "status" to table.status,
@@ -100,7 +101,7 @@ class TableFragment : Fragment() {
         }
     }
 
-    private fun setAlertDialog(table: TableEntity) {
+    private fun setAlertDialog(table: Table) {
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(requireActivity().resources.getString(R.string.delete_table_title))
         builder.setMessage(
@@ -111,7 +112,13 @@ class TableFragment : Fragment() {
         )
 
         builder.setPositiveButton(requireActivity().resources.getString(R.string.yes)) { _, _ ->
-            viewModel.deleteTable(table).observe(viewLifecycleOwner) { res ->
+            val tableEntity = TableEntity(
+                id = table.id,
+                name = table.name,
+                status = table.status,
+                createdDate = table.createdDate
+            )
+            viewModel.deleteTable(tableEntity).observe(viewLifecycleOwner) { res ->
                 when (res) {
                     is Resource.Loading -> {
                         binding.refresh.isRefreshing = true
