@@ -6,7 +6,7 @@
     app:startDestination="@+id/home">
 
     <include app:graph="@navigation/home" />
-    <include app:graph="@navigation/history"/>
+    <include app:graph="@navigation/history" />
     <include app:graph="@navigation/transaction" />
     <include app:graph="@navigation/restaurant" />
     <include app:graph="@navigation/table" />
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.fishmarket.ui.settings.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
 
 

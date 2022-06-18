@@ -11,6 +11,7 @@ import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentSettingsBinding
 import com.example.fishmarket.ui.login.LoginActivity
 import com.example.fishmarket.utilis.Utils
+import com.google.firebase.auth.FirebaseUser
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
@@ -29,8 +30,31 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getCurrentUser()
         binding.logout.setOnClickListener {
             viewModel.logout().observe(viewLifecycleOwner, logoutObserver)
+        }
+    }
+
+    private fun getCurrentUser() {
+        viewModel.getCurrentUser().observe(viewLifecycleOwner, currentUserObserver)
+    }
+
+    private fun displayUser(user: FirebaseUser) {
+        binding.tvEmail.text = user.email
+    }
+
+    private val currentUserObserver = Observer<Resource<FirebaseUser>> { res ->
+        when (res) {
+            is Resource.Loading -> {
+
+            }
+            is Resource.Success -> {
+                res.data?.let { displayUser(it) }
+            }
+            is Resource.Error -> {
+                Utils.showMessage(requireActivity(), res.message.toString())
+            }
         }
     }
 

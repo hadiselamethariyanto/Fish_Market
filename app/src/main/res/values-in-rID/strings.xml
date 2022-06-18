@@ -62,4 +62,6 @@
     <string name="invalid_password">Password harus lebih dari 5 karakter</string>
     <string name="login_failed">Login gagal</string>
     <string name="action_login">Masuk</string>
+    <string name="title_settings">Pengaturan</string>
+    <string name="logout">Keluar</string>
 </resources>

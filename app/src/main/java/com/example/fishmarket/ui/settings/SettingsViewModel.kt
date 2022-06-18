@@ -6,4 +6,6 @@ import com.example.fishmarket.domain.repository.ILoginRepository
 
 class SettingsViewModel(private val loginRepository: ILoginRepository) : ViewModel() {
     fun logout() = loginRepository.logout().asLiveData()
+
+    fun getCurrentUser() = loginRepository.getCurrentUser().asLiveData()
 }

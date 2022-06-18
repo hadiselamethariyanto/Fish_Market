@@ -22,7 +22,7 @@ class RestaurantAdapter(private val context: Context) :
     fun updateData(new: List<RestaurantWithTransactionEntity>) {
         list.clear()
         list.addAll(new)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, list.size)
     }
 
     inner class ViewHolder(private val binding: ItemRestaurantBinding) :
