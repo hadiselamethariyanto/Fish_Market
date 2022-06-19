@@ -16,12 +16,26 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.De
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
+import com.example.fishmarket.domain.model.Category
 import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.domain.model.User
 import com.google.firebase.auth.FirebaseUser
 
 object DataMapper {
 
+    fun mapCategoryEntityToDomain(categoryEntity: CategoryEntity) = Category(
+        id = categoryEntity.id,
+        name = categoryEntity.name,
+        created_date = categoryEntity.created_date
+    )
+
+    fun mapCategoryEntitiesToDomain(list: List<CategoryEntity>) = list.map { categoryEntity ->
+        Category(
+            id = categoryEntity.id,
+            name = categoryEntity.name,
+            created_date = categoryEntity.created_date
+        )
+    }
 
     fun mapTableEntitiesToDomain(list: List<TableEntity>): List<Table> = list.map {
         Table(id = it.id, name = it.name, status = it.status, createdDate = it.createdDate)

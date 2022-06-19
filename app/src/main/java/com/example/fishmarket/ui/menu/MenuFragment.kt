@@ -14,7 +14,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenuFragment : Fragment() {
 
-    private val viewModel: MenuViewModel by viewModel()
     private var _binding: FragmentMenuBinding? = null
     private val binding get() = _binding!!
 

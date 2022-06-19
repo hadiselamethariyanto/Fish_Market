@@ -3,12 +3,12 @@ package com.example.fishmarket.ui.menu.list_category
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fishmarket.data.repository.category.source.local.entity.CategoryEntity
 import com.example.fishmarket.databinding.ItemCategoryBinding
+import com.example.fishmarket.domain.model.Category
 
 class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    private val list = ArrayList<CategoryEntity>()
+    private val list = ArrayList<Category>()
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -16,8 +16,7 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
         this.onItemClickCallback = onItemClickCallback
     }
 
-
-    fun updateData(new: List<CategoryEntity>) {
+    fun updateData(new: List<Category>) {
         list.clear()
         list.addAll(new)
         notifyDataSetChanged()
@@ -27,17 +26,17 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindItem(
-            categoryEntity: CategoryEntity,
+            category: Category,
             onItemClickCallback: OnItemClickCallback
         ) {
-            binding.tvCategoryName.text = categoryEntity.name
+            binding.tvCategoryName.text = category.name
 
             itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(categoryEntity)
+                onItemClickCallback.onItemClicked(category)
             }
 
             itemView.setOnLongClickListener {
-                onItemClickCallback.onItemLongClicked(categoryEntity)
+                onItemClickCallback.onItemLongClicked(category)
                 true
             }
         }
@@ -56,7 +55,7 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     override fun getItemCount(): Int = list.size
 
     interface OnItemClickCallback {
-        fun onItemLongClicked(category: CategoryEntity)
-        fun onItemClicked(category: CategoryEntity)
+        fun onItemLongClicked(category: Category)
+        fun onItemClicked(category: Category)
     }
 }

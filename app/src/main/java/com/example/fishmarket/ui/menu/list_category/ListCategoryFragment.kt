@@ -15,6 +15,7 @@ import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.category.source.local.entity.CategoryEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentListCategoryBinding
+import com.example.fishmarket.domain.model.Category
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListCategoryFragment : Fragment() {
@@ -37,11 +38,11 @@ class ListCategoryFragment : Fragment() {
 
         categoryAdapter = CategoryAdapter()
         categoryAdapter.setOnItemClickCallback(object : CategoryAdapter.OnItemClickCallback {
-            override fun onItemLongClicked(category: CategoryEntity) {
+            override fun onItemLongClicked(category: Category) {
                 setAlertDialog(category)
             }
 
-            override fun onItemClicked(category: CategoryEntity) {
+            override fun onItemClicked(category: Category) {
                 val bundle = bundleOf(
                     "id" to category.id,
                     "name" to category.name,
@@ -86,7 +87,12 @@ class ListCategoryFragment : Fragment() {
         }
     }
 
-    private fun setAlertDialog(categoryEntity: CategoryEntity) {
+    private fun setAlertDialog(category: Category) {
+        val categoryEntity = CategoryEntity(
+            id = category.id,
+            name = category.name,
+            created_date = category.created_date
+        )
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(requireActivity().resources.getString(R.string.delete_category))
         builder.setMessage(

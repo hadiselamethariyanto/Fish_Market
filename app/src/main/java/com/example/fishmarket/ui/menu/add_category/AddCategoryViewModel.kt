@@ -4,9 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.fishmarket.data.repository.category.source.local.entity.CategoryEntity
 import com.example.fishmarket.domain.repository.ICategoryRepository
+import com.example.fishmarket.domain.usecase.CategoryUseCase
 
-class AddCategoryViewModel(private val categoryRepository: ICategoryRepository) : ViewModel() {
+class AddCategoryViewModel(private val categoryUseCase: CategoryUseCase) : ViewModel() {
 
     fun addCategory(categoryEntity: CategoryEntity) =
-        categoryRepository.insertCategory(categoryEntity).asLiveData()
+        categoryUseCase.insertCategory(categoryEntity).asLiveData()
 }

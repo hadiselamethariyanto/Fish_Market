@@ -1,9 +1,6 @@
 package com.example.fishmarket.di
 
-import com.example.fishmarket.domain.usecase.LoginInteractor
-import com.example.fishmarket.domain.usecase.LoginUseCase
-import com.example.fishmarket.domain.usecase.TableInteractor
-import com.example.fishmarket.domain.usecase.TableUseCase
+import com.example.fishmarket.domain.usecase.*
 import com.example.fishmarket.ui.history.list_history.HistoryViewModel
 import com.example.fishmarket.ui.home.transaction.HomeViewModel
 import com.example.fishmarket.ui.home.add_transaction.AddTransactionViewModel
@@ -29,6 +26,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 val useCaseModule = module {
     factory<LoginUseCase> { LoginInteractor(get()) }
     factory<TableUseCase> { TableInteractor(get()) }
+    factory<CategoryUseCase> { CategoryInteractor(get()) }
 }
 
 val viewModelModule = module {

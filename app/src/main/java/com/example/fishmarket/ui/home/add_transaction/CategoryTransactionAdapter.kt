@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.category.source.local.entity.CategoryEntity
 import com.example.fishmarket.databinding.ItemCategoryAddTransactionBinding
+import com.example.fishmarket.domain.model.Category
 
 class CategoryTransactionAdapter(private val context: Context) :
     RecyclerView.Adapter<CategoryTransactionAdapter.ViewHolder>() {
-    private val list = ArrayList<CategoryEntity>()
+    private val list = ArrayList<Category>()
     private lateinit var onItemClickCallback: OnItemClickCallback
     var selectedItemPos = -1
     var lastItemSelectedPos = -1
@@ -20,9 +20,9 @@ class CategoryTransactionAdapter(private val context: Context) :
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun updateData(new: List<CategoryEntity>) {
+    fun updateData(new: List<Category>) {
         list.clear()
-        list.add(CategoryEntity("0", context.resources.getString(R.string.all), 0))
+        list.add(Category("0", context.resources.getString(R.string.all), 0))
         list.addAll(new)
         notifyDataSetChanged()
     }
@@ -46,7 +46,7 @@ class CategoryTransactionAdapter(private val context: Context) :
             binding.tvCategoryName.setTextColor(ContextCompat.getColor(context, R.color.gray_500))
         }
 
-        fun bindItem(categoryEntity: CategoryEntity) {
+        fun bindItem(categoryEntity: Category) {
             binding.tvCategoryName.text = categoryEntity.name
 
             itemView.setOnClickListener {
@@ -84,6 +84,6 @@ class CategoryTransactionAdapter(private val context: Context) :
     override fun getItemCount(): Int = list.size
 
     interface OnItemClickCallback {
-        fun onItemClicked(categoryEntity: CategoryEntity)
+        fun onItemClicked(categoryEntity: Category)
     }
 }

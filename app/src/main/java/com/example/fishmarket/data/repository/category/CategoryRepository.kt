@@ -8,19 +8,23 @@ import com.example.fishmarket.data.source.remote.NetworkBoundInternetOnly
 import com.example.fishmarket.data.source.remote.NetworkBoundResource
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.data.source.remote.network.ApiResponse
+import com.example.fishmarket.domain.model.Category
 import com.example.fishmarket.domain.repository.ICategoryRepository
 import com.example.fishmarket.utilis.DataMapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class CategoryRepository(
     private val localDataSource: CategoryLocalDataSource,
     private val remoteDataSource: CategoryRemoteDataSource
 ) : ICategoryRepository {
 
-    override fun insertCategory(categoryEntity: CategoryEntity): Flow<Resource<CategoryEntity>> {
-        return object : NetworkBoundInternetOnly<CategoryEntity, CategoryEntity>() {
-            override fun loadFromDB(): Flow<CategoryEntity> =
-                localDataSource.getCategory(categoryEntity.id)
+    override fun insertCategory(categoryEntity: CategoryEntity): Flow<Resource<Category>> {
+        return object : NetworkBoundInternetOnly<Category, CategoryEntity>() {
+            override fun loadFromDB(): Flow<Category> =
+                localDataSource.getCategory(categoryEntity.id).map {
+                    DataMapper.mapCategoryEntityToDomain(it)
+                }
 
             override suspend fun createCall(): Flow<ApiResponse<CategoryEntity>> =
                 remoteDataSource.addCategory(categoryEntity)
@@ -32,10 +36,12 @@ class CategoryRepository(
         }.asFlow()
     }
 
-    override fun updateCategory(categoryEntity: CategoryEntity): Flow<Resource<CategoryEntity>> {
-        return object : NetworkBoundInternetOnly<CategoryEntity, CategoryEntity>() {
-            override fun loadFromDB(): Flow<CategoryEntity> =
-                localDataSource.getCategory(categoryEntity.id)
+    override fun updateCategory(categoryEntity: CategoryEntity): Flow<Resource<Category>> {
+        return object : NetworkBoundInternetOnly<Category, CategoryEntity>() {
+            override fun loadFromDB(): Flow<Category> =
+                localDataSource.getCategory(categoryEntity.id).map {
+                    DataMapper.mapCategoryEntityToDomain(it)
+                }
 
             override suspend fun createCall(): Flow<ApiResponse<CategoryEntity>> =
                 remoteDataSource.updateCategory(categoryEntity)
@@ -47,10 +53,12 @@ class CategoryRepository(
         }.asFlow()
     }
 
-    override fun deleteCategory(categoryEntity: CategoryEntity): Flow<Resource<List<CategoryEntity>>> {
-        return object : NetworkBoundInternetOnly<List<CategoryEntity>, CategoryEntity>() {
-            override fun loadFromDB(): Flow<List<CategoryEntity>> =
-                localDataSource.getCategories()
+    override fun deleteCategory(categoryEntity: CategoryEntity): Flow<Resource<List<Category>>> {
+        return object : NetworkBoundInternetOnly<List<Category>, CategoryEntity>() {
+            override fun loadFromDB(): Flow<List<Category>> =
+                localDataSource.getCategories().map {
+                    DataMapper.mapCategoryEntitiesToDomain(it)
+                }
 
             override suspend fun createCall(): Flow<ApiResponse<CategoryEntity>> =
                 remoteDataSource.deleteCategory(categoryEntity)
@@ -62,11 +70,13 @@ class CategoryRepository(
         }.asFlow()
     }
 
-    override fun getCategories(): Flow<Resource<List<CategoryEntity>>> {
-        return object : NetworkBoundResource<List<CategoryEntity>, List<CategoryResponse>>() {
-            override fun loadFromDB(): Flow<List<CategoryEntity>> = localDataSource.getCategories()
+    override fun getCategories(): Flow<Resource<List<Category>>> {
+        return object : NetworkBoundResource<List<Category>, List<CategoryResponse>>() {
+            override fun loadFromDB(): Flow<List<Category>> = localDataSource.getCategories().map {
+                DataMapper.mapCategoryEntitiesToDomain(it)
+            }
 
-            override fun shouldFetch(data: List<CategoryEntity>?): Boolean =
+            override fun shouldFetch(data: List<Category>?): Boolean =
                 data == null || data.isEmpty()
 
             override suspend fun createCall(): Flow<ApiResponse<List<CategoryResponse>>> =
@@ -79,11 +89,13 @@ class CategoryRepository(
         }.asFlow()
     }
 
-    override fun getCategory(id: String): Flow<Resource<CategoryEntity>> {
-        return object : NetworkBoundResource<CategoryEntity, List<CategoryResponse>>() {
-            override fun loadFromDB(): Flow<CategoryEntity> = localDataSource.getCategory(id)
+    override fun getCategory(id: String): Flow<Resource<Category>> {
+        return object : NetworkBoundResource<Category, List<CategoryResponse>>() {
+            override fun loadFromDB(): Flow<Category> = localDataSource.getCategory(id).map {
+                DataMapper.mapCategoryEntityToDomain(it)
+            }
 
-            override fun shouldFetch(data: CategoryEntity?): Boolean = data == null
+            override fun shouldFetch(data: Category?): Boolean = data == null
 
             override suspend fun createCall(): Flow<ApiResponse<List<CategoryResponse>>> =
                 remoteDataSource.getCategories()

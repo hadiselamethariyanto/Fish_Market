@@ -17,6 +17,7 @@ import com.example.fishmarket.data.repository.category.source.local.entity.Categ
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTransactionBinding
+import com.example.fishmarket.domain.model.Category
 import com.example.fishmarket.utilis.Utils
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
@@ -153,7 +154,7 @@ class AddTransactionFragment : Fragment() {
         val categoryTransactionAdapter = CategoryTransactionAdapter(requireActivity())
         categoryTransactionAdapter.setOnItemClickCallback(object :
             CategoryTransactionAdapter.OnItemClickCallback {
-            override fun onItemClicked(categoryEntity: CategoryEntity) {
+            override fun onItemClicked(categoryEntity: Category) {
                 viewModel.getMenus(categoryEntity.id).observe(viewLifecycleOwner, menusObserver)
             }
         })
