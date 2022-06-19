@@ -6,10 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentEditRestaurantBinding
+import com.example.fishmarket.domain.model.Restaurant
+import com.example.fishmarket.utilis.Utils.afterTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditRestaurantFragment : Fragment() {
@@ -33,27 +37,52 @@ class EditRestaurantFragment : Fragment() {
 
         getRestaurant(id.toString())
 
-        binding.btnSave.setOnClickListener {
-            val name = binding.etRestaurantName.text.toString()
-            val restaurantEntity =
-                RestaurantEntity(id = id ?: "", name = name, createdDate = createdDate ?: 0)
-            viewModel.updateRestaurant(restaurantEntity).observe(viewLifecycleOwner) { res ->
-                when (res) {
-                    is Resource.Loading -> {
-                        binding.btnSave.isEnabled = false
-                    }
-                    is Resource.Success -> {
-                        findNavController().navigateUp()
-                        binding.btnSave.isEnabled = true
-                    }
-                    is Resource.Error -> {
-                        Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
-                            .show()
-                        binding.btnSave.isEnabled = true
-                    }
-                }
+        val etRestaurantName = binding.etRestaurantName
+        val btnSave = binding.btnSave
+
+        viewModel.restaurantFormState.observe(viewLifecycleOwner) {
+            val restaurantState = it ?: return@observe
+
+            btnSave.isEnabled = restaurantState.isDataValid
+
+            if (restaurantState.restaurantNameError != null) {
+                etRestaurantName.error = getString(R.string.warning_restaurant_name_empty)
             }
         }
+
+        etRestaurantName.afterTextChanged {
+            viewModel.restaurantDataChanged(etRestaurantName.text.toString())
+        }
+
+        btnSave.setOnClickListener {
+            val restaurantEntity =
+                RestaurantEntity(
+                    id = id ?: "",
+                    name = etRestaurantName.text.toString(),
+                    createdDate = createdDate ?: 0
+                )
+
+            viewModel.updateRestaurant(restaurantEntity)
+                .observe(viewLifecycleOwner, updateRestaurantObserver)
+        }
+    }
+
+    private val updateRestaurantObserver = Observer<Resource<Restaurant>> { res ->
+        when (res) {
+            is Resource.Loading -> {
+                binding.btnSave.isEnabled = false
+            }
+            is Resource.Success -> {
+                findNavController().navigateUp()
+                binding.btnSave.isEnabled = true
+            }
+            is Resource.Error -> {
+                Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                    .show()
+                binding.btnSave.isEnabled = true
+            }
+        }
+
     }
 
     private fun getRestaurant(id: String) {
