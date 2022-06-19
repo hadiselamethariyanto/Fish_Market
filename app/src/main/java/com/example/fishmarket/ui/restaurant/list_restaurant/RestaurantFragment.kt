@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.example.fishmarket.data.repository.restaurant.source.local.entity.Res
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentRestaurantBinding
 import com.example.fishmarket.domain.model.Restaurant
+import com.example.fishmarket.domain.model.RestaurantWithTransaction
 import com.example.fishmarket.utilis.Utils
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,6 +40,17 @@ class RestaurantFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRestaurantAdapter()
+
+        viewModel.getRestaurantWithTransaction()
+            .observe(viewLifecycleOwner, getRestaurantWithTransactionObserver)
+
+        binding.fabAddRestaurant.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_add_restaurant)
+        }
+    }
+
+    private fun setupRestaurantAdapter() {
         restaurantAdapter = RestaurantAdapter(requireActivity())
         restaurantAdapter.setOnItemClickCallback(object : RestaurantAdapter.OnItemClickCallback {
             override fun onItemLongClicked(restaurant: Restaurant) {
@@ -64,8 +77,36 @@ class RestaurantFragment : Fragment() {
                 LinearLayoutManager.VERTICAL
             )
         )
+    }
 
-        viewModel.getRestaurantWithTransaction().observe(viewLifecycleOwner) { res ->
+    private fun setAlertDialog(restaurant: Restaurant) {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle(requireActivity().resources.getString(R.string.delete_restaurant_title))
+        builder.setMessage(
+            requireActivity().resources.getString(
+                R.string.delete_warning_message,
+                restaurant.name
+            )
+        )
+
+        builder.setPositiveButton(requireActivity().resources.getString(R.string.yes)) { _, _ ->
+            val restaurantEntity = RestaurantEntity(
+                id = restaurant.id,
+                name = restaurant.name,
+                createdDate = restaurant.createdDate
+            )
+            viewModel.deleteRestaurant(restaurantEntity)
+                .observe(viewLifecycleOwner, deleteRestaurantObserver)
+        }
+
+        builder.setNegativeButton(requireActivity().resources.getString(R.string.no)) { _, _ ->
+        }
+
+        builder.show()
+    }
+
+    private val getRestaurantWithTransactionObserver =
+        Observer<Resource<List<RestaurantWithTransaction>>> { res ->
             when (res) {
                 is Resource.Loading -> {
                     binding.refresh.isRefreshing = true
@@ -88,55 +129,27 @@ class RestaurantFragment : Fragment() {
                     binding.refresh.isRefreshing = false
                 }
             }
-
         }
 
-        binding.fabAddRestaurant.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_dashboard_to_navigation_add_restaurant)
-        }
-    }
-
-    private fun setAlertDialog(restaurant: Restaurant) {
-        val builder = AlertDialog.Builder(requireActivity())
-        builder.setTitle(requireActivity().resources.getString(R.string.delete_restaurant_title))
-        builder.setMessage(
-            requireActivity().resources.getString(
-                R.string.delete_warning_message,
-                restaurant.name
-            )
-        )
-
-        builder.setPositiveButton(requireActivity().resources.getString(R.string.yes)) { _, _ ->
-            val restaurantEntity = RestaurantEntity(
-                id = restaurant.id,
-                name = restaurant.name,
-                createdDate = restaurant.createdDate
-            )
-            viewModel.deleteRestaurant(restaurantEntity).observe(viewLifecycleOwner) { res ->
-                when (res) {
-                    is Resource.Loading -> {
-                        binding.refresh.isRefreshing = true
-                    }
-                    is Resource.Success -> {
-                        binding.refresh.isRefreshing = false
-                        if (res.data != null) {
-                            restaurantAdapter.updateData(res.data)
-                        }
-                    }
-                    is Resource.Error -> {
-                        binding.refresh.isRefreshing = false
-                        Utils.showMessage(requireActivity(), res.message.toString())
+    private val deleteRestaurantObserver =
+        Observer<Resource<List<RestaurantWithTransaction>>> { res ->
+            when (res) {
+                is Resource.Loading -> {
+                    binding.refresh.isRefreshing = true
+                }
+                is Resource.Success -> {
+                    binding.refresh.isRefreshing = false
+                    if (res.data != null) {
+                        restaurantAdapter.updateData(res.data)
                     }
                 }
-
+                is Resource.Error -> {
+                    binding.refresh.isRefreshing = false
+                    Utils.showMessage(requireActivity(), res.message.toString())
+                }
             }
-        }
 
-        builder.setNegativeButton(requireActivity().resources.getString(R.string.no)) { _, _ ->
         }
-
-        builder.show()
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
