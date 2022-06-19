@@ -17,11 +17,17 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.Tr
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.domain.model.Category
+import com.example.fishmarket.domain.model.StatusTransaction
 import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.domain.model.User
 import com.google.firebase.auth.FirebaseUser
 
 object DataMapper {
+
+    fun mapStatusTransactionEntitiesToDomain(list: List<StatusTransactionEntity>): List<StatusTransaction> =
+        list.map {
+            StatusTransaction(id = it.id, name = it.name, icon = it.icon)
+        }
 
     fun mapCategoryEntityToDomain(categoryEntity: CategoryEntity) = Category(
         id = categoryEntity.id,

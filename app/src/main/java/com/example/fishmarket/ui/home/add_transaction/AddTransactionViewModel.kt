@@ -10,7 +10,7 @@ import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.domain.repository.ICategoryRepository
 import com.example.fishmarket.domain.repository.IMenuRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
-import com.example.fishmarket.domain.usecase.TableUseCase
+import com.example.fishmarket.domain.usecase.table.TableUseCase
 import com.example.fishmarket.utilis.Utils
 
 class AddTransactionViewModel(

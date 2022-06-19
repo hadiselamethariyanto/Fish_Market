@@ -1,6 +1,13 @@
 package com.example.fishmarket.di
 
-import com.example.fishmarket.domain.usecase.*
+import com.example.fishmarket.domain.usecase.category.CategoryInteractor
+import com.example.fishmarket.domain.usecase.category.CategoryUseCase
+import com.example.fishmarket.domain.usecase.login.LoginInteractor
+import com.example.fishmarket.domain.usecase.login.LoginUseCase
+import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionInteractor
+import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionUseCase
+import com.example.fishmarket.domain.usecase.table.TableInteractor
+import com.example.fishmarket.domain.usecase.table.TableUseCase
 import com.example.fishmarket.ui.history.list_history.HistoryViewModel
 import com.example.fishmarket.ui.home.transaction.HomeViewModel
 import com.example.fishmarket.ui.home.add_transaction.AddTransactionViewModel
@@ -27,6 +34,7 @@ val useCaseModule = module {
     factory<LoginUseCase> { LoginInteractor(get()) }
     factory<TableUseCase> { TableInteractor(get()) }
     factory<CategoryUseCase> { CategoryInteractor(get()) }
+    factory<StatusTransactionUseCase> { StatusTransactionInteractor(get()) }
 }
 
 val viewModelModule = module {

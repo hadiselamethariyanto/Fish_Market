@@ -3,8 +3,7 @@ package com.example.fishmarket.ui.table.edit_table
 import androidx.lifecycle.*
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
-import com.example.fishmarket.domain.repository.ITableRepository
-import com.example.fishmarket.domain.usecase.TableUseCase
+import com.example.fishmarket.domain.usecase.table.TableUseCase
 import com.example.fishmarket.ui.table.add_table.TableFormState
 
 class EditTableViewModel(private val tableUseCase: TableUseCase) : ViewModel() {

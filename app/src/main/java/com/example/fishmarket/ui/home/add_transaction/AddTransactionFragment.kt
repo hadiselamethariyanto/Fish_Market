@@ -13,15 +13,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishmarket.App
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.category.source.local.entity.CategoryEntity
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTransactionBinding
 import com.example.fishmarket.domain.model.Category
 import com.example.fishmarket.utilis.Utils
-import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.review.testing.FakeReviewManager
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 class AddTransactionFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.example.fishmarket.domain.usecase
+package com.example.fishmarket.domain.usecase.login
 
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.model.User

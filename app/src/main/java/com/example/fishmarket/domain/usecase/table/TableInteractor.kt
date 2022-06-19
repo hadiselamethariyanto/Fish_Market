@@ -1,4 +1,4 @@
-package com.example.fishmarket.domain.usecase
+package com.example.fishmarket.domain.usecase.table
 
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.source.remote.Resource

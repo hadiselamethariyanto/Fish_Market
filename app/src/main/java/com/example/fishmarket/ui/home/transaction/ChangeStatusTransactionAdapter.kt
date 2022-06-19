@@ -2,18 +2,17 @@ package com.example.fishmarket.ui.home.transaction
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.status_transaction.source.local.entity.StatusTransactionEntity
 import com.example.fishmarket.databinding.ItemChangeStatusTransactionBinding
+import com.example.fishmarket.domain.model.StatusTransaction
 
 class ChangeStatusTransactionAdapter(private val context: Context) :
     RecyclerView.Adapter<ChangeStatusTransactionAdapter.ViewHolder>() {
-    private val list = ArrayList<StatusTransactionEntity>()
+    private val list = ArrayList<StatusTransaction>()
     var selectedItemPos = -1
     var lastItemSelectedPos = -1
     private lateinit var onItemClickCallback: OnItemClickCallback
@@ -22,7 +21,7 @@ class ChangeStatusTransactionAdapter(private val context: Context) :
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun updateData(new: List<StatusTransactionEntity>) {
+    fun updateData(new: List<StatusTransaction>) {
         list.clear()
         list.addAll(new)
         notifyDataSetChanged()
@@ -67,7 +66,7 @@ class ChangeStatusTransactionAdapter(private val context: Context) :
             binding.tvStatus.setTextColor(ContextCompat.getColor(context, R.color.black))
         }
 
-        fun bindItem(status: StatusTransactionEntity, onItemClickCallback: OnItemClickCallback) {
+        fun bindItem(status: StatusTransaction, onItemClickCallback: OnItemClickCallback) {
             binding.tvStatus.text = status.name
             binding.ivIcon.setImageResource(status.icon)
 

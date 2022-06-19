@@ -1,4 +1,4 @@
-package com.example.fishmarket.domain.usecase
+package com.example.fishmarket.domain.usecase.category
 
 import com.example.fishmarket.data.repository.category.source.local.entity.CategoryEntity
 import com.example.fishmarket.data.source.remote.Resource

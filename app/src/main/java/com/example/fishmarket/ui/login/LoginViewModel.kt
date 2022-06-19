@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import androidx.lifecycle.asLiveData
 import com.example.fishmarket.R
-import com.example.fishmarket.domain.usecase.LoginUseCase
+import com.example.fishmarket.domain.usecase.login.LoginUseCase
 
 
 class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {

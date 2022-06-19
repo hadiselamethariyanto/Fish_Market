@@ -1,15 +1,16 @@
 package com.example.fishmarket.data.repository.status_transaction
 
 import com.example.fishmarket.data.repository.status_transaction.source.local.LocalStatusTransactionDataSource
-import com.example.fishmarket.data.repository.status_transaction.source.local.entity.StatusTransactionEntity
 import com.example.fishmarket.data.repository.status_transaction.source.remote.StatusTransactionRemoteDataSource
 import com.example.fishmarket.data.repository.status_transaction.source.remote.model.StatusTransactionResponse
 import com.example.fishmarket.data.source.remote.NetworkBoundResource
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.data.source.remote.network.ApiResponse
+import com.example.fishmarket.domain.model.StatusTransaction
 import com.example.fishmarket.domain.repository.IStatusTransactionRepository
 import com.example.fishmarket.utilis.DataMapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class StatusTransactionRepository(
     private val localDaDataSource: LocalStatusTransactionDataSource,
@@ -17,13 +18,15 @@ class StatusTransactionRepository(
 ) :
     IStatusTransactionRepository {
 
-    override fun getStatusTransaction(): Flow<Resource<List<StatusTransactionEntity>>> {
+    override fun getStatusTransaction(): Flow<Resource<List<StatusTransaction>>> {
         return object :
-            NetworkBoundResource<List<StatusTransactionEntity>, List<StatusTransactionResponse>>() {
-            override fun loadFromDB(): Flow<List<StatusTransactionEntity>> =
-                localDaDataSource.getStatusTransaction()
+            NetworkBoundResource<List<StatusTransaction>, List<StatusTransactionResponse>>() {
+            override fun loadFromDB(): Flow<List<StatusTransaction>> =
+                localDaDataSource.getStatusTransaction().map {
+                    DataMapper.mapStatusTransactionEntitiesToDomain(it)
+                }
 
-            override fun shouldFetch(data: List<StatusTransactionEntity>?): Boolean =
+            override fun shouldFetch(data: List<StatusTransaction>?): Boolean =
                 data == null || data.isEmpty()
 
             override suspend fun createCall(): Flow<ApiResponse<List<StatusTransactionResponse>>> =

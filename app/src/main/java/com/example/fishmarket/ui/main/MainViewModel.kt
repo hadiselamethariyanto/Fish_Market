@@ -2,11 +2,8 @@ package com.example.fishmarket.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.example.fishmarket.domain.repository.ILoginRepository
-import com.example.fishmarket.domain.repository.IRestaurantRepository
 import com.example.fishmarket.domain.repository.IStatusTransactionRepository
-import com.example.fishmarket.domain.repository.ITableRepository
-import com.example.fishmarket.domain.usecase.LoginUseCase
+import com.example.fishmarket.domain.usecase.login.LoginUseCase
 
 class MainViewModel(
     private val statusRepository: IStatusTransactionRepository,
