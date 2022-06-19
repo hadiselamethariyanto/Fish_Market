@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTableBinding
@@ -68,7 +69,7 @@ class AddTableFragment : Fragment() {
                 binding.btnSave.isEnabled = false
             }
             is Resource.Success -> {
-                findNavController().navigateUp()
+                findNavController().popBackStack(R.id.navigation_table, false)
                 binding.btnSave.isEnabled = true
             }
             is Resource.Error -> {

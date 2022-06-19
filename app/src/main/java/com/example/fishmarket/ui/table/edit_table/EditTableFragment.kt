@@ -13,6 +13,7 @@ import com.example.fishmarket.data.repository.table.source.local.entity.TableEnt
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentEditTableBinding
 import com.example.fishmarket.domain.model.Table
+import com.example.fishmarket.utilis.Utils.afterTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -39,19 +40,31 @@ class EditTableFragment : Fragment() {
 
         getTable(id.toString())
 
-        binding.btnSave.setOnClickListener {
-            val name = binding.etTableName.text.toString()
-            if (name == "") {
-                binding.etTableName.error = resources.getString(R.string.warning_empty_table_name)
-            } else {
-                val table = TableEntity(
-                    id = id ?: "",
-                    name = name,
-                    status = status ?: false,
-                    createdDate = createdDate ?: 0
-                )
-                viewModel.updateTable(table).observe(viewLifecycleOwner, editTableObserver)
+        viewModel.tableFormState.observe(viewLifecycleOwner) {
+            val tableState = it ?: return@observe
+
+            binding.btnSave.isEnabled = tableState.isDataValid
+
+            if (tableState.tableNameError != null) {
+                binding.etTableName.error = getString(R.string.not_valid_table_name)
             }
+        }
+
+        val etTableName = binding.etTableName
+        val btnSave = binding.btnSave
+
+        etTableName.afterTextChanged {
+            viewModel.dataTableChanged(etTableName.text.toString())
+        }
+
+        btnSave.setOnClickListener {
+            val table = TableEntity(
+                id = id ?: "",
+                name = etTableName.text.toString(),
+                status = status ?: false,
+                createdDate = createdDate ?: 0
+            )
+            viewModel.updateTable(table).observe(viewLifecycleOwner, editTableObserver)
         }
     }
 
@@ -61,7 +74,7 @@ class EditTableFragment : Fragment() {
                 binding.btnSave.isEnabled = false
             }
             is Resource.Success -> {
-                findNavController().navigateUp()
+                findNavController().popBackStack(R.id.navigation_table, false)
                 binding.btnSave.isEnabled = false
             }
             is Resource.Error -> {
