@@ -4,14 +4,14 @@ import androidx.lifecycle.*
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
-import com.example.fishmarket.domain.repository.IRestaurantRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
+import com.example.fishmarket.domain.usecase.restaurant.RestaurantUseCase
 import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionUseCase
 
 class HomeViewModel(
     private val transactionRepository: ITransactionRepository,
     private val statusTransactionUseCase: StatusTransactionUseCase,
-    private val restaurantRepository: IRestaurantRepository
+    private val restaurantUseCase: RestaurantUseCase
 ) : ViewModel() {
 
     private var _filter = MutableLiveData(0)
@@ -83,7 +83,7 @@ class HomeViewModel(
         }
     }
 
-    fun getRestaurant() = restaurantRepository.getRestaurant().asLiveData()
+    fun getRestaurant() = restaurantUseCase.getRestaurant().asLiveData()
 
     fun getDetailTransaction(id: String) =
         transactionRepository.getDetailTransaction(id).asLiveData()

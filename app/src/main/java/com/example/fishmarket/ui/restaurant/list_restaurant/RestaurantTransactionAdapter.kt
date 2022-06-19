@@ -3,16 +3,16 @@ package com.example.fishmarket.ui.restaurant.list_restaurant
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionFireEntity
 import com.example.fishmarket.databinding.ItemRestaurantTransactionBinding
+import com.example.fishmarket.domain.model.TransactionFire
 
-class RestaurantTransactionAdapter(private val list: List<TransactionFireEntity>) :
+class RestaurantTransactionAdapter(private val list: List<TransactionFire>) :
     RecyclerView.Adapter<RestaurantTransactionAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ItemRestaurantTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindItem(transaction: TransactionFireEntity) {
+        fun bindItem(transaction: TransactionFire) {
             binding.tvTable.text = transaction.name
         }
     }

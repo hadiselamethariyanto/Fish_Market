@@ -7,6 +7,7 @@ import com.example.fishmarket.data.repository.login.source.local.entity.UserEnti
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.data.repository.menu.source.remote.model.MenuResponse
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
+import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantWithTransactionEntity
 import com.example.fishmarket.data.repository.restaurant.source.remote.model.RestaurantResponse
 import com.example.fishmarket.data.repository.status_transaction.source.local.entity.StatusTransactionEntity
 import com.example.fishmarket.data.repository.status_transaction.source.remote.model.StatusTransactionResponse
@@ -14,15 +15,47 @@ import com.example.fishmarket.data.repository.table.source.local.entity.TableEnt
 import com.example.fishmarket.data.repository.table.source.remote.model.TableResponse
 import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
+import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionFireEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
-import com.example.fishmarket.domain.model.Category
-import com.example.fishmarket.domain.model.StatusTransaction
-import com.example.fishmarket.domain.model.Table
-import com.example.fishmarket.domain.model.User
+import com.example.fishmarket.domain.model.*
 import com.google.firebase.auth.FirebaseUser
 
 object DataMapper {
+
+    fun mapRestaurantWithTransactionEntityToDomain(list: List<RestaurantWithTransactionEntity>): List<RestaurantWithTransaction> {
+        return list.map {
+            val restaurant = mapRestaurantEntityToDomain(it.restaurant)
+            val transaction = mapTransactionFireEntityToDomain(it.transaction)
+            RestaurantWithTransaction(restaurant = restaurant, transaction = transaction)
+        }
+    }
+
+    fun mapTransactionFireEntityToDomain(list: List<TransactionFireEntity>): List<TransactionFire> =
+        list.map {
+            TransactionFire(
+                id = it.id,
+                name = it.name,
+                id_restaurant = it.id_restaurant,
+                created_date = it.created_date,
+                status = it.status
+            )
+        }
+
+    fun mapRestaurantEntityToDomain(restaurantEntity: RestaurantEntity): Restaurant = Restaurant(
+        id = restaurantEntity.id,
+        name = restaurantEntity.name,
+        createdDate = restaurantEntity.createdDate
+    )
+
+    fun mapRestaurantEntitiesToDomain(list: List<RestaurantEntity>): List<Restaurant> =
+        list.map { restaurantEntity ->
+            Restaurant(
+                id = restaurantEntity.id,
+                name = restaurantEntity.name,
+                createdDate = restaurantEntity.createdDate
+            )
+        }
 
     fun mapStatusTransactionEntitiesToDomain(list: List<StatusTransactionEntity>): List<StatusTransaction> =
         list.map {

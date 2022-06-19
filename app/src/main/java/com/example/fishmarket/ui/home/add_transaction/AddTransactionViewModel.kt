@@ -1,15 +1,15 @@
 package com.example.fishmarket.ui.home.add_transaction
 
 import androidx.lifecycle.*
-import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
+import com.example.fishmarket.domain.model.Restaurant
 import com.example.fishmarket.domain.model.Table
-import com.example.fishmarket.domain.repository.ICategoryRepository
 import com.example.fishmarket.domain.repository.IMenuRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
+import com.example.fishmarket.domain.usecase.category.CategoryUseCase
 import com.example.fishmarket.domain.usecase.table.TableUseCase
 import com.example.fishmarket.utilis.Utils
 
@@ -17,26 +17,26 @@ class AddTransactionViewModel(
     private val repository: ITransactionRepository,
     private val tableUseCase: TableUseCase,
     private val menuRepository: IMenuRepository,
-    private val categoryRepository: ICategoryRepository
+    private val categoryUseCase: CategoryUseCase
 ) : ViewModel() {
 
     private var _table = MutableLiveData<Table>()
     val table: LiveData<Table> get() = _table
 
-    private var _restaurant = MutableLiveData<RestaurantEntity>()
-    val restaurant: LiveData<RestaurantEntity> get() = _restaurant
+    private var _restaurant = MutableLiveData<Restaurant>()
+    val restaurant: LiveData<Restaurant> get() = _restaurant
 
     fun setTable(table: Table) {
         _table.value = table
     }
 
-    fun setRestaurant(restaurant: RestaurantEntity) {
+    fun setRestaurant(restaurant: Restaurant) {
         _restaurant.value = restaurant
     }
 
     fun resetTransaction() {
         _table.value = Table("", "", false, 0)
-        _restaurant.value = RestaurantEntity("", "", 0)
+        _restaurant.value = Restaurant("", "", 0)
     }
 
     fun addTransaction(
@@ -69,5 +69,5 @@ class AddTransactionViewModel(
 
     fun getAvailableTable() = tableUseCase.getAvailableTable().asLiveData()
 
-    fun getCategories() = categoryRepository.getCategories().asLiveData()
+    fun getCategories() = categoryUseCase.getCategories().asLiveData()
 }

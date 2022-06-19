@@ -4,6 +4,8 @@ import com.example.fishmarket.domain.usecase.category.CategoryInteractor
 import com.example.fishmarket.domain.usecase.category.CategoryUseCase
 import com.example.fishmarket.domain.usecase.login.LoginInteractor
 import com.example.fishmarket.domain.usecase.login.LoginUseCase
+import com.example.fishmarket.domain.usecase.restaurant.RestaurantInteractor
+import com.example.fishmarket.domain.usecase.restaurant.RestaurantUseCase
 import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionInteractor
 import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionUseCase
 import com.example.fishmarket.domain.usecase.table.TableInteractor
@@ -35,6 +37,7 @@ val useCaseModule = module {
     factory<TableUseCase> { TableInteractor(get()) }
     factory<CategoryUseCase> { CategoryInteractor(get()) }
     factory<StatusTransactionUseCase> { StatusTransactionInteractor(get()) }
+    factory<RestaurantUseCase> { RestaurantInteractor(get()) }
 }
 
 val viewModelModule = module {

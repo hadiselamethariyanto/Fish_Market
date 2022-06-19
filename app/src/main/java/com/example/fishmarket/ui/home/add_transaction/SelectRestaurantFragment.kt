@@ -44,7 +44,7 @@ class SelectRestaurantFragment : DialogFragment() {
 
                 }
                 is Resource.Success -> {
-                    if (res.data!=null){
+                    if (res.data != null) {
                         selectRestaurantAdapter.updateData(res.data)
                     }
                 }

@@ -1,4 +1,4 @@
-package com.example.fishmarket.domain.repository
+package com.example.fishmarket.domain.usecase.restaurant
 
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.source.remote.Resource
@@ -6,8 +6,7 @@ import com.example.fishmarket.domain.model.Restaurant
 import com.example.fishmarket.domain.model.RestaurantWithTransaction
 import kotlinx.coroutines.flow.Flow
 
-interface IRestaurantRepository {
-
+interface RestaurantUseCase {
     fun addRestaurant(restaurant: RestaurantEntity): Flow<Resource<Restaurant>>
 
     fun deleteRestaurant(restaurant: RestaurantEntity): Flow<Resource<List<RestaurantWithTransaction>>>

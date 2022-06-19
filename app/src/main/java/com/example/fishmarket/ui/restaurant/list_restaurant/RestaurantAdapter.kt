@@ -5,21 +5,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
-import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantWithTransactionEntity
 import com.example.fishmarket.databinding.ItemRestaurantBinding
+import com.example.fishmarket.domain.model.Restaurant
+import com.example.fishmarket.domain.model.RestaurantWithTransaction
 
 class RestaurantAdapter(private val context: Context) :
     RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
 
-    private val list = ArrayList<RestaurantWithTransactionEntity>()
+    private val list = ArrayList<RestaurantWithTransaction>()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun updateData(new: List<RestaurantWithTransactionEntity>) {
+    fun updateData(new: List<RestaurantWithTransaction>) {
         list.clear()
         list.addAll(new)
         notifyItemRangeChanged(0, list.size)
@@ -28,7 +28,7 @@ class RestaurantAdapter(private val context: Context) :
     inner class ViewHolder(private val binding: ItemRestaurantBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindItem(
-            restaurant: RestaurantWithTransactionEntity,
+            restaurant: RestaurantWithTransaction,
             onItemClickCallback: OnItemClickCallback
         ) {
             binding.tvRestaurantName.text = restaurant.restaurant.name
@@ -63,7 +63,7 @@ class RestaurantAdapter(private val context: Context) :
     override fun getItemCount(): Int = list.size
 
     interface OnItemClickCallback {
-        fun onItemLongClicked(restaurant: RestaurantEntity)
-        fun onItemClicked(restaurant: RestaurantEntity)
+        fun onItemLongClicked(restaurant: Restaurant)
+        fun onItemClicked(restaurant: Restaurant)
     }
 }

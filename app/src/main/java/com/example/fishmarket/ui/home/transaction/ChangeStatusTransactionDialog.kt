@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -156,7 +155,7 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
 
             }
             is Resource.Success -> {
-                findNavController().navigateUp()
+                dismiss()
             }
             is Resource.Error -> {
 

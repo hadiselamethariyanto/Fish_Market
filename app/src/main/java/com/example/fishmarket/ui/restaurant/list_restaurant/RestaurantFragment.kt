@@ -15,6 +15,7 @@ import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentRestaurantBinding
+import com.example.fishmarket.domain.model.Restaurant
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RestaurantFragment : Fragment() {
@@ -38,11 +39,11 @@ class RestaurantFragment : Fragment() {
 
         restaurantAdapter = RestaurantAdapter(requireActivity())
         restaurantAdapter.setOnItemClickCallback(object : RestaurantAdapter.OnItemClickCallback {
-            override fun onItemLongClicked(restaurant: RestaurantEntity) {
+            override fun onItemLongClicked(restaurant: Restaurant) {
                 setAlertDialog(restaurant)
             }
 
-            override fun onItemClicked(restaurant: RestaurantEntity) {
+            override fun onItemClicked(restaurant: Restaurant) {
                 val bundle =
                     bundleOf("id" to restaurant.id, "createdDate" to restaurant.createdDate)
                 findNavController().navigate(
@@ -92,17 +93,22 @@ class RestaurantFragment : Fragment() {
         }
     }
 
-    private fun setAlertDialog(restaurantEntity: RestaurantEntity) {
+    private fun setAlertDialog(restaurant: Restaurant) {
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(requireActivity().resources.getString(R.string.delete_restaurant_title))
         builder.setMessage(
             requireActivity().resources.getString(
                 R.string.delete_warning_message,
-                restaurantEntity.name
+                restaurant.name
             )
         )
 
         builder.setPositiveButton(requireActivity().resources.getString(R.string.yes)) { _, _ ->
+            val restaurantEntity = RestaurantEntity(
+                id = restaurant.id,
+                name = restaurant.name,
+                createdDate = restaurant.createdDate
+            )
             viewModel.deleteRestaurant(restaurantEntity).observe(viewLifecycleOwner) { res ->
                 when (res) {
                     is Resource.Loading -> {

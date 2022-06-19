@@ -5,17 +5,17 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.databinding.ItemSelectRestaurantBinding
+import com.example.fishmarket.domain.model.Restaurant
 
 class SelectRestaurantAdapter : RecyclerView.Adapter<SelectRestaurantAdapter.ViewHolder>() {
 
-    private val list = ArrayList<RestaurantEntity>()
+    private val list = ArrayList<Restaurant>()
     var selectedItemPos = -1
     var lastItemSelectedPos = -1
 
 
-    fun updateData(new: List<RestaurantEntity>) {
+    fun updateData(new: List<Restaurant>) {
         list.clear()
         list.addAll(new)
         notifyDataSetChanged()
@@ -33,7 +33,7 @@ class SelectRestaurantAdapter : RecyclerView.Adapter<SelectRestaurantAdapter.Vie
 
     fun getSelectedPosition(): Int = selectedItemPos
 
-    fun getSelectedRestaurant(): RestaurantEntity = list[selectedItemPos]
+    fun getSelectedRestaurant(): Restaurant = list[selectedItemPos]
 
     inner class ViewHolder(private val binding: ItemSelectRestaurantBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -63,7 +63,7 @@ class SelectRestaurantAdapter : RecyclerView.Adapter<SelectRestaurantAdapter.Vie
         }
 
 
-        fun bindItem(restaurant: RestaurantEntity) {
+        fun bindItem(restaurant: Restaurant) {
             binding.tvRestaurant.text = restaurant.name
             itemView.setOnClickListener {
                 selectedItemPos = adapterPosition
