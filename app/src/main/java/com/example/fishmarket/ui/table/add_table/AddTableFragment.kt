@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTableBinding
 import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.utilis.Utils
+import com.example.fishmarket.utilis.Utils.afterTextChanged
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddTableFragment : Fragment() {
@@ -32,20 +32,34 @@ class AddTableFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.tableFormState.observe(viewLifecycleOwner, Observer {
+            val tableState = it ?: return@Observer
 
-        binding.btnSave.setOnClickListener {
-            val name = binding.etTableName.text.toString()
-            val id = Utils.getRandomString()
-            val createdDate = System.currentTimeMillis()
+            binding.btnSave.isEnabled = tableState.isDataValid
 
-            if (name == "") {
-                binding.etTableName.error = resources.getString(R.string.empty_data)
-            } else {
+            if (tableState.tableNameError != null) {
+                binding.etTableName.error = getString(tableState.tableNameError)
+            }
+        })
+
+        binding.etTableName.apply {
+            afterTextChanged {
+                viewModel.dataTableChanged(binding.etTableName.text.toString())
+            }
+
+
+            binding.btnSave.setOnClickListener {
+                val name = binding.etTableName.text.toString()
+                val id = Utils.getRandomString()
+                val createdDate = System.currentTimeMillis()
+
                 val table =
                     TableEntity(id = id, name = name, status = false, createdDate = createdDate)
                 viewModel.addTable(table).observe(viewLifecycleOwner, addTableObserver)
             }
         }
+
+
     }
 
     private val addTableObserver = Observer<Resource<Table>> { res ->
