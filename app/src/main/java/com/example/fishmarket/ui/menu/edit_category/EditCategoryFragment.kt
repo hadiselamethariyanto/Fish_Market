@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.category.source.local.entity.CategoryEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentEditCategoryBinding
+import com.example.fishmarket.domain.model.Category
+import com.example.fishmarket.utilis.Utils
+import com.example.fishmarket.utilis.Utils.afterTextChanged
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,43 +36,48 @@ class EditCategoryFragment : BottomSheetDialogFragment() {
         val name = arguments?.getString("name")
         val createdDate = arguments?.getLong("created_date")
 
-        binding.etCategoryName.setText(name)
+        val etCategoryName = binding.etCategoryName
+        val btnSave = binding.btnSave
 
-        binding.btnSave.setOnClickListener {
+        etCategoryName.setText(name)
+        etCategoryName.afterTextChanged {
+            viewModel.dataCategoryChanged(etCategoryName.text.toString())
+        }
 
-            val mName = binding.etCategoryName.text.toString()
-            if (mName == "") {
-                binding.etCategoryName.error =
-                    resources.getString(R.string.warning_category_name_empty)
-            } else {
-                val category = CategoryEntity(
-                    id = id.toString(),
-                    name = mName,
-                    created_date = createdDate ?: 0
-                )
+        viewModel.categoryFormState.observe(viewLifecycleOwner) {
+            val categoryState = it ?: return@observe
 
-                viewModel.editCategory(category).observe(viewLifecycleOwner) { res ->
-                    when (res) {
-                        is Resource.Loading -> {
-                            binding.btnSave.isEnabled = false
-                        }
-                        is Resource.Success -> {
-                            binding.btnSave.isEnabled = true
-                            dismiss()
-                        }
-                        is Resource.Error -> {
-                            binding.btnSave.isEnabled = true
-                            Toast.makeText(
-                                requireActivity(),
-                                res.message.toString(),
-                                Toast.LENGTH_LONG
-                            )
-                                .show()
-                        }
-                    }
-                }
+            btnSave.isEnabled = categoryState.isDataValid
+
+            if (categoryState.categoryNameError != null) {
+                etCategoryName.error = getString(R.string.warning_category_name_empty)
             }
+        }
 
+        btnSave.setOnClickListener {
+            val category = CategoryEntity(
+                id = id.toString(),
+                name = etCategoryName.text.toString(),
+                created_date = createdDate ?: 0
+            )
+            viewModel.editCategory(category).observe(viewLifecycleOwner, editCategoryObserver)
+        }
+
+    }
+
+    private val editCategoryObserver = Observer<Resource<Category>> { res ->
+        when (res) {
+            is Resource.Loading -> {
+                binding.btnSave.isEnabled = false
+            }
+            is Resource.Success -> {
+                binding.btnSave.isEnabled = true
+                dismiss()
+            }
+            is Resource.Error -> {
+                binding.btnSave.isEnabled = true
+                Utils.showMessage(requireActivity(), res.message.toString())
+            }
         }
     }
 
