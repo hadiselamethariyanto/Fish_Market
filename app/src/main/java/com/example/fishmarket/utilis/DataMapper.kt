@@ -23,6 +23,29 @@ import com.google.firebase.auth.FirebaseUser
 
 object DataMapper {
 
+    fun mapMenuEntitiesToDomain(list: List<MenuEntity>): List<Menu> = list.map {
+        Menu(
+            id = it.id,
+            name = it.name,
+            price = it.price,
+            unit = it.unit,
+            image = it.image,
+            id_category = it.id_category,
+            created_date = it.created_date
+        )
+    }
+
+    fun mapMenuEntityToDomain(menuEntity: MenuEntity): Menu =
+        Menu(
+            id = menuEntity.id,
+            name = menuEntity.name,
+            price = menuEntity.price,
+            unit = menuEntity.unit,
+            image = menuEntity.image,
+            id_category = menuEntity.id_category,
+            created_date = menuEntity.created_date
+        )
+
     fun mapRestaurantWithTransactionEntityToDomain(list: List<RestaurantWithTransactionEntity>): List<RestaurantWithTransaction> {
         return list.map {
             val restaurant = mapRestaurantEntityToDomain(it.restaurant)
@@ -31,7 +54,7 @@ object DataMapper {
         }
     }
 
-    fun mapTransactionFireEntityToDomain(list: List<TransactionFireEntity>): List<TransactionFire> =
+    private fun mapTransactionFireEntityToDomain(list: List<TransactionFireEntity>): List<TransactionFire> =
         list.map {
             TransactionFire(
                 id = it.id,

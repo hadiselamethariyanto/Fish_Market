@@ -19,6 +19,7 @@ import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddMenuBinding
+import com.example.fishmarket.domain.model.Menu
 import com.example.fishmarket.utilis.FileUtil
 import com.example.fishmarket.utilis.Utils
 import com.google.firebase.ktx.Firebase
@@ -157,7 +158,7 @@ class AddMenuFragment : Fragment() {
     }
 
 
-    private val insertMenuObserver = Observer<Resource<MenuEntity>> { res ->
+    private val insertMenuObserver = Observer<Resource<Menu>> { res ->
         when (res) {
             is Resource.Loading -> {
                 binding.btnSave.isEnabled = false

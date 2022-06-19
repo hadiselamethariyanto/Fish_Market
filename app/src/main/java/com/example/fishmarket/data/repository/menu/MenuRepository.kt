@@ -4,24 +4,26 @@ import com.example.fishmarket.data.repository.menu.source.local.MenuLocalDataSou
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.data.repository.menu.source.remote.MenuRemoteDataSource
 import com.example.fishmarket.data.repository.menu.source.remote.model.MenuResponse
-import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
-import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantWithTransactionEntity
 import com.example.fishmarket.data.source.remote.NetworkBoundInternetOnly
 import com.example.fishmarket.data.source.remote.NetworkBoundResource
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.data.source.remote.network.ApiResponse
+import com.example.fishmarket.domain.model.Menu
 import com.example.fishmarket.domain.repository.IMenuRepository
 import com.example.fishmarket.utilis.DataMapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class MenuRepository(
     private val localDataSource: MenuLocalDataSource,
     private val remoteDataSource: MenuRemoteDataSource
 ) : IMenuRepository {
 
-    override fun insertMenu(menu: MenuEntity): Flow<Resource<MenuEntity>> {
-        return object : NetworkBoundInternetOnly<MenuEntity, MenuEntity>() {
-            override fun loadFromDB(): Flow<MenuEntity> = localDataSource.getMenu(menu.id)
+    override fun insertMenu(menu: MenuEntity): Flow<Resource<Menu>> {
+        return object : NetworkBoundInternetOnly<Menu, MenuEntity>() {
+            override fun loadFromDB(): Flow<Menu> = localDataSource.getMenu(menu.id).map {
+                DataMapper.mapMenuEntityToDomain(it)
+            }
 
             override suspend fun createCall(): Flow<ApiResponse<MenuEntity>> =
                 remoteDataSource.addMenu(menu)
@@ -33,9 +35,11 @@ class MenuRepository(
         }.asFlow()
     }
 
-    override fun editMenu(menu: MenuEntity): Flow<Resource<MenuEntity>> {
-        return object : NetworkBoundInternetOnly<MenuEntity, MenuEntity>() {
-            override fun loadFromDB(): Flow<MenuEntity> = localDataSource.getMenu(menu.id)
+    override fun editMenu(menu: MenuEntity): Flow<Resource<Menu>> {
+        return object : NetworkBoundInternetOnly<Menu, MenuEntity>() {
+            override fun loadFromDB(): Flow<Menu> = localDataSource.getMenu(menu.id).map {
+                DataMapper.mapMenuEntityToDomain(it)
+            }
 
             override suspend fun createCall(): Flow<ApiResponse<MenuEntity>> =
                 remoteDataSource.editMenu(menu)
@@ -47,11 +51,13 @@ class MenuRepository(
         }.asFlow()
     }
 
-    override fun deleteMenu(menu: MenuEntity): Flow<Resource<List<MenuEntity>>> {
+    override fun deleteMenu(menu: MenuEntity): Flow<Resource<List<Menu>>> {
         return object :
-            NetworkBoundInternetOnly<List<MenuEntity>, MenuEntity>() {
-            override fun loadFromDB(): Flow<List<MenuEntity>> =
-                localDataSource.getMenus()
+            NetworkBoundInternetOnly<List<Menu>, MenuEntity>() {
+            override fun loadFromDB(): Flow<List<Menu>> =
+                localDataSource.getMenus().map {
+                    DataMapper.mapMenuEntitiesToDomain(it)
+                }
 
             override suspend fun createCall(): Flow<ApiResponse<MenuEntity>> =
                 remoteDataSource.deleteMenu(menu)
@@ -62,11 +68,13 @@ class MenuRepository(
         }.asFlow()
     }
 
-    override fun getMenus(): Flow<Resource<List<MenuEntity>>> {
-        return object : NetworkBoundResource<List<MenuEntity>, List<MenuResponse>>() {
-            override fun loadFromDB(): Flow<List<MenuEntity>> = localDataSource.getMenus()
+    override fun getMenus(): Flow<Resource<List<Menu>>> {
+        return object : NetworkBoundResource<List<Menu>, List<MenuResponse>>() {
+            override fun loadFromDB(): Flow<List<Menu>> = localDataSource.getMenus().map {
+                DataMapper.mapMenuEntitiesToDomain(it)
+            }
 
-            override fun shouldFetch(data: List<MenuEntity>?): Boolean =
+            override fun shouldFetch(data: List<Menu>?): Boolean =
                 data == null || data.isEmpty()
 
             override suspend fun createCall(): Flow<ApiResponse<List<MenuResponse>>> =
@@ -79,12 +87,14 @@ class MenuRepository(
         }.asFlow()
     }
 
-    override fun getMenusByCategory(id: String): Flow<Resource<List<MenuEntity>>> {
-        return object : NetworkBoundResource<List<MenuEntity>, List<MenuResponse>>() {
-            override fun loadFromDB(): Flow<List<MenuEntity>> =
-                localDataSource.getMenusByCategory(id)
+    override fun getMenusByCategory(id: String): Flow<Resource<List<Menu>>> {
+        return object : NetworkBoundResource<List<Menu>, List<MenuResponse>>() {
+            override fun loadFromDB(): Flow<List<Menu>> =
+                localDataSource.getMenusByCategory(id).map {
+                    DataMapper.mapMenuEntitiesToDomain(it)
+                }
 
-            override fun shouldFetch(data: List<MenuEntity>?): Boolean =
+            override fun shouldFetch(data: List<Menu>?): Boolean =
                 data == null || data.isEmpty()
 
             override suspend fun createCall(): Flow<ApiResponse<List<MenuResponse>>> =

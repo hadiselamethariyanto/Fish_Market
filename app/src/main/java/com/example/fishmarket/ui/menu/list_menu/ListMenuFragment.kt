@@ -16,6 +16,7 @@ import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentListMenuBinding
+import com.example.fishmarket.domain.model.Menu
 import com.example.fishmarket.ui.menu.MenuAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,11 +41,11 @@ class ListMenuFragment : Fragment() {
 
         menuAdapter = MenuAdapter()
         menuAdapter.setOnItemClickCallback(object : MenuAdapter.OnItemClickCallback {
-            override fun onItemLongClicked(menu: MenuEntity) {
+            override fun onItemLongClicked(menu: Menu) {
                 setAlertDialog(menu)
             }
 
-            override fun onItemClicked(menu: MenuEntity) {
+            override fun onItemClicked(menu: Menu) {
                 val bundle = bundleOf(
                     "id" to menu.id,
                     "name" to menu.name,
@@ -78,7 +79,7 @@ class ListMenuFragment : Fragment() {
         viewModel.getMenus().observe(viewLifecycleOwner, menuObserver)
     }
 
-    private val menuObserver = Observer<Resource<List<MenuEntity>>> { res ->
+    private val menuObserver = Observer<Resource<List<Menu>>> { res ->
         when (res) {
             is Resource.Loading -> {
                 binding.refresh.isRefreshing = true
@@ -104,7 +105,7 @@ class ListMenuFragment : Fragment() {
 
     }
 
-    private fun setAlertDialog(menu: MenuEntity) {
+    private fun setAlertDialog(menu: Menu) {
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle(requireActivity().resources.getString(R.string.delete_menu))
         builder.setMessage(
@@ -115,7 +116,16 @@ class ListMenuFragment : Fragment() {
         )
 
         builder.setPositiveButton(requireActivity().resources.getString(R.string.yes)) { _, _ ->
-            viewModel.deleteMenu(menu).observe(viewLifecycleOwner) { res ->
+            val menuEntity = MenuEntity(
+                id = menu.id,
+                name = menu.name,
+                price = menu.price,
+                unit = menu.unit,
+                image = menu.image,
+                id_category = menu.id_category,
+                created_date = menu.created_date
+            )
+            viewModel.deleteMenu(menuEntity).observe(viewLifecycleOwner) { res ->
                 when (res) {
                     is Resource.Loading -> {
                         binding.refresh.isRefreshing = true

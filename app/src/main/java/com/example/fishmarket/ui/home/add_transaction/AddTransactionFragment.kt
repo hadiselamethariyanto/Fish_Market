@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishmarket.App
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTransactionBinding
 import com.example.fishmarket.domain.model.Category
@@ -50,7 +49,7 @@ class AddTransactionFragment : Fragment() {
         addTransactionAdapter = AddTransactionAdapter(ct, this)
         addTransactionAdapter.setOnItemClickCallback(object :
             AddTransactionAdapter.OnItemClickCallback {
-            override fun onItemEdit(menu: MenuEntity) {
+            override fun onItemEdit(menu: com.example.fishmarket.domain.model.Menu) {
                 for (i in 0 until ct.getCart().cartSize) {
                     val product = ct.getCart().getProduct(i)
                     if (product.id == menu.id) {
@@ -120,32 +119,33 @@ class AddTransactionFragment : Fragment() {
         }
     }
 
-    private val menusObserver = Observer<Resource<List<MenuEntity>>> { res ->
-        when (res) {
-            is Resource.Loading -> {
-                binding.refresh.isRefreshing = true
-            }
-            is Resource.Success -> {
-                binding.refresh.isRefreshing = false
-                if (res.data != null) {
-                    if (res.data.isEmpty()) {
-                        binding.rvMenu.visibility = View.GONE
-                        binding.llNoData.visibility = View.VISIBLE
-                    } else {
-                        binding.rvMenu.visibility = View.VISIBLE
-                        binding.llNoData.visibility = View.GONE
+    private val menusObserver =
+        Observer<Resource<List<com.example.fishmarket.domain.model.Menu>>> { res ->
+            when (res) {
+                is Resource.Loading -> {
+                    binding.refresh.isRefreshing = true
+                }
+                is Resource.Success -> {
+                    binding.refresh.isRefreshing = false
+                    if (res.data != null) {
+                        if (res.data.isEmpty()) {
+                            binding.rvMenu.visibility = View.GONE
+                            binding.llNoData.visibility = View.VISIBLE
+                        } else {
+                            binding.rvMenu.visibility = View.VISIBLE
+                            binding.llNoData.visibility = View.GONE
+                        }
+                        addTransactionAdapter.updateData(res.data)
                     }
-                    addTransactionAdapter.updateData(res.data)
+                }
+                is Resource.Error -> {
+                    binding.refresh.isRefreshing = false
+                    Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
+                        .show()
                 }
             }
-            is Resource.Error -> {
-                binding.refresh.isRefreshing = false
-                Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
-                    .show()
-            }
-        }
 
-    }
+        }
 
     private fun getCategories() {
         val categoryTransactionAdapter = CategoryTransactionAdapter(requireActivity())

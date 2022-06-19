@@ -5,12 +5,14 @@ import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntit
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.repository.ICategoryRepository
 import com.example.fishmarket.domain.repository.IMenuRepository
+import com.example.fishmarket.domain.usecase.category.CategoryUseCase
+import com.example.fishmarket.domain.usecase.menu.MenuUseCase
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AddMenuViewModel(
-    private val menuRepository: IMenuRepository,
-    private val categoryRepository: ICategoryRepository
+    private val menuUseCase: MenuUseCase,
+    private val categoryUseCase: CategoryUseCase
 ) : ViewModel() {
 
     private val _categoryId = MutableLiveData<String>()
@@ -19,12 +21,12 @@ class AddMenuViewModel(
     private val _categoryName = MutableLiveData<String>()
     val categoryName: LiveData<String> get() = _categoryName
 
-    fun insertMenu(menu: MenuEntity) = menuRepository.insertMenu(menu).asLiveData()
+    fun insertMenu(menu: MenuEntity) = menuUseCase.insertMenu(menu).asLiveData()
 
-    fun editMenu(menuEntity: MenuEntity) = menuRepository.editMenu(menuEntity).asLiveData()
+    fun editMenu(menuEntity: MenuEntity) = menuUseCase.editMenu(menuEntity).asLiveData()
 
     fun getCategory(id: String) = viewModelScope.launch {
-        categoryRepository.getCategory(id).collect { res ->
+        categoryUseCase.getCategory(id).collect { res ->
             when (res) {
                 is Resource.Loading -> {
 
@@ -51,5 +53,5 @@ class AddMenuViewModel(
         _categoryName.value = value
     }
 
-    fun getCategories() = categoryRepository.getCategories().asLiveData()
+    fun getCategories() = categoryUseCase.getCategories().asLiveData()
 }

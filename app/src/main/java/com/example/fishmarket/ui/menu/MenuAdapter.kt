@@ -3,13 +3,13 @@ package com.example.fishmarket.ui.menu
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.databinding.ItemMenuBinding
+import com.example.fishmarket.domain.model.Menu
 import com.example.fishmarket.utilis.Utils
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
-    private val list = ArrayList<MenuEntity>()
+    private val list = ArrayList<Menu>()
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -17,7 +17,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun updateData(new: List<MenuEntity>) {
+    fun updateData(new: List<Menu>) {
         list.clear()
         list.addAll(new)
         notifyDataSetChanged()
@@ -25,19 +25,19 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: ItemMenuBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindItem(
-            menuEntity: MenuEntity,
+            menu: Menu,
             onItemClickCallback: OnItemClickCallback
         ) {
-            binding.tvName.text = menuEntity.name
-            binding.tvPrice.text = Utils.formatNumberToRupiah(menuEntity.price, itemView.context)
+            binding.tvName.text = menu.name
+            binding.tvPrice.text = Utils.formatNumberToRupiah(menu.price, itemView.context)
 
             itemView.setOnLongClickListener {
-                onItemClickCallback.onItemLongClicked(menuEntity)
+                onItemClickCallback.onItemLongClicked(menu)
                 true
             }
 
             itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(menuEntity)
+                onItemClickCallback.onItemClicked(menu)
             }
         }
     }
@@ -54,7 +54,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     override fun getItemCount(): Int = list.size
 
     interface OnItemClickCallback {
-        fun onItemLongClicked(menu: MenuEntity)
-        fun onItemClicked(menu: MenuEntity)
+        fun onItemLongClicked(menu: Menu)
+        fun onItemClicked(menu: Menu)
     }
 }

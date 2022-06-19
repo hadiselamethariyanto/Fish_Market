@@ -20,6 +20,7 @@ import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentEditMenuBinding
+import com.example.fishmarket.domain.model.Menu
 import com.example.fishmarket.ui.menu.add_menu.AddMenuViewModel
 import com.example.fishmarket.utilis.FileUtil
 import com.google.firebase.ktx.Firebase
@@ -157,7 +158,7 @@ class EditMenuFragment : Fragment() {
         }
     }
 
-    private val editMenuObserver = Observer<Resource<MenuEntity>> { res ->
+    private val editMenuObserver = Observer<Resource<Menu>> { res ->
         when (res) {
             is Resource.Loading -> {
                 binding.btnSave.isEnabled = false

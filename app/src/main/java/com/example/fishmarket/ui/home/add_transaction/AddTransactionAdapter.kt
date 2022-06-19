@@ -9,16 +9,15 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.fishmarket.App
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.databinding.ItemAddTransactionBinding
-import com.example.fishmarket.ui.menu.MenuAdapter
+import com.example.fishmarket.domain.model.Menu
 import com.example.fishmarket.utilis.Product
 import com.example.fishmarket.utilis.Utils
 import com.example.fishmarket.utilis.Utils.capitalizeWords
 
 class AddTransactionAdapter(private val ct: App, private val fragment: AddTransactionFragment) :
     RecyclerView.Adapter<AddTransactionAdapter.ViewHolder>() {
-    private val list = ArrayList<MenuEntity>()
+    private val list = ArrayList<Menu>()
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -26,7 +25,7 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun updateData(new: List<MenuEntity>) {
+    fun updateData(new: List<Menu>) {
         list.clear()
         list.addAll(new)
         notifyDataSetChanged()
@@ -34,7 +33,7 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
 
     inner class ViewHolder(private val binding: ItemAddTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindItem(menu: MenuEntity, ct: App, position: Int) {
+        fun bindItem(menu: Menu, ct: App, position: Int) {
 
             if (ct.getCart().checkData(menu.id)) {
                 for (x in 0 until ct.getCart().cartSize) {
@@ -149,6 +148,6 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
     override fun getItemCount(): Int = list.size
 
     interface OnItemClickCallback {
-        fun onItemEdit(menu: MenuEntity)
+        fun onItemEdit(menu: Menu)
     }
 }
