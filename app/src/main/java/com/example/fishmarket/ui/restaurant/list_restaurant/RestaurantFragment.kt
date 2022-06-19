@@ -16,6 +16,7 @@ import com.example.fishmarket.data.repository.restaurant.source.local.entity.Res
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentRestaurantBinding
 import com.example.fishmarket.domain.model.Restaurant
+import com.example.fishmarket.utilis.Utils
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RestaurantFragment : Fragment() {
@@ -55,6 +56,8 @@ class RestaurantFragment : Fragment() {
         })
 
         binding.rvRestaurant.adapter = restaurantAdapter
+        binding.rvRestaurant.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.rvRestaurant.addItemDecoration(
             DividerItemDecoration(
                 requireActivity(),
@@ -122,8 +125,7 @@ class RestaurantFragment : Fragment() {
                     }
                     is Resource.Error -> {
                         binding.refresh.isRefreshing = false
-                        Toast.makeText(requireActivity(), res.message.toString(), Toast.LENGTH_LONG)
-                            .show()
+                        Utils.showMessage(requireActivity(), res.message.toString())
                     }
                 }
 
@@ -131,7 +133,6 @@ class RestaurantFragment : Fragment() {
         }
 
         builder.setNegativeButton(requireActivity().resources.getString(R.string.no)) { _, _ ->
-
         }
 
         builder.show()

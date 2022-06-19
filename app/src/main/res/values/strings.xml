@@ -92,5 +92,6 @@
     <string name="logout">Logout</string>
     <string name="placeholder_email" translatable="false">user@gmail.com</string>
     <string name="not_valid_table_name">Table name not valid</string>
+    <string name="warning_restaurant_name_empty">Please fill restaurant name</string>
 
 </resources>
