@@ -3,7 +3,8 @@ package com.example.fishmarket.ui.history.list_history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.fishmarket.domain.repository.ITransactionRepository
+import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
 
-class HistoryViewModel(private val transactionRepository: ITransactionRepository) : ViewModel() {
-    fun getTransactionsWithDetail() = transactionRepository.getTransactionWithDetail().asLiveData()
+class HistoryViewModel(private val transactionUseCase: TransactionUseCase) : ViewModel() {
+    fun getTransactionsWithDetail() = transactionUseCase.getTransactionWithDetail().asLiveData()
 }

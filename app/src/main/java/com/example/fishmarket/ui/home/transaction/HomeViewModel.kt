@@ -5,12 +5,12 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.Tr
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.model.Transaction
-import com.example.fishmarket.domain.repository.ITransactionRepository
 import com.example.fishmarket.domain.usecase.restaurant.RestaurantUseCase
 import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionUseCase
+import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
 
 class HomeViewModel(
-    private val transactionRepository: ITransactionRepository,
+    private val transactionUseCase: TransactionUseCase,
     private val statusTransactionUseCase: StatusTransactionUseCase,
     private val restaurantUseCase: RestaurantUseCase
 ) : ViewModel() {
@@ -19,7 +19,7 @@ class HomeViewModel(
     val filter: LiveData<Int> get() = _filter
 
     val transactions = Transformations.switchMap(filter) { filter ->
-        transactionRepository.getTransactions(filter).asLiveData()
+        transactionUseCase.getTransactions(filter).asLiveData()
     }
 
     fun getStatusTransaction() = statusTransactionUseCase.getStatusTransaction().asLiveData()
@@ -72,7 +72,7 @@ class HomeViewModel(
             }
         }
 
-        return transactionRepository.changeStatusTransaction(dataTransactionUpdate).asLiveData()
+        return transactionUseCase.changeStatusTransaction(dataTransactionUpdate).asLiveData()
     }
 
 
@@ -87,5 +87,5 @@ class HomeViewModel(
     fun getRestaurant() = restaurantUseCase.getRestaurant().asLiveData()
 
     fun getDetailTransaction(id: String) =
-        transactionRepository.getDetailTransaction(id).asLiveData()
+        transactionUseCase.getDetailTransaction(id).asLiveData()
 }

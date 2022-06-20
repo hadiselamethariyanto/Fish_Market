@@ -7,16 +7,16 @@ import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.model.Restaurant
 import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.domain.model.Transaction
-import com.example.fishmarket.domain.repository.IMenuRepository
-import com.example.fishmarket.domain.repository.ITransactionRepository
 import com.example.fishmarket.domain.usecase.category.CategoryUseCase
+import com.example.fishmarket.domain.usecase.menu.MenuUseCase
 import com.example.fishmarket.domain.usecase.table.TableUseCase
+import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
 import com.example.fishmarket.utilis.Utils
 
 class AddTransactionViewModel(
-    private val repository: ITransactionRepository,
+    private val transactionUseCase: TransactionUseCase,
     private val tableUseCase: TableUseCase,
-    private val menuRepository: IMenuRepository,
+    private val menuUseCase: MenuUseCase,
     private val categoryUseCase: CategoryUseCase
 ) : ViewModel() {
 
@@ -62,10 +62,10 @@ class AddTransactionViewModel(
             detail = detail
         )
 
-        return repository.addTransaction(transaction).asLiveData()
+        return transactionUseCase.addTransaction(transaction).asLiveData()
     }
 
-    fun getMenus(id: String) = menuRepository.getMenusByCategory(id).asLiveData()
+    fun getMenus(id: String) = menuUseCase.getMenusByCategory(id).asLiveData()
 
     fun getAvailableTable() = tableUseCase.getAvailableTable().asLiveData()
 

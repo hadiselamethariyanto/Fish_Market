@@ -12,12 +12,13 @@ import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactio
 import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionUseCase
 import com.example.fishmarket.domain.usecase.table.TableInteractor
 import com.example.fishmarket.domain.usecase.table.TableUseCase
+import com.example.fishmarket.domain.usecase.transaction.TransactionInteractor
+import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
 import com.example.fishmarket.ui.history.list_history.HistoryViewModel
 import com.example.fishmarket.ui.home.transaction.HomeViewModel
 import com.example.fishmarket.ui.home.add_transaction.AddTransactionViewModel
 import com.example.fishmarket.ui.login.LoginViewModel
 import com.example.fishmarket.ui.main.MainViewModel
-import com.example.fishmarket.ui.menu.MenuViewModel
 import com.example.fishmarket.ui.menu.add_category.AddCategoryViewModel
 import com.example.fishmarket.ui.menu.add_menu.AddMenuViewModel
 import com.example.fishmarket.ui.menu.edit_category.EditCategoryViewModel
@@ -41,6 +42,7 @@ val useCaseModule = module {
     factory<StatusTransactionUseCase> { StatusTransactionInteractor(get()) }
     factory<RestaurantUseCase> { RestaurantInteractor(get()) }
     factory<MenuUseCase> { MenuInteractor(get()) }
+    factory<TransactionUseCase> { TransactionInteractor(get()) }
 }
 
 val viewModelModule = module {
@@ -53,7 +55,6 @@ val viewModelModule = module {
     viewModel { AddTransactionViewModel(get(), get(), get(), get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get(), get()) }
-    viewModel { MenuViewModel(get()) }
     viewModel { AddMenuViewModel(get(), get()) }
     viewModel { ListMenuViewModel(get()) }
     viewModel { AddCategoryViewModel(get()) }
