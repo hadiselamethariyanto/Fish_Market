@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.DialogChangeStatusTransactionBinding
+import com.example.fishmarket.domain.model.Transaction
 import com.example.fishmarket.ui.history.detail_history.DetailHistoryAdapter
 import com.example.fishmarket.ui.home.add_transaction.SelectRestaurantAdapter
 import com.example.fishmarket.utilis.Utils
@@ -149,7 +149,7 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private val changeStatusObserver = Observer<Resource<TransactionEntity>> { res ->
+    private val changeStatusObserver = Observer<Resource<Transaction>> { res ->
         when (res) {
             is Resource.Loading -> {
 

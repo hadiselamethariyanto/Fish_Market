@@ -12,10 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentHistoryBinding
 import com.example.fishmarket.domain.model.History
+import com.example.fishmarket.domain.model.TransactionWithDetail
 import com.example.fishmarket.utilis.Utils
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,7 +40,7 @@ class HistoryFragment : Fragment() {
 
         historyAdapter = HistoryAdapter()
         historyAdapter.setOnItemClickCallback(object : HistoryAdapter.OnItemClickCallback {
-            override fun onItemClicked(transaction: TransactionWithDetailEntity) {
+            override fun onItemClicked(transaction: TransactionWithDetail) {
                 val jsonString = Gson().toJson(transaction)
                 val bundle = bundleOf("data" to jsonString)
                 findNavController().navigate(
@@ -62,7 +62,7 @@ class HistoryFragment : Fragment() {
 
     }
 
-    private val transactionObserver = Observer<Resource<List<TransactionWithDetailEntity>>> { res ->
+    private val transactionObserver = Observer<Resource<List<TransactionWithDetail>>> { res ->
         when (res) {
             is Resource.Loading -> {
                 binding.refresh.isRefreshing = true
@@ -75,7 +75,7 @@ class HistoryFragment : Fragment() {
 
                     val listHistory = mutableListOf<History>()
                     for (x in res.data) {
-                        date = Utils.formatDate(x.transactionEntity.created_date)
+                        date = Utils.formatDate(x.transaction.created_date)
                         if (date != previousDate) {
                             val newHistory = History(1, x)
                             listHistory.add(newHistory)

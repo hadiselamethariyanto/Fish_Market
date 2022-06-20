@@ -10,9 +10,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentHomeBinding
+import com.example.fishmarket.domain.model.TransactionHome
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
 
         val transactionAdapter = TransactionAdapter(requireActivity())
         transactionAdapter.setOnItemClickCallback(object : TransactionAdapter.OnItemClickCallback {
-            override fun onItemClicked(transaction: TransactionHomeEntity) {
+            override fun onItemClicked(transaction: TransactionHome) {
                 if (transaction.status != 4) {
                     val json = Gson().toJson(transaction)
 

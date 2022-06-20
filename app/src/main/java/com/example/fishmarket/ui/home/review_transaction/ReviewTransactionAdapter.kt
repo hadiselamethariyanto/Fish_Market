@@ -3,7 +3,6 @@ package com.example.fishmarket.ui.home.review_transaction
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fishmarket.data.repository.menu.source.local.entity.MenuEntity
 import com.example.fishmarket.databinding.ItemHistoryDetailBinding
 import com.example.fishmarket.utilis.Product
 import com.example.fishmarket.utilis.Utils

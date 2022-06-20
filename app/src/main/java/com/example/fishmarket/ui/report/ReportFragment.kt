@@ -9,9 +9,9 @@ import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentReportBinding
+import com.example.fishmarket.domain.model.Transaction
 import com.example.fishmarket.utilis.Utils
 import com.google.android.material.datepicker.MaterialDatePicker
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -62,7 +62,7 @@ class ReportFragment : Fragment() {
         }
     }
 
-    private val reportObserver = Observer<Resource<List<TransactionEntity>>> { res ->
+    private val reportObserver = Observer<Resource<List<Transaction>>> { res ->
         when (res) {
             is Resource.Loading -> {
                 binding.content.content.visibility = View.GONE

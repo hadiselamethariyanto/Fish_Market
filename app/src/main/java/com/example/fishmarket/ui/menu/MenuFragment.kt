@@ -10,7 +10,6 @@ import com.example.fishmarket.databinding.FragmentMenuBinding
 import com.example.fishmarket.ui.menu.list_category.ListCategoryFragment
 import com.example.fishmarket.ui.menu.list_menu.ListMenuFragment
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MenuFragment : Fragment() {
 

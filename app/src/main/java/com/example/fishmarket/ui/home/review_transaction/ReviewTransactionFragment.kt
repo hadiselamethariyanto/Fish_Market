@@ -10,10 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.App
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentReviewTransactionBinding
+import com.example.fishmarket.domain.model.Transaction
 import com.example.fishmarket.ui.home.add_transaction.AddTransactionViewModel
 import com.example.fishmarket.utilis.Product
 import com.example.fishmarket.utilis.Utils
@@ -103,7 +103,7 @@ class ReviewTransactionFragment : Fragment() {
     }
 
 
-    private val addTransactionObserver = Observer<Resource<TransactionEntity>> { res ->
+    private val addTransactionObserver = Observer<Resource<Transaction>> { res ->
         when (res) {
             is Resource.Loading -> {
                 binding.btnSave.isEnabled = false

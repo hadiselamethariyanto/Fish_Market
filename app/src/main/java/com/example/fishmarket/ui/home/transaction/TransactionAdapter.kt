@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.databinding.ItemTransactionsBinding
+import com.example.fishmarket.domain.model.TransactionHome
 import com.example.fishmarket.utilis.CountdownRunnable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,7 +20,7 @@ class TransactionAdapter(private val context: Context) :
     RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     private val handler = Handler(Looper.getMainLooper())
-    private val list = ArrayList<TransactionHomeEntity>()
+    private val list = ArrayList<TransactionHome>()
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -28,7 +28,7 @@ class TransactionAdapter(private val context: Context) :
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun updateData(new: List<TransactionHomeEntity>) {
+    fun updateData(new: List<TransactionHome>) {
         list.clear()
         list.addAll(new)
         notifyDataSetChanged()
@@ -45,7 +45,7 @@ class TransactionAdapter(private val context: Context) :
                 context
             )
 
-        fun bindItem(transaction: TransactionHomeEntity, onItemClickCallback: OnItemClickCallback) {
+        fun bindItem(transaction: TransactionHome, onItemClickCallback: OnItemClickCallback) {
             handler.removeCallbacks(countdownRunnable)
             val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
@@ -194,6 +194,6 @@ class TransactionAdapter(private val context: Context) :
     override fun getItemCount() = list.size
 
     interface OnItemClickCallback {
-        fun onItemClicked(transaction: TransactionHomeEntity)
+        fun onItemClicked(transaction: TransactionHome)
     }
 }

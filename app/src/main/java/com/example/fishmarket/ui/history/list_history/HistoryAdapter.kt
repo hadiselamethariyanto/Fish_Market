@@ -7,10 +7,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
 import com.example.fishmarket.databinding.ItemHistoryBinding
 import com.example.fishmarket.databinding.ItemHistoryDateBinding
 import com.example.fishmarket.domain.model.History
+import com.example.fishmarket.domain.model.TransactionWithDetail
 import com.example.fishmarket.utilis.Utils
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
@@ -32,9 +32,9 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     inner class ViewHolderItem(private val binding: ItemHistoryBinding) :
         ViewHolder(binding.root) {
-        fun bindItem(transaction: TransactionWithDetailEntity) {
+        fun bindItem(transaction: TransactionWithDetail) {
             val context = itemView.context
-            when (transaction.transactionEntity.status) {
+            when (transaction.transaction.status) {
                 1 -> {
                     val colorHex = "#" + Integer.toHexString(
                         ContextCompat.getColor(
@@ -99,10 +99,10 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
             }
 
             binding.tvTotalBiaya.text = Utils.formatNumberToRupiah(
-                transaction.transactionEntity.total_fee,
+                transaction.transaction.total_fee,
                 itemView.context
             )
-            binding.tvJam.text = Utils.formatTime(transaction.transactionEntity.created_date)
+            binding.tvJam.text = Utils.formatTime(transaction.transaction.created_date)
 
             itemView.setOnClickListener {
                 onItemClickCallback.onItemClicked(transaction)
@@ -112,8 +112,8 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     inner class ViewHolderDate(private val binding: ItemHistoryDateBinding) :
         ViewHolder(binding.root) {
-        fun bindItem(transaction: TransactionWithDetailEntity) {
-            binding.date.text = Utils.formatDate(transaction.transactionEntity.created_date)
+        fun bindItem(transaction: TransactionWithDetail) {
+            binding.date.text = Utils.formatDate(transaction.transaction.created_date)
         }
     }
 
@@ -145,6 +145,6 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     override fun getItemViewType(position: Int): Int = list[position].viewType
 
     interface OnItemClickCallback {
-        fun onItemClicked(transaction: TransactionWithDetailEntity)
+        fun onItemClicked(transaction: TransactionWithDetail)
     }
 }

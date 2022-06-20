@@ -1,19 +1,21 @@
 package com.example.fishmarket.data.repository.transaction
 
 import com.example.fishmarket.data.repository.transaction.source.local.TransactionLocalDataSource
-import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionHistoryEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.TransactionRemoteDataSource
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.NetworkBoundInternetOnly
 import com.example.fishmarket.data.source.remote.NetworkBoundResource
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.data.source.remote.network.ApiResponse
+import com.example.fishmarket.domain.model.DetailTransactionHistory
+import com.example.fishmarket.domain.model.Transaction
+import com.example.fishmarket.domain.model.TransactionHome
+import com.example.fishmarket.domain.model.TransactionWithDetail
 import com.example.fishmarket.domain.repository.ITransactionRepository
 import com.example.fishmarket.utilis.DataMapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class TransactionRepository(
     private val localDataSource: TransactionLocalDataSource,
@@ -21,10 +23,12 @@ class TransactionRepository(
 ) :
     ITransactionRepository {
 
-    override fun addTransaction(transaction: TransactionResponse): Flow<Resource<TransactionEntity>> {
-        return object : NetworkBoundInternetOnly<TransactionEntity, TransactionResponse>() {
-            override fun loadFromDB(): Flow<TransactionEntity> =
-                localDataSource.getTransaction(transaction.id.toString())
+    override fun addTransaction(transaction: TransactionResponse): Flow<Resource<Transaction>> {
+        return object : NetworkBoundInternetOnly<Transaction, TransactionResponse>() {
+            override fun loadFromDB(): Flow<Transaction> =
+                localDataSource.getTransaction(transaction.id.toString()).map {
+                    DataMapper.mapTransactionEntityToDomain(it)
+                }
 
             override suspend fun createCall(): Flow<ApiResponse<TransactionResponse>> =
                 remoteDataSource.addTransaction(transaction)
@@ -36,10 +40,12 @@ class TransactionRepository(
         }.asFlow()
     }
 
-    override fun changeStatusTransaction(transactionEntity: TransactionEntity): Flow<Resource<TransactionEntity>> {
-        return object : NetworkBoundInternetOnly<TransactionEntity, TransactionEntity>() {
-            override fun loadFromDB(): Flow<TransactionEntity> =
-                localDataSource.getTransaction(transactionEntity.id)
+    override fun changeStatusTransaction(transactionEntity: TransactionEntity): Flow<Resource<Transaction>> {
+        return object : NetworkBoundInternetOnly<Transaction, TransactionEntity>() {
+            override fun loadFromDB(): Flow<Transaction> =
+                localDataSource.getTransaction(transactionEntity.id).map {
+                    DataMapper.mapTransactionEntityToDomain(it)
+                }
 
             override suspend fun createCall(): Flow<ApiResponse<TransactionEntity>> =
                 remoteDataSource.updateTransaction(transactionEntity)
@@ -59,13 +65,15 @@ class TransactionRepository(
     override suspend fun setStatusTable(status: Boolean, id: String) =
         localDataSource.setStatusTable(status, id)
 
-    override fun getTransactions(filter: Int): Flow<Resource<List<TransactionHomeEntity>>> {
+    override fun getTransactions(filter: Int): Flow<Resource<List<TransactionHome>>> {
         return object :
-            NetworkBoundResource<List<TransactionHomeEntity>, List<TransactionResponse>>() {
-            override fun loadFromDB(): Flow<List<TransactionHomeEntity>> =
-                localDataSource.getTransactions(filter)
+            NetworkBoundResource<List<TransactionHome>, List<TransactionResponse>>() {
+            override fun loadFromDB(): Flow<List<TransactionHome>> =
+                localDataSource.getTransactions(filter).map {
+                    DataMapper.mapTransactionHomeEntitiesToDomain(it)
+                }
 
-            override fun shouldFetch(data: List<TransactionHomeEntity>?): Boolean =
+            override fun shouldFetch(data: List<TransactionHome>?): Boolean =
                 true
 
             override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> =
@@ -88,13 +96,15 @@ class TransactionRepository(
         }.asFlow()
     }
 
-    override fun getTransactionWithDetail(): Flow<Resource<List<TransactionWithDetailEntity>>> {
+    override fun getTransactionWithDetail(): Flow<Resource<List<TransactionWithDetail>>> {
         return object :
-            NetworkBoundResource<List<TransactionWithDetailEntity>, List<TransactionResponse>>() {
-            override fun loadFromDB(): Flow<List<TransactionWithDetailEntity>> =
-                localDataSource.getTransactionsWithDetail()
+            NetworkBoundResource<List<TransactionWithDetail>, List<TransactionResponse>>() {
+            override fun loadFromDB(): Flow<List<TransactionWithDetail>> =
+                localDataSource.getTransactionsWithDetail().map {
+                    DataMapper.mapTransactionWithDetailEntityToDomain(it)
+                }
 
-            override fun shouldFetch(data: List<TransactionWithDetailEntity>?): Boolean =
+            override fun shouldFetch(data: List<TransactionWithDetail>?): Boolean =
                 data == null || data.size < 50
 
             override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> =
@@ -120,11 +130,13 @@ class TransactionRepository(
     override fun getRangeTransaction(
         first: Long,
         second: Long
-    ): Flow<Resource<List<TransactionEntity>>> {
+    ): Flow<Resource<List<Transaction>>> {
         return object :
-            NetworkBoundInternetOnly<List<TransactionEntity>, List<TransactionResponse>>() {
-            override fun loadFromDB(): Flow<List<TransactionEntity>> =
-                localDataSource.getRangeTransactions(first, second)
+            NetworkBoundInternetOnly<List<Transaction>, List<TransactionResponse>>() {
+            override fun loadFromDB(): Flow<List<Transaction>> =
+                localDataSource.getRangeTransactions(first, second).map {
+                    DataMapper.mapTransactionEntitiesToDomain(it)
+                }
 
             override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> =
                 remoteDataSource.getRangeTransaction(first, second)
@@ -146,8 +158,10 @@ class TransactionRepository(
         }.asFlow()
     }
 
-    override fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistoryEntity>> =
-        localDataSource.getDetailTransaction(id)
+    override fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistory>> =
+        localDataSource.getDetailTransaction(id).map {
+            DataMapper.mapDetailTransactionHistoryEntitiesToDomain(it)
+        }
 
 
 }

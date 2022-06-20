@@ -13,15 +13,82 @@ import com.example.fishmarket.data.repository.status_transaction.source.local.en
 import com.example.fishmarket.data.repository.status_transaction.source.remote.model.StatusTransactionResponse
 import com.example.fishmarket.data.repository.table.source.local.entity.TableEntity
 import com.example.fishmarket.data.repository.table.source.remote.model.TableResponse
-import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionFireEntity
+import com.example.fishmarket.data.repository.transaction.source.local.entity.*
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.domain.model.*
 import com.google.firebase.auth.FirebaseUser
 
 object DataMapper {
+
+    fun mapTransactionWithDetailEntityToDomain(list: List<TransactionWithDetailEntity>): List<TransactionWithDetail> =
+        list.map {
+            val transaction = mapTransactionEntityToDomain(it.transactionEntity)
+            val detailTransactionHistory =
+                mapDetailTransactionHistoryEntitiesToDomain(it.detailTransactionEntity)
+
+            TransactionWithDetail(
+                transaction = transaction,
+                detailTransactionHistory = detailTransactionHistory
+            )
+        }
+
+    fun mapDetailTransactionHistoryEntitiesToDomain(list: List<DetailTransactionHistoryEntity>): List<DetailTransactionHistory> =
+        list.map {
+            DetailTransactionHistory(
+                id = it.id,
+                id_transaction = it.id_transaction,
+                name = it.name,
+                quantity = it.quantity,
+                price = it.price,
+                unit = it.unit
+            )
+        }
+
+    fun mapTransactionHomeEntitiesToDomain(list: List<TransactionHomeEntity>): List<TransactionHome> =
+        list.map {
+            TransactionHome(
+                id = it.id,
+                table = it.table,
+                id_table = it.id_table,
+                id_restaurant = it.id_restaurant,
+                restaurant = it.restaurant,
+                created_date = it.created_date,
+                dibakar_date = it.dibakar_date,
+                disajikan_date = it.disajikan_date,
+                finished_date = it.finished_date,
+                status = it.status,
+                total_fee = it.total_fee
+            )
+        }
+
+    fun mapTransactionEntitiesToDomain(list: List<TransactionEntity>): List<Transaction> =
+        list.map { transactionEntity ->
+            Transaction(
+                id = transactionEntity.id,
+                id_table = transactionEntity.id_table,
+                id_restaurant = transactionEntity.id_restaurant,
+                created_date = transactionEntity.created_date,
+                dibakar_date = transactionEntity.dibakar_date,
+                disajikan_date = transactionEntity.disajikan_date,
+                finished_date = transactionEntity.finished_date,
+                status = transactionEntity.status,
+                total_fee = transactionEntity.total_fee
+            )
+        }
+
+    fun mapTransactionEntityToDomain(transactionEntity: TransactionEntity): Transaction =
+        Transaction(
+            id = transactionEntity.id,
+            id_table = transactionEntity.id_table,
+            id_restaurant = transactionEntity.id_restaurant,
+            created_date = transactionEntity.created_date,
+            dibakar_date = transactionEntity.dibakar_date,
+            disajikan_date = transactionEntity.disajikan_date,
+            finished_date = transactionEntity.finished_date,
+            status = transactionEntity.status,
+            total_fee = transactionEntity.total_fee
+        )
 
     fun mapMenuEntitiesToDomain(list: List<MenuEntity>): List<Menu> = list.map {
         Menu(

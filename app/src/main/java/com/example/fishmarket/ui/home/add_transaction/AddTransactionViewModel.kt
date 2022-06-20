@@ -1,12 +1,12 @@
 package com.example.fishmarket.ui.home.add_transaction
 
 import androidx.lifecycle.*
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.model.Restaurant
 import com.example.fishmarket.domain.model.Table
+import com.example.fishmarket.domain.model.Transaction
 import com.example.fishmarket.domain.repository.IMenuRepository
 import com.example.fishmarket.domain.repository.ITransactionRepository
 import com.example.fishmarket.domain.usecase.category.CategoryUseCase
@@ -42,7 +42,7 @@ class AddTransactionViewModel(
     fun addTransaction(
         totalFee: Int,
         detail: List<DetailTransactionResponse>
-    ): LiveData<Resource<TransactionEntity>> {
+    ): LiveData<Resource<Transaction>> {
         val id = Utils.getRandomString()
         val createdDate = System.currentTimeMillis()
         val status = 1

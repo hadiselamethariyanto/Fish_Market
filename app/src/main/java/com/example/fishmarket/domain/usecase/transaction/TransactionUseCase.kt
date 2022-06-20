@@ -1,6 +1,7 @@
-package com.example.fishmarket.domain.repository
+package com.example.fishmarket.domain.usecase.transaction
 
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
+import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.model.DetailTransactionHistory
@@ -9,7 +10,7 @@ import com.example.fishmarket.domain.model.TransactionHome
 import com.example.fishmarket.domain.model.TransactionWithDetail
 import kotlinx.coroutines.flow.Flow
 
-interface ITransactionRepository {
+interface TransactionUseCase {
 
     fun addTransaction(transaction: TransactionResponse): Flow<Resource<Transaction>>
 

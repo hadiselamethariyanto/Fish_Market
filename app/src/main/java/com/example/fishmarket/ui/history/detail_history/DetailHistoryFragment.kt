@@ -7,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionHistoryEntity
-import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionWithDetailEntity
 import com.example.fishmarket.databinding.FragmentDetailHistoryBinding
+import com.example.fishmarket.domain.model.DetailTransactionHistory
+import com.example.fishmarket.domain.model.TransactionWithDetail
 import com.example.fishmarket.utilis.Utils
 import com.google.gson.Gson
 
@@ -31,18 +30,18 @@ class DetailHistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val bundle = arguments?.getString("data")
-        val transaction = Gson().fromJson(bundle, TransactionWithDetailEntity::class.java)
+        val transaction = Gson().fromJson(bundle, TransactionWithDetail::class.java)
 
-        binding.id.text = transaction.transactionEntity.id
-        binding.time.text = Utils.formatTime(transaction.transactionEntity.created_date)
+        binding.id.text = transaction.transaction.id
+        binding.time.text = Utils.formatTime(transaction.transaction.created_date)
         binding.totalFee.text =
-            Utils.formatNumberToRupiah(transaction.transactionEntity.total_fee, requireActivity())
+            Utils.formatNumberToRupiah(transaction.transaction.total_fee, requireActivity())
 
-        setupAdapter(transaction.detailTransactionEntity)
+        setupAdapter(transaction.detailTransactionHistory)
 
     }
 
-    private fun setupAdapter(list: List<DetailTransactionHistoryEntity>) {
+    private fun setupAdapter(list: List<DetailTransactionHistory>) {
         val detailHistoryAdapter = DetailHistoryAdapter(list)
         binding.rvDetail.adapter = detailHistoryAdapter
         binding.rvDetail.addItemDecoration(
