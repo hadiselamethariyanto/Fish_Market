@@ -13,6 +13,7 @@ import com.example.fishmarket.R
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentHomeBinding
 import com.example.fishmarket.domain.model.TransactionHome
+import com.example.fishmarket.utilis.Utils.navigateSafe
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -44,7 +45,7 @@ class HomeFragment : Fragment() {
                         "transaction" to json
                     )
 
-                    findNavController().navigate(
+                    findNavController().navigateSafe(
                         R.id.action_navigation_home_to_navigation_dialog_change_status_transaction,
                         bundle
                     )
