@@ -34,7 +34,6 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
     inner class ViewHolder(private val binding: ItemAddTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindItem(menu: Menu, ct: App, position: Int) {
-
             if (ct.getCart().checkData(menu.id)) {
                 for (x in 0 until ct.getCart().cartSize) {
                     val product = ct.getCart().getProduct(x)
@@ -43,8 +42,12 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
                         binding.llPlusMinusData.visibility = View.VISIBLE
 
                         if (menu.unit == "Decimal") {
+                            binding.tvPlus.visibility = View.GONE
+                            binding.tvMinus.visibility = View.GONE
                             binding.tvQuantity.text = product.quantity.toString()
                         } else {
+                            binding.tvPlus.visibility = View.VISIBLE
+                            binding.tvMinus.visibility = View.VISIBLE
                             binding.tvQuantity.text = product.quantity.toInt().toString()
                         }
                     }

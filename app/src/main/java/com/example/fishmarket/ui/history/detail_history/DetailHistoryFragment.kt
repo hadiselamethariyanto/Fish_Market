@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.fishmarket.R
 import com.example.fishmarket.databinding.FragmentDetailHistoryBinding
 import com.example.fishmarket.domain.model.DetailTransactionHistory
 import com.example.fishmarket.domain.model.TransactionWithDetail
 import com.example.fishmarket.utilis.Utils
 import com.google.gson.Gson
+import org.alkaaf.btprint.BluetoothPrint
 
 class DetailHistoryFragment : Fragment() {
 
@@ -39,6 +41,9 @@ class DetailHistoryFragment : Fragment() {
 
         setupAdapter(transaction.detailTransactionHistory)
 
+        binding.btnPrint.setOnClickListener {
+            print(transaction)
+        }
     }
 
     private fun setupAdapter(list: List<DetailTransactionHistory>) {
@@ -59,6 +64,51 @@ class DetailHistoryFragment : Fragment() {
             binding.emptyData.llNoData.visibility = View.VISIBLE
         }
 
+    }
+
+    private fun print(transaction: TransactionWithDetail) {
+        val builder = BluetoothPrint.Builder(BluetoothPrint.Size.WIDTH58)
+        builder.addLine()
+        builder.setAlignMid()
+        builder.addTextln(getString(R.string.app_name))
+        builder.addTextln(getString(R.string.address))
+        builder.addLine()
+        builder.setAlignLeft()
+        builder.addFrontEnd("No Transaksi: ", transaction.transaction.id)
+        builder.addFrontEnd("Hari: ", Utils.formatDate(transaction.transaction.created_date))
+        builder.addLine()
+
+        val detailTransaction = transaction.detailTransactionHistory
+        for (product in detailTransaction) {
+            val name = product.name
+            val quantity = product.quantity
+            val price = product.price
+
+            builder.setAlignLeft()
+            builder.addFrontEnd(
+                "$name $quantity x $price",
+                ":${quantity * price}"
+            )
+        }
+
+        builder.addLine()
+        builder.addFrontEnd(
+            "Total Biaya",
+            ":${Utils.formatNumberToRupiah(transaction.transaction.total_fee, requireActivity())}"
+        )
+        builder.addLine()
+        builder.setAlignMid()
+        builder.addTextln("Terimakasih atas kunjungan anda")
+        builder.addTextln("---------Copy----------")
+        builder.addTextln("")
+        builder.addTextln("")
+        builder.addTextln("")
+        builder.addTextln("")
+
+        BluetoothPrint.with(requireActivity())
+            .autoCloseAfter(1)
+            .setData(builder.byte)
+            .print()
     }
 
     override fun onDestroy() {

@@ -95,5 +95,7 @@
     <string name="warning_restaurant_name_empty">Please fill restaurant name</string>
     <string name="select_customer">Select Customer</string>
     <string name="customer">Customer</string>
+    <string name="print" translatable="false">print</string>
+    <string name="address">Kampungmandar, Banyuwangi Sub-District, Banyuwangi Regency, East Java 68419</string>
 
 </resources>

@@ -20,6 +20,7 @@ import com.example.fishmarket.ui.home.add_transaction.SelectRestaurantAdapter
 import com.example.fishmarket.utilis.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
+import org.alkaaf.btprint.BluetoothPrint
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
@@ -155,6 +156,9 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
 
             }
             is Resource.Success -> {
+                if ((res.data?.status ?: 0) == 4) {
+                    res.data?.let { printTransaction(it) }
+                }
                 dismiss()
             }
             is Resource.Error -> {
@@ -164,7 +168,8 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
     }
 
     private fun getDetailTransaction(id: String) {
-        homeViewModel.getDetailTransaction(id).observe(viewLifecycleOwner) { list ->
+        homeViewModel.getDetailTransaction(id)
+        homeViewModel.detailTransactionHistory.observe(viewLifecycleOwner) { list ->
             if (list.isNotEmpty()) {
                 val detailAdapter = DetailHistoryAdapter(list)
                 binding.rvDetailTransaction.adapter = detailAdapter
@@ -179,6 +184,52 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
                 binding.tvTotalFee.text = Utils.formatDoubleToRupiah(totalFee, requireActivity())
             }
         }
+    }
+
+    private fun printTransaction(transaction: Transaction) {
+        val detailTransaction = homeViewModel.detailTransactionHistory.value
+
+        val builder = BluetoothPrint.Builder(BluetoothPrint.Size.WIDTH58)
+        builder.addLine()
+        builder.setAlignMid()
+        builder.addTextln(getString(R.string.app_name))
+        builder.addTextln(getString(R.string.address))
+        builder.addLine()
+        builder.setAlignLeft()
+        builder.addFrontEnd("No Transaksi: ", transaction.id)
+        builder.addFrontEnd("Hari: ", Utils.formatDate(transaction.created_date))
+        builder.addLine()
+
+        for (x in 0 until detailTransaction?.size!!) {
+            val product = detailTransaction[x]
+            val name = product.name
+            val quantity = product.quantity
+            val price = product.price
+
+            builder.setAlignLeft()
+            builder.addFrontEnd(
+                "$name $quantity x $price",
+                ":${quantity * price}"
+            )
+        }
+
+        builder.addLine()
+        builder.addFrontEnd(
+            "Total Biaya",
+            ":${Utils.formatNumberToRupiah(transaction.total_fee, requireActivity())}"
+        )
+        builder.addLine()
+        builder.setAlignMid()
+        builder.addTextln("Terimakasih atas kunjungan anda")
+        builder.addTextln("")
+        builder.addTextln("")
+        builder.addTextln("")
+        builder.addTextln("")
+
+        BluetoothPrint.with(requireActivity())
+            .autoCloseAfter(1)
+            .setData(builder.byte)
+            .print()
     }
 
     override fun onDestroy() {

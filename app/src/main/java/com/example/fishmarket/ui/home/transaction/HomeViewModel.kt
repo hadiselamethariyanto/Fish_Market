@@ -4,10 +4,14 @@ import androidx.lifecycle.*
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
+import com.example.fishmarket.domain.model.DetailTransactionHistory
 import com.example.fishmarket.domain.model.Transaction
 import com.example.fishmarket.domain.usecase.restaurant.RestaurantUseCase
 import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionUseCase
 import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val transactionUseCase: TransactionUseCase,
@@ -17,6 +21,9 @@ class HomeViewModel(
 
     private var _filter = MutableLiveData(0)
     val filter: LiveData<Int> get() = _filter
+
+    private var _detailTransactionHistory = MutableLiveData<List<DetailTransactionHistory>>()
+    val detailTransactionHistory: LiveData<List<DetailTransactionHistory>> get() = _detailTransactionHistory
 
     val transactions = Transformations.switchMap(filter) { filter ->
         transactionUseCase.getTransactions(filter).asLiveData()
@@ -86,6 +93,9 @@ class HomeViewModel(
 
     fun getRestaurant() = restaurantUseCase.getRestaurant().asLiveData()
 
-    fun getDetailTransaction(id: String) =
-        transactionUseCase.getDetailTransaction(id).asLiveData()
+    fun getDetailTransaction(id: String) = viewModelScope.launch {
+        transactionUseCase.getDetailTransaction(id).collect {
+            _detailTransactionHistory.value = it
+        }
+    }
 }
