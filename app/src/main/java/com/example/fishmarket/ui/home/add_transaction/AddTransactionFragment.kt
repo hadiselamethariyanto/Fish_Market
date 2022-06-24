@@ -1,9 +1,7 @@
 package com.example.fishmarket.ui.home.add_transaction
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -17,7 +15,6 @@ import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentAddTransactionBinding
 import com.example.fishmarket.domain.model.Category
 import com.example.fishmarket.utilis.Utils
-import com.google.android.play.core.review.ReviewManagerFactory
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 class AddTransactionFragment : Fragment() {
@@ -27,21 +24,18 @@ class AddTransactionFragment : Fragment() {
     private val viewModel: AddTransactionViewModel by koinNavGraphViewModel(R.id.home)
     private val ct = App.getApp()
     private lateinit var addTransactionAdapter: AddTransactionAdapter
-    private lateinit var tvBadge: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddTransactionBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setTable()
         setDismissObserver()
         getCategories()
 
@@ -57,7 +51,8 @@ class AddTransactionFragment : Fragment() {
                             "position" to i,
                             "name" to product.name,
                             "price" to product.price,
-                            "quantity" to product.quantity
+                            "quantity" to product.quantity,
+                            "unit" to product.unit
                         )
 
                         findNavController().navigate(
@@ -73,28 +68,12 @@ class AddTransactionFragment : Fragment() {
         binding.rvMenu.layoutManager = gridLayoutManager
 
         binding.llSaveTransaction.setOnClickListener {
-            val tableId = viewModel.table.value?.id ?: ""
-            if (tableId == "") {
-                Toast.makeText(requireActivity(), "mohon pilih meja", Toast.LENGTH_LONG).show()
-            } else {
-                findNavController().navigate(R.id.action_navigation_add_transaction_to_reviewTransactionFragment)
-            }
+            findNavController().navigate(R.id.action_navigation_add_transaction_to_reviewTransactionFragment)
         }
 
         viewModel.getMenus("0").observe(viewLifecycleOwner, menusObserver)
     }
 
-    private fun setTable() {
-        viewModel.table.observe(viewLifecycleOwner) {
-            val tableId = it.id
-            if (tableId == "") {
-                tvBadge.visibility = View.GONE
-            } else {
-                tvBadge.visibility = View.VISIBLE
-                tvBadge.text = it.name
-            }
-        }
-    }
 
     private fun setDismissObserver() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
@@ -183,51 +162,6 @@ class AddTransactionFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        requireActivity().menuInflater.inflate(R.menu.menu_home, menu)
-
-        val menuItem = menu.findItem(R.id.select_table)
-        val actionView = menuItem.actionView
-        tvBadge = actionView.findViewById(R.id.table_badge)
-
-        actionView.setOnClickListener {
-            onOptionsItemSelected(menuItem)
-        }
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.select_table -> {
-                findNavController().navigate(R.id.action_navigation_add_transaction_to_navigation_dialog_select_table)
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
-    }
-
-    fun inAppReview() {
-        val reviewManager = ReviewManagerFactory.create(requireActivity())
-        val requestReviewFlow = reviewManager.requestReviewFlow()
-        requestReviewFlow.addOnCompleteListener { request ->
-            if (request.isSuccessful) {
-                // We got the ReviewInfo object
-                val reviewInfo = request.result
-                val flow = reviewManager.launchReviewFlow(requireActivity(), reviewInfo)
-                flow.addOnCompleteListener {
-                    // The flow has finished. The API does not indicate whether the user
-                    // reviewed or not, or even whether the review dialog was shown. Thus, no
-                    // matter the result, we continue our app flow.
-                }
-            } else {
-                Log.d("Error: ", request.exception.toString())
-                // There was some problem, continue regardless of the result.
-            }
-        }
-    }
 
     override fun onResume() {
         super.onResume()

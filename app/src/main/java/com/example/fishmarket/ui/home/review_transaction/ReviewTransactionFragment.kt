@@ -1,11 +1,11 @@
 package com.example.fishmarket.ui.home.review_transaction
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.App
@@ -40,6 +40,8 @@ class ReviewTransactionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         setupInfo()
+        setTable()
+        selectTable()
         setupSaveTransaction()
         setDismissObserver()
     }
@@ -54,7 +56,8 @@ class ReviewTransactionFragment : Fragment() {
                     "position" to position,
                     "name" to product.name,
                     "price" to product.price,
-                    "quantity" to product.quantity
+                    "quantity" to product.quantity,
+                    "unit" to product.unit
                 )
 
                 findNavController().navigate(
@@ -79,26 +82,48 @@ class ReviewTransactionFragment : Fragment() {
 
     private fun setupInfo() {
         val totalFee = ct.getCart().totalFee
-        binding.tvTableName.text = viewModel.table.value?.name ?: ""
         binding.tvTotalFee.text = Utils.formatNumberToRupiah(totalFee, requireActivity())
+    }
+
+    private fun setTable() {
+        viewModel.table.observe(viewLifecycleOwner) {
+            binding.tvTableName.text = it.name
+            binding.tvSelectTable.text = it.name
+        }
+    }
+
+    private fun selectTable() {
+        binding.tvSelectTable.setOnClickListener {
+            findNavController().navigate(R.id.action_reviewTransactionFragment_to_navigation_dialog_select_table)
+        }
     }
 
     private fun setupSaveTransaction() {
         binding.btnSave.setOnClickListener {
-            val totalFee = ct.getCart().totalFee
-            val detailList = ArrayList<DetailTransactionResponse>()
-            for (x in 0 until ct.getCart().cartSize) {
-                val menu = ct.getCart().getProduct(x)
-                val detail = DetailTransactionResponse(
-                    id = Utils.getRandomString(),
-                    id_menu = menu.id,
-                    quantity = menu.quantity,
-                    price = menu.price
+
+            val table = viewModel.table.value?.name ?: ""
+
+            if (table.isEmpty()) {
+                Utils.showMessage(
+                    requireActivity(),
+                    getString(R.string.warning_message_select_table)
                 )
-                detailList.add(detail)
+            } else {
+                val totalFee = ct.getCart().totalFee
+                val detailList = ArrayList<DetailTransactionResponse>()
+                for (x in 0 until ct.getCart().cartSize) {
+                    val menu = ct.getCart().getProduct(x)
+                    val detail = DetailTransactionResponse(
+                        id = Utils.getRandomString(),
+                        id_menu = menu.id,
+                        quantity = menu.quantity,
+                        price = menu.price
+                    )
+                    detailList.add(detail)
+                }
+                viewModel.addTransaction(totalFee, detailList)
+                    .observe(viewLifecycleOwner, addTransactionObserver)
             }
-            viewModel.addTransaction(totalFee, detailList)
-                .observe(viewLifecycleOwner, addTransactionObserver)
         }
     }
 
@@ -121,5 +146,6 @@ class ReviewTransactionFragment : Fragment() {
         }
 
     }
+
 
 }

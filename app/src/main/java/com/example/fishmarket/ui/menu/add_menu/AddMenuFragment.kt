@@ -22,6 +22,7 @@ import com.example.fishmarket.databinding.FragmentAddMenuBinding
 import com.example.fishmarket.domain.model.Menu
 import com.example.fishmarket.utilis.FileUtil
 import com.example.fishmarket.utilis.Utils
+import com.example.fishmarket.utilis.Utils.afterTextChanged
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
@@ -51,6 +52,48 @@ class AddMenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val etMenuName = binding.etMenuName
+        val etMenuPrice = binding.etMenuPrice
+        val etIdCategory = binding.etIdCategory
+        val atvUnit = binding.atvUnit
+
+        etMenuName.afterTextChanged {
+            viewModel.menuDataChanged(
+                name = etMenuName.text.toString(),
+                price = etMenuPrice.text.toString(),
+                category = viewModel.categoryId.value ?: "",
+                unit = atvUnit.text.toString()
+            )
+        }
+
+        etMenuPrice.afterTextChanged {
+            viewModel.menuDataChanged(
+                name = etMenuName.text.toString(),
+                price = etMenuPrice.text.toString(),
+                category = viewModel.categoryId.value ?: "",
+                unit = atvUnit.text.toString()
+            )
+        }
+
+        etIdCategory.afterTextChanged {
+            viewModel.menuDataChanged(
+                name = etMenuName.text.toString(),
+                price = etMenuPrice.text.toString(),
+                category = viewModel.categoryId.value ?: "",
+                unit = atvUnit.text.toString()
+            )
+        }
+
+
+        atvUnit.afterTextChanged {
+            viewModel.menuDataChanged(
+                name = etMenuName.text.toString(),
+                price = etMenuPrice.text.toString(),
+                category = viewModel.categoryId.value ?: "",
+                unit = atvUnit.text.toString()
+            )
+        }
+
         binding.etIdCategory.isFocusable = false
         binding.etIdCategory.isClickable = true
         binding.etIdCategory.setOnClickListener {
@@ -74,6 +117,8 @@ class AddMenuFragment : Fragment() {
             openGalleryForImage()
         }
 
+        setFormValidation()
+
         binding.btnSave.setOnClickListener {
             val id = Utils.getRandomString()
             val name = binding.etMenuName.text.toString()
@@ -83,63 +128,71 @@ class AddMenuFragment : Fragment() {
             val createdDate = System.currentTimeMillis()
 
 
-            if (name == "") {
-                binding.etMenuName.error = resources.getString(R.string.warning_menu_name_empty)
-            } else if (price == "") {
-                binding.etMenuPrice.error = resources.getString(R.string.warning_price_menu_empty)
-            } else if (idCategory == "") {
-                binding.etIdCategory.error =
-                    resources.getString(R.string.warning_category_menu_empty)
-            } else if (unit == "") {
-                binding.atvUnit.error = resources.getString(R.string.warning_unit_menu_empty)
-            } else {
-                binding.btnSave.isEnabled = false
+            binding.btnSave.isEnabled = false
 
-                val storage = Firebase.storage
-                val storageRef = storage.reference
+            val storage = Firebase.storage
+            val storageRef = storage.reference
 
-                val imagesRef: StorageReference = storageRef.child(
-                    "images/" + UUID.randomUUID().toString()
-                )
+            val imagesRef: StorageReference = storageRef.child(
+                "images/" + UUID.randomUUID().toString()
+            )
 
-                binding.imgMenu.isDrawingCacheEnabled = true
-                binding.imgMenu.buildDrawingCache()
-                val bitmap = (binding.imgMenu.drawable as BitmapDrawable).bitmap
-                val baos = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val data = baos.toByteArray()
+            binding.imgMenu.isDrawingCacheEnabled = true
+            binding.imgMenu.buildDrawingCache()
+            val bitmap = (binding.imgMenu.drawable as BitmapDrawable).bitmap
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
 
-                imagesRef.putBytes(data).continueWithTask { task ->
-                    if (!task.isSuccessful) {
-                        task.exception?.let {
-                            throw it
-                        }
-                    }
-                    imagesRef.downloadUrl
-                }.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val downloadUri = task.result
-                        val menu = MenuEntity(
-                            id = id,
-                            name = name,
-                            price = price.toInt(),
-                            unit = unit,
-                            image = downloadUri.toString(),
-                            id_category = idCategory ?: "",
-                            created_date = createdDate
-                        )
-
-                        viewModel.insertMenu(menu).observe(viewLifecycleOwner, insertMenuObserver)
-                    } else {
-                        binding.btnSave.isEnabled = true
-                        Toast.makeText(
-                            requireActivity(),
-                            task.exception?.message.toString(),
-                            Toast.LENGTH_LONG
-                        ).show()
+            imagesRef.putBytes(data).continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
                     }
                 }
+                imagesRef.downloadUrl
+            }.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUri = task.result
+                    val menu = MenuEntity(
+                        id = id,
+                        name = name,
+                        price = price.toInt(),
+                        unit = unit,
+                        image = downloadUri.toString(),
+                        id_category = idCategory ?: "",
+                        created_date = createdDate
+                    )
 
+                    viewModel.insertMenu(menu).observe(viewLifecycleOwner, insertMenuObserver)
+                } else {
+                    binding.btnSave.isEnabled = true
+                    Utils.showMessage(requireActivity(), task.exception?.message.toString())
+                }
+            }
+
+
+        }
+    }
+
+    private fun setFormValidation() {
+        viewModel.menuFormState.observe(viewLifecycleOwner) {
+            val menuState = it ?: return@observe
+
+            binding.btnSave.isEnabled = menuState.isDataValid
+
+            if (menuState.nameError != null) {
+                binding.etMenuName.error = getString(menuState.nameError)
+            } else if (menuState.priceError != null) {
+                binding.etMenuPrice.error = getString(menuState.priceError)
+            } else if (menuState.categoryError != null) {
+                binding.etIdCategory.error = getString(menuState.categoryError)
+            } else if (menuState.categoryError == null) {
+                binding.etIdCategory.error = null
+            } else if (menuState.unit != null) {
+                binding.atvUnit.error = getString(menuState.unit)
+            } else if (menuState.unit == null) {
+                binding.atvUnit.error = null
             }
         }
     }

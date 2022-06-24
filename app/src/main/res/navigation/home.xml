@@ -11,9 +11,6 @@
         android:label="@string/title_add_transaction"
         tools:layout="@layout/fragment_add_transaction">
         <action
-            android:id="@+id/action_navigation_add_transaction_to_navigation_dialog_select_table"
-            app:destination="@id/navigation_dialog_select_table" />
-        <action
             android:id="@+id/action_navigation_add_transaction_to_navigation_dialog_select_restaurant"
             app:destination="@id/navigation_dialog_select_restaurant" />
         <action
@@ -47,6 +44,9 @@
         <action
             android:id="@+id/action_reviewTransactionFragment_to_editTransactionFragment"
             app:destination="@id/editTransactionFragment" />
+        <action
+            android:id="@+id/action_reviewTransactionFragment_to_navigation_dialog_select_table"
+            app:destination="@id/navigation_dialog_select_table" />
     </fragment>
 
 

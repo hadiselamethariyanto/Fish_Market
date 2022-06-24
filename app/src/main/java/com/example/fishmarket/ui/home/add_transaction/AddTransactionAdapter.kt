@@ -114,7 +114,13 @@ class AddTransactionAdapter(private val ct: App, private val fragment: AddTransa
                 quantity++
 
                 val product =
-                    Product(id = menu.id, name = menu.name, price = menu.price, quantity = quantity)
+                    Product(
+                        id = menu.id,
+                        name = menu.name,
+                        price = menu.price,
+                        quantity = quantity,
+                        unit = menu.unit
+                    )
 
                 if (ct.getCart().checkData(menu.id)) {
                     for (x in 0 until ct.getCart().cartSize) {
