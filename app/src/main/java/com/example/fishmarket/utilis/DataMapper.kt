@@ -89,6 +89,22 @@ object DataMapper {
             )
         }
 
+
+    fun mapChangeStatusTransactionEntityToDomain(value: ChangeStatusTransactionEntity): ChangeStatusTransaction =
+        ChangeStatusTransaction(
+            id = value.id,
+            id_table = value.id_table,
+            id_restaurant = value.id_restaurant,
+            created_date = value.created_date,
+            dibakar_date = value.dibakar_date,
+            disajikan_date = value.disajikan_date,
+            finished_date = value.finished_date,
+            status = value.status,
+            total_fee = value.total_fee,
+            table_name = value.table_name,
+            restaurant_name = value.restaurant_name
+        )
+
     fun mapTransactionEntityToDomain(transactionEntity: TransactionEntity): Transaction =
         Transaction(
             id = transactionEntity.id,

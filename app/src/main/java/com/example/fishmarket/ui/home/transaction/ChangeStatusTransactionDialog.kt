@@ -14,7 +14,7 @@ import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.DialogChangeStatusTransactionBinding
-import com.example.fishmarket.domain.model.Transaction
+import com.example.fishmarket.domain.model.ChangeStatusTransaction
 import com.example.fishmarket.ui.home.add_transaction.SelectRestaurantAdapter
 import com.example.fishmarket.utilis.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -151,13 +151,13 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private val changeStatusObserver = Observer<Resource<Transaction>> { res ->
+    private val changeStatusObserver = Observer<Resource<ChangeStatusTransaction>> { res ->
         when (res) {
             is Resource.Loading -> {
 
             }
             is Resource.Success -> {
-                if ((res.data?.status ?: 0) == 4) {
+                if ((res.data?.status ?: 0) == 4 || (res.data?.status ?: 0) == 2) {
                     res.data?.let { printTransaction(it) }
                 }
                 dismiss()
@@ -196,7 +196,7 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun printTransaction(transaction: Transaction) {
+    private fun printTransaction(transaction: ChangeStatusTransaction) {
         val detailTransaction = homeViewModel.detailTransactionHistory.value
 
         val builder = BluetoothPrint.Builder(BluetoothPrint.Size.WIDTH58)
@@ -208,6 +208,8 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         builder.setAlignLeft()
         builder.addFrontEnd("No Transaksi: ", transaction.id)
         builder.addFrontEnd("Hari: ", Utils.formatDate(transaction.created_date))
+        builder.addFrontEnd("Pembakar: ", transaction.restaurant_name)
+        builder.addFrontEnd("Meja: ", transaction.table_name)
         builder.addLine()
 
         for (x in 0 until detailTransaction?.size!!) {
@@ -218,10 +220,17 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
 
             if (product.status) {
                 builder.setAlignLeft()
-                builder.addFrontEnd(
-                    "$name $quantity x $price",
-                    ":${quantity * price}"
-                )
+                if (product.unit == "Decimal") {
+                    builder.addFrontEnd(
+                        "$name x $quantity",
+                        ":${(quantity * price).toInt()}"
+                    )
+                } else {
+                    builder.addFrontEnd(
+                        "$name x ${quantity.toInt()}",
+                        ":${(quantity * price).toInt()}"
+                    )
+                }
             }
         }
 

@@ -41,11 +41,11 @@ class TransactionRepository(
     override fun changeStatusTransaction(
         transactionEntity: TransactionEntity,
         detailTransactionEntity: List<DetailTransactionEntity>
-    ): Flow<Resource<Transaction>> {
-        return object : NetworkBoundInternetOnly<Transaction, TransactionEntity>() {
-            override fun loadFromDB(): Flow<Transaction> =
-                localDataSource.getTransaction(transactionEntity.id).map {
-                    DataMapper.mapTransactionEntityToDomain(it)
+    ): Flow<Resource<ChangeStatusTransaction>> {
+        return object : NetworkBoundInternetOnly<ChangeStatusTransaction, TransactionEntity>() {
+            override fun loadFromDB(): Flow<ChangeStatusTransaction> =
+                localDataSource.getChangeStatusTransaction(transactionEntity.id).map {
+                    DataMapper.mapChangeStatusTransactionEntityToDomain(it)
                 }
 
             override suspend fun createCall(): Flow<ApiResponse<TransactionEntity>> =

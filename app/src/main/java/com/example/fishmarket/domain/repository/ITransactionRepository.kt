@@ -14,7 +14,7 @@ interface ITransactionRepository {
     fun changeStatusTransaction(
         transactionEntity: TransactionEntity,
         detailTransactionEntity: List<DetailTransactionEntity>
-    ): Flow<Resource<Transaction>>
+    ): Flow<Resource<ChangeStatusTransaction>>
 
     suspend fun setStatusTable(status: Boolean, id: String)
 

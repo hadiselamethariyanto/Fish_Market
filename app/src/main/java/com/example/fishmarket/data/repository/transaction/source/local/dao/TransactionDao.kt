@@ -27,6 +27,14 @@ interface TransactionDao {
     @Query("SELECT * FROM `transaction` WHERE id=:id")
     fun getTransaction(id: String): Flow<TransactionEntity>
 
+    @Query(
+        "SELECT t.*,tr.name as table_name,r.name as restaurant_name FROM `transaction` t " +
+                "INNER JOIN table_restaurant tr ON t.id_table = tr.id " +
+                "INNER JOIN restaurant r ON t.id_restaurant = r.id " +
+                "WHERE t.id=:id"
+    )
+    fun getChangeStatusTransaction(id: String): Flow<ChangeStatusTransactionEntity>
+
     @Transaction
     @Query("SELECT * FROM `transaction` ORDER BY created_date DESC LIMIT 50")
     fun getTransactionsWithDetail(): Flow<List<TransactionWithDetailEntity>>

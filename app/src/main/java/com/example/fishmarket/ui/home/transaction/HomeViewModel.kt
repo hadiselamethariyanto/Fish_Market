@@ -5,8 +5,8 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.De
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
+import com.example.fishmarket.domain.model.ChangeStatusTransaction
 import com.example.fishmarket.domain.model.DetailTransactionHistory
-import com.example.fishmarket.domain.model.Transaction
 import com.example.fishmarket.domain.usecase.restaurant.RestaurantUseCase
 import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionUseCase
 import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
@@ -34,7 +34,7 @@ class HomeViewModel(
         transaction: TransactionHomeEntity,
         newStatus: Int,
         idRestaurant: String
-    ): LiveData<Resource<Transaction>> {
+    ): LiveData<Resource<ChangeStatusTransaction>> {
         val dataTransactionUpdate = TransactionEntity(
             id = transaction.id,
             id_table = transaction.id_table,

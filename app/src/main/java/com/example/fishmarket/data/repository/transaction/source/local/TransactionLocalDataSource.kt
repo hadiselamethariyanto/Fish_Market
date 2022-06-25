@@ -30,6 +30,9 @@ class TransactionLocalDataSource(private val transactionDao: TransactionDao) {
 
     fun getTransaction(id: String): Flow<TransactionEntity> = transactionDao.getTransaction(id)
 
+    fun getChangeStatusTransaction(id: String): Flow<ChangeStatusTransactionEntity> =
+        transactionDao.getChangeStatusTransaction(id)
+
     suspend fun changeStatusTransaction(transaction: TransactionEntity): Int =
         transactionDao.changeStatusTransaction(transaction)
 

@@ -16,7 +16,7 @@ class TransactionInteractor(private val repository: ITransactionRepository) : Tr
     override fun changeStatusTransaction(
         transactionEntity: TransactionEntity,
         detailTransactionEntity: List<DetailTransactionEntity>
-    ): Flow<Resource<Transaction>> =
+    ): Flow<Resource<ChangeStatusTransaction>> =
         repository.changeStatusTransaction(transactionEntity, detailTransactionEntity)
 
     override suspend fun setStatusTable(status: Boolean, id: String) =
