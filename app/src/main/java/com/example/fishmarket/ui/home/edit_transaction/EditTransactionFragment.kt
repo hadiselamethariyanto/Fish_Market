@@ -8,13 +8,16 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.App
 import com.example.fishmarket.databinding.FragmentEditTransactionBinding
+import com.example.fishmarket.utilis.Utils.afterTextChanged
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditTransactionFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentEditTransactionBinding? = null
     private val binding get() = _binding!!
     private val ct = App.getApp()
+    private val viewModel: EditTransactionViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,11 +43,23 @@ class EditTransactionFragment : BottomSheetDialogFragment() {
         if (unit == "Decimal") {
             binding.etQuantity.inputType =
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-            binding.etQuantity.setText(quantity.toString())
         } else {
             binding.etQuantity.setText(quantity.toInt().toString())
             binding.etQuantity.inputType =
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED
+            formChangeListener()
+        }
+
+        viewModel.formEditTransactionFormState.observe(viewLifecycleOwner) {
+            val formState = it ?: return@observe
+
+            if (formState.priceError != null) {
+                binding.etMenuPrice.error = getString(formState.priceError)
+            } else if (formState.quantityError != null) {
+                binding.etQuantity.error = getString(formState.quantityError)
+            } else {
+                binding.btnSave.isEnabled = true
+            }
         }
 
         binding.btnRemove.setOnClickListener {
@@ -52,21 +67,30 @@ class EditTransactionFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
+        binding.etMenuPrice.afterTextChanged {
+            formChangeListener()
+        }
+
+        binding.etQuantity.afterTextChanged {
+            formChangeListener()
+        }
+
         binding.btnSave.setOnClickListener {
             val mPrice = binding.etMenuPrice.text.toString()
             val mQuantity = binding.etQuantity.text.toString()
 
-            if (mPrice == "") {
-                binding.etMenuPrice.error = ""
-            } else if (mQuantity == "") {
-                binding.etQuantity.error = ""
-            } else {
-                val product = ct.getCart().getProduct(position)
-                product.quantity = mQuantity.toDouble()
-                product.price = mPrice.toInt()
-                dismiss()
-            }
+            val product = ct.getCart().getProduct(position)
+            product.quantity = mQuantity.toDouble()
+            product.price = mPrice.toInt()
+            dismiss()
         }
+    }
+
+    private fun formChangeListener() {
+        viewModel.formDataChanged(
+            binding.etMenuPrice.text.toString(),
+            binding.etQuantity.text.toString()
+        )
     }
 
     override fun dismiss() {

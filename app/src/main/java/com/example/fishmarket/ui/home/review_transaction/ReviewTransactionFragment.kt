@@ -17,6 +17,7 @@ import com.example.fishmarket.domain.model.Transaction
 import com.example.fishmarket.ui.home.add_transaction.AddTransactionViewModel
 import com.example.fishmarket.utilis.Product
 import com.example.fishmarket.utilis.Utils
+import org.alkaaf.btprint.BluetoothPrint
 import org.koin.androidx.navigation.koinNavGraphViewModel
 
 
@@ -136,6 +137,7 @@ class ReviewTransactionFragment : Fragment() {
             }
             is Resource.Success -> {
                 binding.btnSave.isEnabled = true
+                res.data?.let { printTransaction(it) }
                 viewModel.resetTransaction()
                 ct.getCart().clearArray()
                 findNavController().popBackStack(R.id.navigation_add_transaction, false)
@@ -146,6 +148,60 @@ class ReviewTransactionFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun printTransaction(transaction: Transaction) {
+        val detailTransaction = ct.getCart().cart
+        val builder = BluetoothPrint.Builder(BluetoothPrint.Size.WIDTH58)
+        builder.addLine()
+        builder.setAlignMid()
+        builder.addTextln(getString(R.string.app_name))
+        builder.addTextln(getString(R.string.address))
+        builder.addLine()
+        builder.setAlignLeft()
+        builder.addFrontEnd("No Transaksi: ", transaction.id)
+        builder.addFrontEnd("Hari: ", Utils.formatDate(transaction.created_date))
+        builder.addFrontEnd("Meja: ", viewModel.table.value?.name ?: "")
+        builder.addLine()
+
+        for (x in 0 until detailTransaction.size) {
+            val product = detailTransaction[x]
+            val name = product.name
+            val quantity = product.quantity
+            val price = product.price
+
+            builder.setAlignLeft()
+            if (product.unit == "Decimal") {
+                builder.addFrontEnd(
+                    "$name x $quantity",
+                    ":${(quantity * price).toInt()}"
+                )
+            } else {
+                builder.addFrontEnd(
+                    "$name x ${quantity.toInt()}",
+                    ":${(quantity * price).toInt()}"
+                )
+            }
+
+        }
+
+        builder.addLine()
+        builder.addFrontEnd(
+            "Total Biaya",
+            ":${Utils.formatNumberToRupiah(transaction.total_fee, requireActivity())}"
+        )
+        builder.addLine()
+        builder.setAlignMid()
+        builder.addTextln("Terimakasih atas kunjungan anda")
+        builder.addTextln("")
+        builder.addTextln("")
+        builder.addTextln("")
+        builder.addTextln("")
+
+        BluetoothPrint.with(requireActivity())
+            .autoCloseAfter(1)
+            .setData(builder.byte)
+            .print()
     }
 
 

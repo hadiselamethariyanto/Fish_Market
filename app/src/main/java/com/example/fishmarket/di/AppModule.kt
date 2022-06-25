@@ -17,6 +17,7 @@ import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
 import com.example.fishmarket.ui.history.list_history.HistoryViewModel
 import com.example.fishmarket.ui.home.transaction.HomeViewModel
 import com.example.fishmarket.ui.home.add_transaction.AddTransactionViewModel
+import com.example.fishmarket.ui.home.edit_transaction.EditTransactionViewModel
 import com.example.fishmarket.ui.login.LoginViewModel
 import com.example.fishmarket.ui.main.MainViewModel
 import com.example.fishmarket.ui.menu.add_category.AddCategoryViewModel
@@ -64,4 +65,5 @@ val viewModelModule = module {
     viewModel { HistoryViewModel(get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
+    viewModel { EditTransactionViewModel() }
 }

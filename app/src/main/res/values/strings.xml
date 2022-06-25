@@ -101,5 +101,6 @@
     <string name="placeholder_restaurant" translatable="false">Bang Gali</string>
     <string name="item_sold">Item Sold</string>
     <string name="remove">Remove</string>
+    <string name="warning_quantity_empty">Please fill quantity menu</string>
 
 </resources>
