@@ -47,6 +47,11 @@ class EditTransactionFragment : BottomSheetDialogFragment() {
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED
         }
 
+        binding.btnRemove.setOnClickListener {
+            ct.getCart().removeProduct(position)
+            dismiss()
+        }
+
         binding.btnSave.setOnClickListener {
             val mPrice = binding.etMenuPrice.text.toString()
             val mQuantity = binding.etQuantity.text.toString()

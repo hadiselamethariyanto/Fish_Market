@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/et_name"
+            android:fontFamily="@font/roboto_regular"
             android:importantForAutofill="no"
             android:inputType="text" />
 
@@ -41,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/et_price"
+            android:fontFamily="@font/roboto_regular"
             android:importantForAutofill="no"
             android:inputType="number" />
 
@@ -61,22 +63,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/et_quantity"
+            android:fontFamily="@font/roboto_regular"
             android:importantForAutofill="no"
             android:inputType="numberDecimal" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/btnRemove"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/red_600"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/remove"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/btnSave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilQuantity" />
+
+    <Button
         android:id="@+id/btnSave"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="@string/btn_save"
-        style="@style/Widget.MaterialComponents.Button"
+        android:fontFamily="@font/roboto_medium"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnRemove"
         app:layout_constraintTop_toBottomOf="@id/tilQuantity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

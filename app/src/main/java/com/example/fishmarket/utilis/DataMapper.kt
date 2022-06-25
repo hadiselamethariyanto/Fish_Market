@@ -262,7 +262,8 @@ object DataMapper {
                 id_menu = it.id_menu.toString(),
                 quantity = it.quantity ?: 0.0,
                 price = it.price ?: 0,
-                id_transaction = id
+                id_transaction = id,
+                status = it.status ?: false
             )
         }
 
