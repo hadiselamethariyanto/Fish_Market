@@ -1,5 +1,6 @@
 package com.example.fishmarket.domain.usecase.transaction
 
+import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
@@ -10,7 +11,10 @@ interface TransactionUseCase {
 
     fun addTransaction(transaction: TransactionResponse): Flow<Resource<Transaction>>
 
-    fun changeStatusTransaction(transactionEntity: TransactionEntity): Flow<Resource<Transaction>>
+    fun changeStatusTransaction(
+        transactionEntity: TransactionEntity,
+        detailTransactionEntity: List<DetailTransactionEntity>
+    ): Flow<Resource<Transaction>>
 
     suspend fun setStatusTable(status: Boolean, id: String)
 

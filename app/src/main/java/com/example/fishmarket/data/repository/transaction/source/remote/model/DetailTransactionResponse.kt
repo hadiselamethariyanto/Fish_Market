@@ -5,5 +5,5 @@ data class DetailTransactionResponse(
     val id_menu: String? = "",
     val quantity: Double? = 0.0,
     val price: Int? = 0,
-    val status: Boolean? = false
+    val status: Boolean? = true
 )

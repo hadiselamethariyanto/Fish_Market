@@ -15,7 +15,7 @@ interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTransactions(transactions: List<TransactionEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addDetailTransactions(detailTransactions: List<DetailTransactionEntity>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -51,12 +51,14 @@ interface TransactionDao {
     @Query("UPDATE table_restaurant SET status =:status WHERE id=:id")
     suspend fun setStatusTable(status: Boolean, id: String)
 
-    @Query("SELECT dt.id, dt.id_transaction,m.name,dt.quantity,dt.price,m.unit from detail_transaction dt INNER JOIN menu m ON dt.id_menu = m.id WHERE dt.id_transaction = :id")
+    @Query("SELECT dt.id, dt.id_transaction,m.name,dt.quantity,dt.price,m.unit,dt.status,m.id as id_menu from detail_transaction dt INNER JOIN menu m ON dt.id_menu = m.id WHERE dt.id_transaction = :id")
     fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistoryEntity>>
 
-    @Query("SELECT dt.id, dt.id_transaction,m.name,dt.quantity,dt.price,m.unit from `transaction` t " +
-            "INNER JOIN  detail_transaction dt ON t.id = dt.id_transaction " +
-            "INNER JOIN menu m ON dt.id_menu = m.id WHERE t.id_restaurant = :idRestaurant")
-    fun getDetailTransactionRestaurant(idRestaurant:String):Flow<List<DetailTransactionHistoryEntity>>
+    @Query(
+        "SELECT dt.id, dt.id_transaction,m.name,dt.quantity,dt.price,m.unit,dt.status,m.id as id_menu from `transaction` t " +
+                "INNER JOIN  detail_transaction dt ON t.id = dt.id_transaction " +
+                "INNER JOIN menu m ON dt.id_menu = m.id WHERE t.id_restaurant = :idRestaurant"
+    )
+    fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistoryEntity>>
 
 }

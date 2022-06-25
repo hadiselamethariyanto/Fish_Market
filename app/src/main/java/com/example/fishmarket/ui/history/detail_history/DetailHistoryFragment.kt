@@ -84,11 +84,14 @@ class DetailHistoryFragment : Fragment() {
             val quantity = product.quantity
             val price = product.price
 
-            builder.setAlignLeft()
-            builder.addFrontEnd(
-                "$name $quantity x $price",
-                ":${quantity * price}"
-            )
+            if (product.status) {
+                builder.setAlignLeft()
+                builder.addFrontEnd(
+                    "$name $quantity x $price",
+                    ":${quantity * price}"
+                )
+
+            }
         }
 
         builder.addLine()

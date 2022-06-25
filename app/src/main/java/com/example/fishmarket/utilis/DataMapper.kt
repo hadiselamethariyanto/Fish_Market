@@ -51,7 +51,9 @@ object DataMapper {
                 name = it.name,
                 quantity = it.quantity,
                 price = it.price,
-                unit = it.unit
+                unit = it.unit,
+                status = it.status,
+                id_menu = it.id_menu
             )
         }
 

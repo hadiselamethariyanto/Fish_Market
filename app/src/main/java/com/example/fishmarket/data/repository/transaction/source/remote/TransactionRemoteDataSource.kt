@@ -1,5 +1,6 @@
 package com.example.fishmarket.data.repository.transaction.source.remote
 
+import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.network.ApiResponse
@@ -23,7 +24,10 @@ class TransactionRemoteDataSource(private val firebase: FirebaseFirestore) {
             emit(ApiResponse.Error(it.message.toString()))
         }.flowOn(Dispatchers.IO)
 
-    suspend fun updateTransaction(transaction: TransactionEntity) =
+    suspend fun updateTransaction(
+        transaction: TransactionEntity,
+        detailTransactionEntity: List<DetailTransactionEntity>
+    ) =
         flow<ApiResponse<TransactionEntity>> {
             val dataUpdate = mapOf<String, Any?>(
                 "id_restaurant" to transaction.id_restaurant,
@@ -31,7 +35,9 @@ class TransactionRemoteDataSource(private val firebase: FirebaseFirestore) {
                 "dibakar_date" to transaction.dibakar_date,
                 "disajikan_date" to transaction.disajikan_date,
                 "finished_date" to transaction.finished_date,
-                "status" to transaction.status
+                "status" to transaction.status,
+                "total_fee" to transaction.total_fee,
+                "detail" to detailTransactionEntity
             )
             val transactionReference = firebase.collection("transaction").document(transaction.id)
             transactionReference.update(dataUpdate).await()

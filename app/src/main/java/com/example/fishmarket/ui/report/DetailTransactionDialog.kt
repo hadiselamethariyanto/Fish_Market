@@ -34,8 +34,8 @@ class DetailTransactionDialog : BottomSheetDialogFragment() {
 
         val idRestaurant = arguments?.getString("idRestaurant") ?: ""
 
-        viewModel.getDetailTransactionRestaurant(idRestaurant).observe(viewLifecycleOwner) {
-            detailHistoryAdapter = DetailHistoryAdapter(it)
+        viewModel.getDetailTransactionRestaurant(idRestaurant).observe(viewLifecycleOwner) { list ->
+            detailHistoryAdapter = DetailHistoryAdapter(list)
             binding.rvDetail.adapter = detailHistoryAdapter
             binding.rvDetail.addItemDecoration(
                 DividerItemDecoration(
@@ -44,9 +44,10 @@ class DetailTransactionDialog : BottomSheetDialogFragment() {
                 )
             )
 
+            val newList = list.filter { it.status }
             binding.tvTotalIncome.text =
                 Utils.formatDoubleToRupiah(
-                    it.sumOf { data -> data.price * data.quantity },
+                    newList.sumOf { data -> data.price * data.quantity },
                     requireActivity()
                 )
         }

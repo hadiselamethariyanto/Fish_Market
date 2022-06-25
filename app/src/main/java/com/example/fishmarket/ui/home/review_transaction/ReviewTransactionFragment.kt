@@ -117,7 +117,8 @@ class ReviewTransactionFragment : Fragment() {
                         id = Utils.getRandomString(),
                         id_menu = menu.id,
                         quantity = menu.quantity,
-                        price = menu.price
+                        price = menu.price,
+                        status = true
                     )
                     detailList.add(detail)
                 }

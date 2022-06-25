@@ -1,6 +1,7 @@
 package com.example.fishmarket.ui.home.transaction
 
 import androidx.lifecycle.*
+import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
 import com.example.fishmarket.data.source.remote.Resource
@@ -9,8 +10,6 @@ import com.example.fishmarket.domain.model.Transaction
 import com.example.fishmarket.domain.usecase.restaurant.RestaurantUseCase
 import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionUseCase
 import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -45,7 +44,7 @@ class HomeViewModel(
             disajikan_date = transaction.disajikan_date,
             finished_date = transaction.finished_date,
             status = newStatus,
-            total_fee = transaction.total_fee
+            total_fee = getTotalFee()
         )
 
         val finishedDate = System.currentTimeMillis()
@@ -79,7 +78,30 @@ class HomeViewModel(
             }
         }
 
-        return transactionUseCase.changeStatusTransaction(dataTransactionUpdate).asLiveData()
+        val detailTransaction: List<DetailTransactionEntity> =
+            _detailTransactionHistory.value?.map {
+                DetailTransactionEntity(
+                    id = it.id,
+                    id_transaction = it.id_transaction,
+                    id_menu = it.id_menu,
+                    quantity = it.quantity,
+                    price = it.price,
+                    status = it.status
+                )
+            } ?: listOf()
+
+        return transactionUseCase.changeStatusTransaction(
+            dataTransactionUpdate,
+            detailTransaction
+        ).asLiveData()
+    }
+
+    fun getTotalFee(): Int {
+        val newList = _detailTransactionHistory.value?.filter {
+            it.status
+        } ?: listOf()
+
+        return newList.sumOf { it.price * it.quantity }.toInt()
     }
 
 
@@ -97,5 +119,12 @@ class HomeViewModel(
         transactionUseCase.getDetailTransaction(id).collect {
             _detailTransactionHistory.value = it
         }
+    }
+
+    fun removeItem(position: Int) {
+        val list = _detailTransactionHistory.value
+        list?.get(position)?.status = false
+
+        _detailTransactionHistory.value = list
     }
 }

@@ -62,4 +62,15 @@
         app:layout_constraintStart_toEndOf="@id/tvQuantity"
         app:layout_constraintTop_toBottomOf="@id/tvMenuName" />
 
+    <ImageView
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_baseline_delete_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFee" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

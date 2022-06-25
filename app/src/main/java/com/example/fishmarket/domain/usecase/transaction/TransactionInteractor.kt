@@ -1,5 +1,6 @@
 package com.example.fishmarket.domain.usecase.transaction
 
+import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
@@ -12,8 +13,11 @@ class TransactionInteractor(private val repository: ITransactionRepository) : Tr
     override fun addTransaction(transaction: TransactionResponse): Flow<Resource<Transaction>> =
         repository.addTransaction(transaction)
 
-    override fun changeStatusTransaction(transactionEntity: TransactionEntity): Flow<Resource<Transaction>> =
-        repository.changeStatusTransaction(transactionEntity)
+    override fun changeStatusTransaction(
+        transactionEntity: TransactionEntity,
+        detailTransactionEntity: List<DetailTransactionEntity>
+    ): Flow<Resource<Transaction>> =
+        repository.changeStatusTransaction(transactionEntity, detailTransactionEntity)
 
     override suspend fun setStatusTable(status: Boolean, id: String) =
         repository.setStatusTable(status, id)

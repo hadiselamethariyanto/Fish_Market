@@ -15,7 +15,6 @@ import com.example.fishmarket.data.repository.transaction.source.local.entity.Tr
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.DialogChangeStatusTransactionBinding
 import com.example.fishmarket.domain.model.Transaction
-import com.example.fishmarket.ui.history.detail_history.DetailHistoryAdapter
 import com.example.fishmarket.ui.home.add_transaction.SelectRestaurantAdapter
 import com.example.fishmarket.utilis.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -28,6 +27,7 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
     private var _binding: DialogChangeStatusTransactionBinding? = null
     private val binding get() = _binding!!
     private val homeViewModel: HomeViewModel by koinNavGraphViewModel(R.id.transaction)
+    private lateinit var detailTransactionPaymentAdapter: DetailTransactionPaymentAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +44,7 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         val json = arguments?.getString("transaction")
         val transaction = Gson().fromJson(json, TransactionHomeEntity::class.java)
 
+        setupDetailTransactionPaymentAdapter()
         getDetailTransaction(transaction.id)
 
         val changeStatusAdapter = ChangeStatusTransactionAdapter(requireActivity())
@@ -167,21 +168,30 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         }
     }
 
+    private fun setupDetailTransactionPaymentAdapter() {
+        detailTransactionPaymentAdapter = DetailTransactionPaymentAdapter()
+        detailTransactionPaymentAdapter.setOnItemClickCallback(object :
+            DetailTransactionPaymentAdapter.OnItemClickCallback {
+            override fun onRemoveClicked(position: Int) {
+                homeViewModel.removeItem(position)
+            }
+        })
+        binding.rvDetailTransaction.adapter = detailTransactionPaymentAdapter
+        binding.rvDetailTransaction.addItemDecoration(
+            DividerItemDecoration(
+                requireActivity(),
+                LinearLayoutManager.VERTICAL
+            )
+        )
+    }
+
     private fun getDetailTransaction(id: String) {
         homeViewModel.getDetailTransaction(id)
         homeViewModel.detailTransactionHistory.observe(viewLifecycleOwner) { list ->
             if (list.isNotEmpty()) {
-                val detailAdapter = DetailHistoryAdapter(list)
-                binding.rvDetailTransaction.adapter = detailAdapter
-                binding.rvDetailTransaction.addItemDecoration(
-                    DividerItemDecoration(
-                        requireActivity(),
-                        LinearLayoutManager.VERTICAL
-                    )
-                )
-
-                val totalFee = list.sumOf { it.quantity * it.price }
-                binding.tvTotalFee.text = Utils.formatDoubleToRupiah(totalFee, requireActivity())
+                detailTransactionPaymentAdapter.updateData(list)
+                val totalFee = homeViewModel.getTotalFee()
+                binding.tvTotalFee.text = Utils.formatNumberToRupiah(totalFee, requireActivity())
             }
         }
     }
@@ -206,11 +216,13 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
             val quantity = product.quantity
             val price = product.price
 
-            builder.setAlignLeft()
-            builder.addFrontEnd(
-                "$name $quantity x $price",
-                ":${quantity * price}"
-            )
+            if (product.status) {
+                builder.setAlignLeft()
+                builder.addFrontEnd(
+                    "$name $quantity x $price",
+                    ":${quantity * price}"
+                )
+            }
         }
 
         builder.addLine()

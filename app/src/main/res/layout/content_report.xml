@@ -118,6 +118,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:scrollbars="vertical"
+        android:clipToPadding="false"
+        android:paddingBottom="90dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/tvRestaurant"
         tools:listitem="@layout/item_report_restaurant" />

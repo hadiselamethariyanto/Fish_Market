@@ -1,6 +1,7 @@
 package com.example.fishmarket.data.repository.transaction
 
 import com.example.fishmarket.data.repository.transaction.source.local.TransactionLocalDataSource
+import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.TransactionRemoteDataSource
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
@@ -37,7 +38,10 @@ class TransactionRepository(
         }.asFlow()
     }
 
-    override fun changeStatusTransaction(transactionEntity: TransactionEntity): Flow<Resource<Transaction>> {
+    override fun changeStatusTransaction(
+        transactionEntity: TransactionEntity,
+        detailTransactionEntity: List<DetailTransactionEntity>
+    ): Flow<Resource<Transaction>> {
         return object : NetworkBoundInternetOnly<Transaction, TransactionEntity>() {
             override fun loadFromDB(): Flow<Transaction> =
                 localDataSource.getTransaction(transactionEntity.id).map {
@@ -45,7 +49,7 @@ class TransactionRepository(
                 }
 
             override suspend fun createCall(): Flow<ApiResponse<TransactionEntity>> =
-                remoteDataSource.updateTransaction(transactionEntity)
+                remoteDataSource.updateTransaction(transactionEntity, detailTransactionEntity)
 
             override suspend fun saveCallResult(data: TransactionEntity) {
                 localDataSource.changeStatusTransaction(transactionEntity)
@@ -54,6 +58,7 @@ class TransactionRepository(
                 } else {
                     localDataSource.setStatusTable(false, data.id_table)
                 }
+                localDataSource.addDetailTransactions(detailTransactionEntity)
             }
 
         }.asFlow()

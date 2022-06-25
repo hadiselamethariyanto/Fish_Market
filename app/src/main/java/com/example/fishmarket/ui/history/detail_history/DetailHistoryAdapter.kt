@@ -1,8 +1,11 @@
 package com.example.fishmarket.ui.history.detail_history
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fishmarket.R
 import com.example.fishmarket.databinding.ItemHistoryDetailBinding
 import com.example.fishmarket.domain.model.DetailTransactionHistory
 import com.example.fishmarket.utilis.Utils
@@ -21,8 +24,28 @@ class DetailHistoryAdapter(private val list: List<DetailTransactionHistory>) :
                 binding.tvQuantity.text = data.quantity.toInt().toString()
             }
             binding.tvPrice.text = Utils.formatNumberToRupiah(data.price, itemView.context)
-            binding.tvFee.text =
-                Utils.formatDoubleToRupiah(data.price * data.quantity, itemView.context)
+
+            if (data.status) {
+                binding.layout.setBackgroundColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.white
+                    )
+                )
+                binding.tvFee.text =
+                    Utils.formatDoubleToRupiah(data.price * data.quantity, itemView.context)
+
+            } else {
+                binding.layout.setBackgroundColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.gray_200
+                    )
+                )
+                binding.tvFee.text = "-" +
+                        Utils.formatDoubleToRupiah(data.price * data.quantity, itemView.context)
+
+            }
         }
 
     }
