@@ -8,4 +8,7 @@ class ReportViewModel(private val transactionUseCase: TransactionUseCase) : View
 
     fun getRangeTransaction(first: Long, second: Long) =
         transactionUseCase.getRangeTransaction(first, second).asLiveData()
+
+    fun getDetailTransactionRestaurant(idRestaurant: String) =
+        transactionUseCase.getDetailTransactionRestaurant(idRestaurant).asLiveData()
 }

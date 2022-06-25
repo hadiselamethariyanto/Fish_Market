@@ -97,5 +97,8 @@
     <string name="customer">Customer</string>
     <string name="print" translatable="false">print</string>
     <string name="address">Kampungmandar, Banyuwangi Sub-District, Banyuwangi Regency, East Java 68419</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="placeholder_restaurant" translatable="false">Bang Gali</string>
+    <string name="item_sold">Item Sold</string>
 
 </resources>

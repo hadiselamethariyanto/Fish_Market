@@ -8,10 +8,7 @@ import com.example.fishmarket.data.source.remote.NetworkBoundInternetOnly
 import com.example.fishmarket.data.source.remote.NetworkBoundResource
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.data.source.remote.network.ApiResponse
-import com.example.fishmarket.domain.model.DetailTransactionHistory
-import com.example.fishmarket.domain.model.Transaction
-import com.example.fishmarket.domain.model.TransactionHome
-import com.example.fishmarket.domain.model.TransactionWithDetail
+import com.example.fishmarket.domain.model.*
 import com.example.fishmarket.domain.repository.ITransactionRepository
 import com.example.fishmarket.utilis.DataMapper
 import kotlinx.coroutines.flow.Flow
@@ -130,12 +127,12 @@ class TransactionRepository(
     override fun getRangeTransaction(
         first: Long,
         second: Long
-    ): Flow<Resource<List<Transaction>>> {
+    ): Flow<Resource<List<RestaurantTransaction>>> {
         return object :
-            NetworkBoundInternetOnly<List<Transaction>, List<TransactionResponse>>() {
-            override fun loadFromDB(): Flow<List<Transaction>> =
+            NetworkBoundInternetOnly<List<RestaurantTransaction>, List<TransactionResponse>>() {
+            override fun loadFromDB(): Flow<List<RestaurantTransaction>> =
                 localDataSource.getRangeTransactions(first, second).map {
-                    DataMapper.mapTransactionEntitiesToDomain(it)
+                    DataMapper.mapRestaurantTransactionToDomain(it)
                 }
 
             override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> =
@@ -160,6 +157,11 @@ class TransactionRepository(
 
     override fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistory>> =
         localDataSource.getDetailTransaction(id).map {
+            DataMapper.mapDetailTransactionHistoryEntitiesToDomain(it)
+        }
+
+    override fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistory>> =
+        localDataSource.getDetailTransactionRestaurant(idRestaurant).map {
             DataMapper.mapDetailTransactionHistoryEntitiesToDomain(it)
         }
 

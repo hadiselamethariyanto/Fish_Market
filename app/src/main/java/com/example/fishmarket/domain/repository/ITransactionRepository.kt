@@ -3,10 +3,7 @@ package com.example.fishmarket.domain.repository
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
-import com.example.fishmarket.domain.model.DetailTransactionHistory
-import com.example.fishmarket.domain.model.Transaction
-import com.example.fishmarket.domain.model.TransactionHome
-import com.example.fishmarket.domain.model.TransactionWithDetail
+import com.example.fishmarket.domain.model.*
 import kotlinx.coroutines.flow.Flow
 
 interface ITransactionRepository {
@@ -21,7 +18,9 @@ interface ITransactionRepository {
 
     fun getTransactionWithDetail(): Flow<Resource<List<TransactionWithDetail>>>
 
-    fun getRangeTransaction(first: Long, second: Long): Flow<Resource<List<Transaction>>>
+    fun getRangeTransaction(first: Long, second: Long): Flow<Resource<List<RestaurantTransaction>>>
 
     fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistory>>
+
+    fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistory>>
 }

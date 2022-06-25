@@ -21,6 +21,16 @@ import com.google.firebase.auth.FirebaseUser
 
 object DataMapper {
 
+    fun mapRestaurantTransactionToDomain(list: List<RestaurantTransactionEntity>): List<RestaurantTransaction> =
+        list.map {
+            RestaurantTransaction(
+                id = it.id,
+                name = it.name,
+                income = it.income,
+                transactionCount = it.transactionCount
+            )
+        }
+
     fun mapTransactionWithDetailEntityToDomain(list: List<TransactionWithDetailEntity>): List<TransactionWithDetail> =
         list.map {
             val transaction = mapTransactionEntityToDomain(it.transactionEntity)

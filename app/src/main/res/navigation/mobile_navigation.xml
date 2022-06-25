@@ -16,13 +16,22 @@
         android:id="@+id/reportFragment"
         android:name="com.example.fishmarket.ui.report.ReportFragment"
         android:label="@string/title_report"
-        tools:layout="@layout/fragment_report" />
+        tools:layout="@layout/fragment_report">
+        <action
+            android:id="@+id/action_reportFragment_to_detailTransactionDialog"
+            app:destination="@id/detailTransactionDialog" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.fishmarket.ui.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
+    <dialog
+        android:id="@+id/detailTransactionDialog"
+        android:name="com.example.fishmarket.ui.report.DetailTransactionDialog"
+        android:label="fragment_detail_transaction_dialog"
+        tools:layout="@layout/fragment_detail_transaction_dialog" />
 
 
 </navigation>

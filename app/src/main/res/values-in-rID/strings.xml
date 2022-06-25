@@ -69,4 +69,6 @@
     <string name="select_customer">Pilih Pelanggan</string>
     <string name="customer">Pelanggan</string>
     <string name="address">Kampungmandar, Kecamatan Banyuwangi, Jawa Timur 68419</string>
+    <string name="restaurant">Restoran</string>
+    <string name="item_sold">Item Terjual</string>
 </resources>

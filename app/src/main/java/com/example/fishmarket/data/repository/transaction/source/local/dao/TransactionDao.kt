@@ -4,7 +4,6 @@ import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.example.fishmarket.data.repository.restaurant.source.local.entity.RestaurantEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.*
-import com.example.fishmarket.data.source.remote.Resource
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -32,8 +31,13 @@ interface TransactionDao {
     @Query("SELECT * FROM `transaction` ORDER BY created_date DESC LIMIT 50")
     fun getTransactionsWithDetail(): Flow<List<TransactionWithDetailEntity>>
 
-    @Query("SELECT * FROM `transaction` WHERE date(created_date/1000,'unixepoch','localtime')>= date(:first/1000,'unixepoch','localtime') AND date(created_date/1000,'unixepoch','localtime') <= date(:second/1000,'unixepoch','localtime')")
-    fun getRangeTransaction(first: Long, second: Long): Flow<List<TransactionEntity>>
+    @Query(
+        "SELECT r.id,r.name, SUM(t.total_fee) as income, COUNT(t.id) as transactionCount FROM restaurant r " +
+                "INNER JOIN `transaction` t ON r.id = t.id_restaurant " +
+                "WHERE date(t.created_date/1000,'unixepoch','localtime')>= date(:first/1000,'unixepoch','localtime') " +
+                "AND date(t.created_date/1000,'unixepoch','localtime') <= date(:second/1000,'unixepoch','localtime') GROUP BY r.name"
+    )
+    fun getRangeTransaction(first: Long, second: Long): Flow<List<RestaurantTransactionEntity>>
 
     @Update
     suspend fun changeStatusTransaction(transaction: TransactionEntity): Int
@@ -49,5 +53,10 @@ interface TransactionDao {
 
     @Query("SELECT dt.id, dt.id_transaction,m.name,dt.quantity,dt.price,m.unit from detail_transaction dt INNER JOIN menu m ON dt.id_menu = m.id WHERE dt.id_transaction = :id")
     fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistoryEntity>>
+
+    @Query("SELECT dt.id, dt.id_transaction,m.name,dt.quantity,dt.price,m.unit from `transaction` t " +
+            "INNER JOIN  detail_transaction dt ON t.id = dt.id_transaction " +
+            "INNER JOIN menu m ON dt.id_menu = m.id WHERE t.id_restaurant = :idRestaurant")
+    fun getDetailTransactionRestaurant(idRestaurant:String):Flow<List<DetailTransactionHistoryEntity>>
 
 }

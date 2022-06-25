@@ -3,10 +3,7 @@ package com.example.fishmarket.domain.usecase.transaction
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
-import com.example.fishmarket.domain.model.DetailTransactionHistory
-import com.example.fishmarket.domain.model.Transaction
-import com.example.fishmarket.domain.model.TransactionHome
-import com.example.fishmarket.domain.model.TransactionWithDetail
+import com.example.fishmarket.domain.model.*
 import com.example.fishmarket.domain.repository.ITransactionRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -27,9 +24,15 @@ class TransactionInteractor(private val repository: ITransactionRepository) : Tr
     override fun getTransactionWithDetail(): Flow<Resource<List<TransactionWithDetail>>> =
         repository.getTransactionWithDetail()
 
-    override fun getRangeTransaction(first: Long, second: Long): Flow<Resource<List<Transaction>>> =
+    override fun getRangeTransaction(
+        first: Long,
+        second: Long
+    ): Flow<Resource<List<RestaurantTransaction>>> =
         repository.getRangeTransaction(first, second)
 
     override fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistory>> =
         repository.getDetailTransaction(id)
+
+    override fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistory>> =
+        repository.getDetailTransactionRestaurant(idRestaurant)
 }
