@@ -41,6 +41,7 @@ class AddTransactionViewModel(
 
     fun addTransaction(
         totalFee: Int,
+        queue:Int,
         detail: List<DetailTransactionResponse>
     ): LiveData<Resource<Transaction>> {
         val id = Utils.getRandomString()
@@ -59,7 +60,8 @@ class AddTransactionViewModel(
             status = status,
             finished_date = 0,
             total_fee = totalFee,
-            detail = detail
+            detail = detail,
+            no_urut = queue
         )
 
         return transactionUseCase.addTransaction(transaction).asLiveData()
@@ -70,4 +72,6 @@ class AddTransactionViewModel(
     fun getAvailableTable() = tableUseCase.getAvailableTable().asLiveData()
 
     fun getCategories() = categoryUseCase.getCategories().asLiveData()
+
+    fun getQueueNumber() = transactionUseCase.getQueueNumber().asLiveData()
 }

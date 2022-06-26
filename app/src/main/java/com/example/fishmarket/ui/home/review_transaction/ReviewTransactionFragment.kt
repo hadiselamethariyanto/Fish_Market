@@ -43,6 +43,7 @@ class ReviewTransactionFragment : Fragment() {
         setupInfo()
         setTable()
         selectTable()
+        setupQueueNumber()
         setupSaveTransaction()
         setDismissObserver()
     }
@@ -68,6 +69,12 @@ class ReviewTransactionFragment : Fragment() {
             }
         })
         binding.rvDetailTransaction.adapter = detailHistoryAdapter
+    }
+
+    private fun setupQueueNumber() {
+        viewModel.getQueueNumber().observe(viewLifecycleOwner) {
+            binding.tvQueueNumber.text = ((it ?: 0) + 1).toString()
+        }
     }
 
     private fun setDismissObserver() {
@@ -103,6 +110,7 @@ class ReviewTransactionFragment : Fragment() {
         binding.btnSave.setOnClickListener {
 
             val table = viewModel.table.value?.name ?: ""
+            val queue = binding.tvQueueNumber.text.toString().toInt()
 
             if (table.isEmpty()) {
                 Utils.showMessage(
@@ -123,7 +131,7 @@ class ReviewTransactionFragment : Fragment() {
                     )
                     detailList.add(detail)
                 }
-                viewModel.addTransaction(totalFee, detailList)
+                viewModel.addTransaction(totalFee, queue, detailList)
                     .observe(viewLifecycleOwner, addTransactionObserver)
             }
         }
@@ -159,7 +167,7 @@ class ReviewTransactionFragment : Fragment() {
         builder.addTextln(getString(R.string.address))
         builder.addLine()
         builder.setAlignLeft()
-        builder.addFrontEnd("No Transaksi: ", transaction.id)
+        builder.addFrontEnd("No Urut: ", transaction.no_urut.toString())
         builder.addFrontEnd("Hari: ", Utils.formatDate(transaction.created_date))
         builder.addFrontEnd("Meja: ", viewModel.table.value?.name ?: "")
         builder.addLine()
@@ -174,12 +182,12 @@ class ReviewTransactionFragment : Fragment() {
             if (product.unit == "Decimal") {
                 builder.addFrontEnd(
                     "$name x $quantity",
-                    ":${(quantity * price).toInt()}"
+                    ":${Utils.formatNumberThousand((quantity * price).toInt())}"
                 )
             } else {
                 builder.addFrontEnd(
                     "$name x ${quantity.toInt()}",
-                    ":${(quantity * price).toInt()}"
+                    ":${Utils.formatNumberThousand((quantity * price).toInt())}"
                 )
             }
 

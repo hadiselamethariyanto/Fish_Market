@@ -44,4 +44,6 @@ class TransactionLocalDataSource(private val transactionDao: TransactionDao) {
 
     fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistoryEntity>> =
         transactionDao.getDetailTransactionRestaurant(idRestaurant)
+
+    fun getQueueNumber(): Flow<Int> = transactionDao.getQueueNumber()
 }

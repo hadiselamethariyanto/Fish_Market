@@ -206,7 +206,7 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         builder.addTextln(getString(R.string.address))
         builder.addLine()
         builder.setAlignLeft()
-        builder.addFrontEnd("No Transaksi: ", transaction.id)
+        builder.addFrontEnd("No Urut: ", transaction.no_urut.toString())
         builder.addFrontEnd("Hari: ", Utils.formatDate(transaction.created_date))
         builder.addFrontEnd("Pembakar: ", transaction.restaurant_name)
         builder.addFrontEnd("Meja: ", transaction.table_name)
@@ -223,12 +223,12 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
                 if (product.unit == "Decimal") {
                     builder.addFrontEnd(
                         "$name x $quantity",
-                        ":${(quantity * price).toInt()}"
+                        ":${Utils.formatNumberThousand((quantity * price).toInt())}"
                     )
                 } else {
                     builder.addFrontEnd(
                         "$name x ${quantity.toInt()}",
-                        ":${(quantity * price).toInt()}"
+                        ":${Utils.formatNumberThousand((quantity * price).toInt())}"
                     )
                 }
             }

@@ -70,7 +70,8 @@ object DataMapper {
                 disajikan_date = it.disajikan_date,
                 finished_date = it.finished_date,
                 status = it.status,
-                total_fee = it.total_fee
+                total_fee = it.total_fee,
+                no_urut = it.no_urut
             )
         }
 
@@ -85,7 +86,8 @@ object DataMapper {
                 disajikan_date = transactionEntity.disajikan_date,
                 finished_date = transactionEntity.finished_date,
                 status = transactionEntity.status,
-                total_fee = transactionEntity.total_fee
+                total_fee = transactionEntity.total_fee,
+                no_urut = transactionEntity.no_urut
             )
         }
 
@@ -102,7 +104,8 @@ object DataMapper {
             status = value.status,
             total_fee = value.total_fee,
             table_name = value.table_name,
-            restaurant_name = value.restaurant_name
+            restaurant_name = value.restaurant_name,
+            no_urut = value.no_urut
         )
 
     fun mapTransactionEntityToDomain(transactionEntity: TransactionEntity): Transaction =
@@ -115,7 +118,8 @@ object DataMapper {
             disajikan_date = transactionEntity.disajikan_date,
             finished_date = transactionEntity.finished_date,
             status = transactionEntity.status,
-            total_fee = transactionEntity.total_fee
+            total_fee = transactionEntity.total_fee,
+            no_urut = transactionEntity.no_urut
         )
 
     fun mapMenuEntitiesToDomain(list: List<MenuEntity>): List<Menu> = list.map {
@@ -234,7 +238,8 @@ object DataMapper {
             disajikan_date = transactionResponse.disajikan_date ?: 0,
             finished_date = transactionResponse.finished_date ?: 0,
             status = transactionResponse.status ?: 0,
-            total_fee = transactionResponse.total_fee ?: 0
+            total_fee = transactionResponse.total_fee ?: 0,
+            no_urut = transactionResponse.no_urut ?: 0
         )
 
     fun mapCategoriesResponseToEntity(list: List<CategoryResponse>): List<CategoryEntity> =
@@ -266,7 +271,8 @@ object DataMapper {
                 disajikan_date = it.disajikan_date ?: 0,
                 finished_date = it.finished_date ?: 0,
                 status = it.status ?: 0,
-                total_fee = it.total_fee ?: 0
+                total_fee = it.total_fee ?: 0,
+                no_urut = it.no_urut ?: 1
             )
         }
 

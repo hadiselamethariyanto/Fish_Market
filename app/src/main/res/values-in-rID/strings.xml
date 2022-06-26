@@ -73,4 +73,6 @@
     <string name="item_sold">Item Terjual</string>
     <string name="remove">Hapus</string>
     <string name="warning_quantity_empty">Mohon isi jumlah menu</string>
+    <string name="queue_number">No Urut</string>
+    <string name="queue">No Urut: %s</string>
 </resources>

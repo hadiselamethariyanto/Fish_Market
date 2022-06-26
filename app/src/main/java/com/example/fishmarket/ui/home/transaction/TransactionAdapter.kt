@@ -49,7 +49,7 @@ class TransactionAdapter(private val context: Context) :
             handler.removeCallbacks(countdownRunnable)
             val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
-            binding.tvId.text = context.resources.getString(R.string.transaction_id, transaction.id)
+            binding.tvId.text = context.resources.getString(R.string.queue, transaction.no_urut)
             binding.tvRestaurant.text = transaction.restaurant
             binding.tvTable.text = transaction.table
             binding.tvClock.text = simpleDateFormat.format(transaction.created_date)

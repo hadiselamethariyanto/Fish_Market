@@ -58,6 +58,12 @@ object Utils {
         return context.getString(R.string.rupiah, decimalFormat.format(value))
     }
 
+    fun formatNumberThousand(value: Int): String {
+        val nf: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
+        val decimalFormat = nf as DecimalFormat
+        return decimalFormat.format(value)
+    }
+
     fun formatDoubleToRupiah(value: Double, context: Context): String {
         val nf: NumberFormat = NumberFormat.getNumberInstance(Locale.GERMAN)
         val decimalFormat = nf as DecimalFormat

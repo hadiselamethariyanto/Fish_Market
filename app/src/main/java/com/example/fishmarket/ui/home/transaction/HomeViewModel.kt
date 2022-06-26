@@ -44,7 +44,8 @@ class HomeViewModel(
             disajikan_date = transaction.disajikan_date,
             finished_date = transaction.finished_date,
             status = newStatus,
-            total_fee = getTotalFee()
+            total_fee = getTotalFee(),
+            no_urut = transaction.no_urut
         )
 
         val finishedDate = System.currentTimeMillis()

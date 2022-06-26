@@ -27,4 +27,6 @@ interface TransactionUseCase {
     fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistory>>
 
     fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistory>>
+
+    fun getQueueNumber():Flow<Int>
 }

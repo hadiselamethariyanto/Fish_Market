@@ -170,5 +170,7 @@ class TransactionRepository(
             DataMapper.mapDetailTransactionHistoryEntitiesToDomain(it)
         }
 
+    override fun getQueueNumber(): Flow<Int> = localDataSource.getQueueNumber()
+
 
 }

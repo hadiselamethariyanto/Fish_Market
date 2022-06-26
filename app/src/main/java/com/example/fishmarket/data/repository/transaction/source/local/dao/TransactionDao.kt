@@ -69,4 +69,8 @@ interface TransactionDao {
     )
     fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistoryEntity>>
 
+
+    @Query("SELECT MAX(no_urut)  FROM `transaction` WHERE DATE(created_date/1000,'unixepoch','localtime') = DATE('now','localtime')")
+    fun getQueueNumber(): Flow<Int>
+
 }

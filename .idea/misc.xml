@@ -33,6 +33,7 @@
         <entry key="app/src/main/res/drawable/ic_payment.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_payment_12.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_receipt_24.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/ic_receipt_orange_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_served.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_served_12.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_store.xml" value="0.1335" />

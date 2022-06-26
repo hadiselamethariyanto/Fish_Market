@@ -102,5 +102,7 @@
     <string name="item_sold">Item Sold</string>
     <string name="remove">Remove</string>
     <string name="warning_quantity_empty">Please fill quantity menu</string>
+    <string name="queue_number">Queue</string>
+    <string name="queue">Queue: %s</string>
 
 </resources>
