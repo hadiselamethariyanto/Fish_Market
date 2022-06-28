@@ -26,6 +26,9 @@ class ReportFragment : Fragment() {
     private val binding get() = _binding!!
     private var restaurantTransactionAdapter = RestaurantTransactionAdapter()
     private val viewModel: ReportViewModel by koinNavGraphViewModel(R.id.reportFragment)
+    private val currentTimeInMillis = System.currentTimeMillis()
+    private val first = Utils.getFirstOfDayTimeInMillis(currentTimeInMillis)
+    private val second = Utils.getEndOfDayTimeInMillis(currentTimeInMillis)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,20 +56,29 @@ class ReportFragment : Fragment() {
             val first = dateRangePicker.selection?.first ?: 0
             val second = Utils.getEndOfDayTimeInMillis(dateRangePicker.selection?.second ?: 0)
 
-            binding.content.tvDate.text = resources.getString(
-                R.string.selected_date,
-                Utils.formatDate(first),
-                Utils.formatDate(second)
-            )
-
-            viewModel.getRangeTransaction(first, second).observe(viewLifecycleOwner, reportObserver)
+            viewModel.dateRangeChanged(first, second)
         }
 
+        viewModel.dateRangeFormState.observe(viewLifecycleOwner) {
+            binding.content.tvDate.text = resources.getString(
+                R.string.selected_date,
+                Utils.formatDate(it.first ?: this.first),
+                Utils.formatDate(it.second ?: this.second)
+            )
+
+            viewModel.getRangeTransaction(it.first ?: this.first, it.second ?: this.second)
+                .observe(viewLifecycleOwner, reportObserver)
+        }
 
         restaurantTransactionAdapter.setOnItemClickCallback(object :
             RestaurantTransactionAdapter.OnItemClickCallback {
             override fun onItemClicked(idRestaurant: String) {
-                val bundle = bundleOf("idRestaurant" to idRestaurant)
+                val dateRange = viewModel.dateRangeFormState.value
+                val first = dateRange?.first ?: this@ReportFragment.first
+                val second = dateRange?.second ?: this@ReportFragment.second
+
+                val bundle =
+                    bundleOf("idRestaurant" to idRestaurant, "first" to first, "second" to second)
                 findNavController().navigate(
                     R.id.action_reportFragment_to_detailTransactionDialog,
                     bundle

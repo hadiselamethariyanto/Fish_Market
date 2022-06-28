@@ -33,24 +33,27 @@ class DetailTransactionDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val idRestaurant = arguments?.getString("idRestaurant") ?: ""
+        val first = arguments?.getLong("first") ?: 0
+        val second = arguments?.getLong("second") ?: 0
 
-        viewModel.getDetailTransactionRestaurant(idRestaurant).observe(viewLifecycleOwner) { list ->
-            detailHistoryAdapter = DetailHistoryAdapter(list)
-            binding.rvDetail.adapter = detailHistoryAdapter
-            binding.rvDetail.addItemDecoration(
-                DividerItemDecoration(
-                    requireActivity(),
-                    LinearLayoutManager.VERTICAL
+        viewModel.getDetailTransactionRestaurant(idRestaurant, first, second)
+            .observe(viewLifecycleOwner) { list ->
+                detailHistoryAdapter = DetailHistoryAdapter(list)
+                binding.rvDetail.adapter = detailHistoryAdapter
+                binding.rvDetail.addItemDecoration(
+                    DividerItemDecoration(
+                        requireActivity(),
+                        LinearLayoutManager.VERTICAL
+                    )
                 )
-            )
 
-            val newList = list.filter { it.status }
-            binding.tvTotalIncome.text =
-                Utils.formatDoubleToRupiah(
-                    newList.sumOf { data -> data.price * data.quantity },
-                    requireActivity()
-                )
-        }
+                val newList = list.filter { it.status }
+                binding.tvTotalIncome.text =
+                    Utils.formatDoubleToRupiah(
+                        newList.sumOf { data -> data.price * data.quantity },
+                        requireActivity()
+                    )
+            }
 
     }
 

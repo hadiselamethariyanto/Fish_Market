@@ -165,8 +165,12 @@ class TransactionRepository(
             DataMapper.mapDetailTransactionHistoryEntitiesToDomain(it)
         }
 
-    override fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistory>> =
-        localDataSource.getDetailTransactionRestaurant(idRestaurant).map {
+    override fun getDetailTransactionRestaurant(
+        idRestaurant: String,
+        first: Long,
+        second: Long
+    ): Flow<List<DetailTransactionHistory>> =
+        localDataSource.getDetailTransactionRestaurant(idRestaurant, first, second).map {
             DataMapper.mapDetailTransactionHistoryEntitiesToDomain(it)
         }
 

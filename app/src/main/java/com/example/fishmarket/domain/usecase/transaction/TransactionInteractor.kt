@@ -37,8 +37,12 @@ class TransactionInteractor(private val repository: ITransactionRepository) : Tr
     override fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistory>> =
         repository.getDetailTransaction(id)
 
-    override fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistory>> =
-        repository.getDetailTransactionRestaurant(idRestaurant)
+    override fun getDetailTransactionRestaurant(
+        idRestaurant: String,
+        first: Long,
+        second: Long
+    ): Flow<List<DetailTransactionHistory>> =
+        repository.getDetailTransactionRestaurant(idRestaurant, first, second)
 
     override fun getQueueNumber(): Flow<Int> = repository.getQueueNumber()
 }

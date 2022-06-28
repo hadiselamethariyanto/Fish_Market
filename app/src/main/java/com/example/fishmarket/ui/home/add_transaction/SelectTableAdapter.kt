@@ -74,13 +74,16 @@ class SelectTableAdapter : RecyclerView.Adapter<SelectTableAdapter.ViewHolder>()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        holder.bindItem(list[position])
         if (position == selectedItemPos) {
             holder.selectedBg()
         } else {
-            holder.unSelectedBg()
+            if (list[position].status){
+                holder.selectedBg()
+            }else{
+                holder.unSelectedBg()
+            }
         }
-        holder.bindItem(list[position])
     }
 
     override fun getItemCount() = list.size

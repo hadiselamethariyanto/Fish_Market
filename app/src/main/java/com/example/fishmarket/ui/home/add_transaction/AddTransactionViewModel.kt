@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
-import com.example.fishmarket.domain.model.Restaurant
 import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.domain.model.Transaction
 import com.example.fishmarket.domain.usecase.category.CategoryUseCase
@@ -23,20 +22,12 @@ class AddTransactionViewModel(
     private var _table = MutableLiveData<Table>()
     val table: LiveData<Table> get() = _table
 
-    private var _restaurant = MutableLiveData<Restaurant>()
-    val restaurant: LiveData<Restaurant> get() = _restaurant
-
     fun setTable(table: Table) {
         _table.value = table
     }
 
-    fun setRestaurant(restaurant: Restaurant) {
-        _restaurant.value = restaurant
-    }
-
     fun resetTransaction() {
         _table.value = Table("", "", false, 0)
-        _restaurant.value = Restaurant("", "", 0)
     }
 
     fun addTransaction(
@@ -48,12 +39,11 @@ class AddTransactionViewModel(
         val createdDate = System.currentTimeMillis()
         val status = 1
         val idTable = table.value?.id
-        val idRestaurant = restaurant.value?.id
 
         val transaction = TransactionResponse(
             id = id,
             id_table = idTable ?: "",
-            id_restaurant = idRestaurant ?: "",
+            id_restaurant = "",
             created_date = createdDate,
             dibakar_date = 0,
             disajikan_date = 0,
@@ -70,6 +60,8 @@ class AddTransactionViewModel(
     fun getMenus(id: String) = menuUseCase.getMenusByCategory(id).asLiveData()
 
     fun getAvailableTable() = tableUseCase.getAvailableTable().asLiveData()
+
+    fun getTables() = tableUseCase.getTables().asLiveData()
 
     fun getCategories() = categoryUseCase.getCategories().asLiveData()
 

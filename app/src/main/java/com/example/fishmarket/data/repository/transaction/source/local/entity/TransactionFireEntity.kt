@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.DatabaseView
 import androidx.room.PrimaryKey
 
-@DatabaseView("SELECT t.id,tr.name,t.id_restaurant,t.created_date,t.status FROM `transaction` t LEFT JOIN table_restaurant tr ON t.id_table = tr.id WHERE t.status = 2")
+@DatabaseView("SELECT t.id,tr.name,t.id_restaurant,t.created_date,t.status FROM `transaction` t LEFT JOIN table_restaurant tr ON t.id_table = tr.id WHERE t.status = 2 AND DATE(t.created_date/1000,'unixepoch','localtime') = DATE('now','localtime')")
 data class TransactionFireEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "name") val name: String,

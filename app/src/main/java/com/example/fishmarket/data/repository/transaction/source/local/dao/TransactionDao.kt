@@ -15,7 +15,7 @@ interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTransactions(transactions: List<TransactionEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addDetailTransactions(detailTransactions: List<DetailTransactionEntity>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -63,11 +63,18 @@ interface TransactionDao {
     fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistoryEntity>>
 
     @Query(
-        "SELECT dt.id, dt.id_transaction,m.name,dt.quantity,dt.price,m.unit,dt.status,m.id as id_menu from `transaction` t " +
+        "SELECT dt.id, dt.id_transaction,m.name,SUM(CASE WHEN dt.status = 1 THEN dt.quantity ELSE 0 END) as quantity,dt.price,m.unit,dt.status,m.id as id_menu from `transaction` t " +
                 "INNER JOIN  detail_transaction dt ON t.id = dt.id_transaction " +
-                "INNER JOIN menu m ON dt.id_menu = m.id WHERE t.id_restaurant = :idRestaurant"
+                "INNER JOIN menu m ON dt.id_menu = m.id WHERE t.id_restaurant = :idRestaurant AND dt.status = 1 " +
+                "AND date(t.created_date/1000,'unixepoch','localtime')>= date(:first/1000,'unixepoch','localtime') " +
+                "AND date(t.created_date/1000,'unixepoch','localtime') <= date(:second/1000,'unixepoch','localtime') " +
+                "GROUP BY m.name"
     )
-    fun getDetailTransactionRestaurant(idRestaurant: String): Flow<List<DetailTransactionHistoryEntity>>
+    fun getDetailTransactionRestaurant(
+        idRestaurant: String,
+        first: Long,
+        second: Long
+    ): Flow<List<DetailTransactionHistoryEntity>>
 
 
     @Query("SELECT MAX(no_urut)  FROM `transaction` WHERE DATE(created_date/1000,'unixepoch','localtime') = DATE('now','localtime')")

@@ -80,6 +80,16 @@ object Utils {
         return calendar.timeInMillis
     }
 
+    fun getFirstOfDayTimeInMillis(timeInMillis: Long): Long {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timeInMillis
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.timeInMillis
+    }
+
     fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
         this.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
