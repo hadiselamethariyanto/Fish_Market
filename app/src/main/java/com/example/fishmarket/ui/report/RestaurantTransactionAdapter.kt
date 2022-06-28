@@ -31,7 +31,7 @@ class RestaurantTransactionAdapter :
             binding.tvTransactionCount.text = data.transactionCount.toString()
 
             itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(data.id)
+                onItemClickCallback.onItemClicked(data.id, data.name, data.transactionCount)
             }
         }
     }
@@ -49,6 +49,6 @@ class RestaurantTransactionAdapter :
     override fun getItemCount(): Int = list.size
 
     interface OnItemClickCallback {
-        fun onItemClicked(idRestaurant: String)
+        fun onItemClicked(idRestaurant: String, restaurantName: String, transactionCount: Int)
     }
 }

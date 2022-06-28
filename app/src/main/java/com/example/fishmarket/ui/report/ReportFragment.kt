@@ -72,13 +72,24 @@ class ReportFragment : Fragment() {
 
         restaurantTransactionAdapter.setOnItemClickCallback(object :
             RestaurantTransactionAdapter.OnItemClickCallback {
-            override fun onItemClicked(idRestaurant: String) {
+            override fun onItemClicked(
+                idRestaurant: String,
+                restaurantName: String,
+                transactionCount: Int
+            ) {
                 val dateRange = viewModel.dateRangeFormState.value
                 val first = dateRange?.first ?: this@ReportFragment.first
                 val second = dateRange?.second ?: this@ReportFragment.second
 
                 val bundle =
-                    bundleOf("idRestaurant" to idRestaurant, "first" to first, "second" to second)
+                    bundleOf(
+                        "idRestaurant" to idRestaurant,
+                        "first" to first,
+                        "second" to second,
+                        "restaurantName" to restaurantName,
+                        "transactionCount" to transactionCount
+                    )
+
                 findNavController().navigate(
                     R.id.action_reportFragment_to_detailTransactionDialog,
                     bundle
