@@ -1,6 +1,9 @@
 package com.example.fishmarket.utilis;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class ModelCart {
     private final ArrayList<Product> cartItems = new ArrayList<>();
@@ -9,8 +12,8 @@ public class ModelCart {
         return cartItems.get(position);
     }
 
-    public void setProduct(Product Products) {
-        cartItems.add(Products);
+    public void setProduct(Product Product) {
+        cartItems.add(Product);
     }
 
     public int getCartSize() {
@@ -43,6 +46,23 @@ public class ModelCart {
             totalItem += cartItems.get(i).getQuantity();
         }
         return totalItem;
+    }
+
+    public void addProducts(List<Product> products) {
+        for (int x = 0; x < products.size(); x++) {
+            Product product = products.get(x);
+            if (checkData(product.getId())){
+                for (int i = 0; i < cartItems.size(); i++) {
+                    Product cart = cartItems.get(i);
+                    if (cart.getId().equals(product.getId())) {
+                        double newQuantity = cart.getQuantity() + product.getQuantity();
+                        cart.setQuantity(newQuantity);
+                    }
+                }
+            }else{
+                cartItems.add(product);
+            }
+        }
     }
 
     public boolean checkData(String idProduct) {

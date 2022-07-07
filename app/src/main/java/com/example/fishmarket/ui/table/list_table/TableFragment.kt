@@ -55,7 +55,8 @@ class TableFragment : Fragment() {
                 val bundle = bundleOf(
                     "id" to table.id,
                     "status" to table.status,
-                    "createdDate" to table.createdDate
+                    "createdDate" to table.createdDate,
+                    "idTransaction" to table.idTransaction
                 )
                 findNavController().navigate(
                     R.id.action_navigation_table_to_navigation_edit_table,
@@ -116,7 +117,8 @@ class TableFragment : Fragment() {
                 id = table.id,
                 name = table.name,
                 status = table.status,
-                createdDate = table.createdDate
+                createdDate = table.createdDate,
+                id_transaction = table.idTransaction
             )
             viewModel.deleteTable(tableEntity).observe(viewLifecycleOwner) { res ->
                 when (res) {

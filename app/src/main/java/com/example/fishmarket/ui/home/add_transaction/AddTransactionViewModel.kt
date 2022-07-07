@@ -6,11 +6,14 @@ import com.example.fishmarket.data.repository.transaction.source.remote.model.Tr
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.domain.model.Table
 import com.example.fishmarket.domain.model.Transaction
+import com.example.fishmarket.domain.model.TransactionWithDetail
 import com.example.fishmarket.domain.usecase.category.CategoryUseCase
 import com.example.fishmarket.domain.usecase.menu.MenuUseCase
 import com.example.fishmarket.domain.usecase.table.TableUseCase
 import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
 import com.example.fishmarket.utilis.Utils
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class AddTransactionViewModel(
     private val transactionUseCase: TransactionUseCase,
@@ -22,39 +25,29 @@ class AddTransactionViewModel(
     private var _table = MutableLiveData<Table>()
     val table: LiveData<Table> get() = _table
 
+    private var _transactionWithDetail = MutableLiveData<TransactionWithDetail>()
+    val transactionWithDetail: LiveData<TransactionWithDetail> get() = _transactionWithDetail
+
     fun setTable(table: Table) {
         _table.value = table
     }
 
     fun resetTransaction() {
-        _table.value = Table("", "", false, 0)
+        _table.value = Table("", "", false, "", 0)
+        _transactionWithDetail.value = null
     }
 
+    fun getTransactionWithDetail(id: String) = viewModelScope.launch {
+        transactionUseCase.getTransactionWithDetail(id).collectLatest {
+            _transactionWithDetail.value = it
+        }
+    }
+
+
     fun addTransaction(
-        totalFee: Int,
-        queue:Int,
-        detail: List<DetailTransactionResponse>
+        transactionResponse: TransactionResponse
     ): LiveData<Resource<Transaction>> {
-        val id = Utils.getRandomString()
-        val createdDate = System.currentTimeMillis()
-        val status = 1
-        val idTable = table.value?.id
-
-        val transaction = TransactionResponse(
-            id = id,
-            id_table = idTable ?: "",
-            id_restaurant = "",
-            created_date = createdDate,
-            dibakar_date = 0,
-            disajikan_date = 0,
-            status = status,
-            finished_date = 0,
-            total_fee = totalFee,
-            detail = detail,
-            no_urut = queue
-        )
-
-        return transactionUseCase.addTransaction(transaction).asLiveData()
+        return transactionUseCase.addTransaction(transactionResponse).asLiveData()
     }
 
     fun getMenus(id: String) = menuUseCase.getMenusByCategory(id).asLiveData()
@@ -66,4 +59,5 @@ class AddTransactionViewModel(
     fun getCategories() = categoryUseCase.getCategories().asLiveData()
 
     fun getQueueNumber() = transactionUseCase.getQueueNumber().asLiveData()
+
 }

@@ -15,7 +15,7 @@ interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTransactions(transactions: List<TransactionEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addDetailTransactions(detailTransactions: List<DetailTransactionEntity>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -36,8 +36,12 @@ interface TransactionDao {
     fun getChangeStatusTransaction(id: String): Flow<ChangeStatusTransactionEntity>
 
     @Transaction
-    @Query("SELECT * FROM `transaction` ORDER BY created_date DESC LIMIT 50")
+    @Query("SELECT t.id,tr.name as id_table,t.id_restaurant,t.created_date,t.dibakar_date,t.disajikan_date,t.finished_date,t.status,t.total_fee,t.no_urut  FROM `transaction` t INNER JOIN table_restaurant tr ON t.id_table = tr.id ORDER BY created_date DESC LIMIT 50")
     fun getTransactionsWithDetail(): Flow<List<TransactionWithDetailEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM `transaction` WHERE id =:id")
+    fun getTransactionWithDetail(id: String): Flow<TransactionWithDetailEntity>
 
     @Query(
         "SELECT r.id,r.name, SUM(t.total_fee) as income, COUNT(t.id) as transactionCount FROM restaurant r " +
@@ -56,8 +60,8 @@ interface TransactionDao {
     @Query("UPDATE `transaction` SET finished_date =:finished_date WHERE id=:id")
     suspend fun setFinishedTransaction(id: Int, finished_date: Long): Int
 
-    @Query("UPDATE table_restaurant SET status =:status WHERE id=:id")
-    suspend fun setStatusTable(status: Boolean, id: String)
+    @Query("UPDATE table_restaurant SET status =:status,id_transaction=:id_transaction WHERE id=:id")
+    suspend fun setStatusTable(status: Boolean, id: String, id_transaction: String)
 
     @Query("SELECT dt.id, dt.id_transaction,m.name,dt.quantity,dt.price,m.unit,dt.status,m.id as id_menu from detail_transaction dt INNER JOIN menu m ON dt.id_menu = m.id WHERE dt.id_transaction = :id")
     fun getDetailTransaction(id: String): Flow<List<DetailTransactionHistoryEntity>>

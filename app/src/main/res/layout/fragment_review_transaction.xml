@@ -6,58 +6,107 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.review_transaction.ReviewTransactionFragment">
 
-    <TextView
-        android:id="@+id/tvSelectTable"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawablePadding="16dp"
-        android:fontFamily="@font/roboto_regular"
-        android:paddingStart="24dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp"
-        android:text="@string/select_table"
-        android:textColor="@color/orange_500"
-        android:textSize="16sp"
-        app:drawableStartCompat="@drawable/ic_table_orange"
-        app:layout_constraintEnd_toStartOf="@id/tvQueueNumber"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvQueueNumber"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawablePadding="16dp"
-        android:fontFamily="@font/roboto_regular"
-        android:paddingStart="24dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp"
-        android:text="@string/queue_number"
-        android:textColor="@color/orange_500"
-        android:textSize="16sp"
-        app:drawableStartCompat="@drawable/ic_receipt_orange_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvSelectTable"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/v1"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@color/gray_200"
-        app:layout_constraintTop_toBottomOf="@id/tvSelectTable" />
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:paddingBottom="100dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDetailTransaction"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scrollbars="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/layoutKeterangan"
-        app:layout_constraintTop_toBottomOf="@id/v1"
-        tools:listitem="@layout/item_history_detail" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvSelectTable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:paddingStart="24dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="12dp"
+                android:text="@string/select_table"
+                android:textColor="@color/orange_500"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_table_orange"
+                app:layout_constraintEnd_toStartOf="@id/tvQueueNumber"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvQueueNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:paddingStart="24dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="12dp"
+                android:text="@string/queue_number"
+                android:textColor="@color/orange_500"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_receipt_orange_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvSelectTable"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/v1"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/gray_200"
+                app:layout_constraintTop_toBottomOf="@id/tvSelectTable" />
+
+            <TextView
+                android:id="@+id/tvAdditionalOrder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/additional_order"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/v1" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAdditionalOrder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:scrollbars="vertical"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tvAdditionalOrder"
+                tools:listitem="@layout/item_history_detail" />
+
+            <TextView
+                android:id="@+id/tvOrder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/order"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/rvAdditionalOrder" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvDetailTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingBottom="100dp"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tvOrder"
+                tools:listitem="@layout/item_history_detail" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
         android:id="@+id/layoutKeterangan"
@@ -67,8 +116,7 @@
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rvDetailTransaction">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/placeholderTable"
@@ -126,5 +174,4 @@
             android:textSize="16sp" />
 
     </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

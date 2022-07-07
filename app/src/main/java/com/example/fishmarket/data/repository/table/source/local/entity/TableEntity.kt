@@ -9,5 +9,6 @@ data class TableEntity(
     @PrimaryKey @ColumnInfo(name = "id") var id: String,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "status") var status: Boolean,
+    @ColumnInfo(name = "id_transaction") var id_transaction:String,
     @ColumnInfo(name = "createdDate") var createdDate: Long
 )

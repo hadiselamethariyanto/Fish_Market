@@ -75,4 +75,6 @@
     <string name="warning_quantity_empty">Mohon isi jumlah menu</string>
     <string name="queue_number">No Urut</string>
     <string name="queue">No Urut: %s</string>
+    <string name="additional_order">Pesanan Tambahan</string>
+    <string name="order">Pesanan</string>
 </resources>

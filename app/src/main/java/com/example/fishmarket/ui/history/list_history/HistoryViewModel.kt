@@ -6,5 +6,5 @@ import com.example.fishmarket.domain.repository.ITransactionRepository
 import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
 
 class HistoryViewModel(private val transactionUseCase: TransactionUseCase) : ViewModel() {
-    fun getTransactionsWithDetail() = transactionUseCase.getTransactionWithDetail().asLiveData()
+    fun getTransactionsWithDetail() = transactionUseCase.getTransactionsWithDetail().asLiveData()
 }

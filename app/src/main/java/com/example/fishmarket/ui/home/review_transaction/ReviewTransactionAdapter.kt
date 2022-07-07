@@ -7,10 +7,17 @@ import com.example.fishmarket.databinding.ItemHistoryDetailBinding
 import com.example.fishmarket.utilis.Product
 import com.example.fishmarket.utilis.Utils
 
-class ReviewTransactionAdapter(private val list: List<Product>) :
+class ReviewTransactionAdapter() :
     RecyclerView.Adapter<ReviewTransactionAdapter.ViewHolder>() {
+    private val list = ArrayList<Product>()
 
     private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun updateData(newList: List<Product>) {
+        list.clear()
+        list.addAll(newList)
+        notifyItemRangeChanged(0, list.size)
+    }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback

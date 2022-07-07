@@ -19,14 +19,14 @@ class TransactionInteractor(private val repository: ITransactionRepository) : Tr
     ): Flow<Resource<ChangeStatusTransaction>> =
         repository.changeStatusTransaction(transactionEntity, detailTransactionEntity)
 
-    override suspend fun setStatusTable(status: Boolean, id: String) =
-        repository.setStatusTable(status, id)
-
     override fun getTransactions(filter: Int): Flow<Resource<List<TransactionHome>>> =
         repository.getTransactions(filter)
 
-    override fun getTransactionWithDetail(): Flow<Resource<List<TransactionWithDetail>>> =
-        repository.getTransactionWithDetail()
+    override fun getTransactionsWithDetail(): Flow<Resource<List<TransactionWithDetail>>> =
+        repository.getTransactionsWithDetail()
+
+    override fun getTransactionWithDetail(id: String): Flow<TransactionWithDetail> =
+        repository.getTransactionWithDetail(id)
 
     override fun getRangeTransaction(
         first: Long,

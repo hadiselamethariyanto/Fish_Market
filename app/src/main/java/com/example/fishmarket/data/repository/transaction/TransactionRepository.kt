@@ -14,6 +14,7 @@ import com.example.fishmarket.domain.repository.ITransactionRepository
 import com.example.fishmarket.utilis.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 
 class TransactionRepository(
     private val localDataSource: TransactionLocalDataSource,
@@ -33,7 +34,13 @@ class TransactionRepository(
 
             override suspend fun saveCallResult(data: TransactionResponse) {
                 localDataSource.addTransaction(DataMapper.mapTransactionResponseToEntity(data))
-                data.id_table?.let { localDataSource.setStatusTable(true, it) }
+                localDataSource.addDetailTransactions(
+                    DataMapper.mapDetailTransactionsToEntity(
+                        data.detail ?: arrayListOf(),
+                        data.id ?: ""
+                    )
+                )
+                localDataSource.setStatusTable(true, data.id_table.toString(), data.id.toString())
             }
         }.asFlow()
     }
@@ -54,18 +61,15 @@ class TransactionRepository(
             override suspend fun saveCallResult(data: TransactionEntity) {
                 localDataSource.changeStatusTransaction(transactionEntity)
                 if (data.status != 4) {
-                    localDataSource.setStatusTable(true, data.id_table)
+                    localDataSource.setStatusTable(true, data.id_table, data.id)
                 } else {
-                    localDataSource.setStatusTable(false, data.id_table)
+                    localDataSource.setStatusTable(false, data.id_table, "")
                 }
                 localDataSource.addDetailTransactions(detailTransactionEntity)
             }
 
         }.asFlow()
     }
-
-    override suspend fun setStatusTable(status: Boolean, id: String) =
-        localDataSource.setStatusTable(status, id)
 
     override fun getTransactions(filter: Int): Flow<Resource<List<TransactionHome>>> {
         return object :
@@ -98,12 +102,12 @@ class TransactionRepository(
         }.asFlow()
     }
 
-    override fun getTransactionWithDetail(): Flow<Resource<List<TransactionWithDetail>>> {
+    override fun getTransactionsWithDetail(): Flow<Resource<List<TransactionWithDetail>>> {
         return object :
             NetworkBoundResource<List<TransactionWithDetail>, List<TransactionResponse>>() {
             override fun loadFromDB(): Flow<List<TransactionWithDetail>> =
                 localDataSource.getTransactionsWithDetail().map {
-                    DataMapper.mapTransactionWithDetailEntityToDomain(it)
+                    DataMapper.mapTransactionsWithDetailEntityToDomain(it)
                 }
 
             override fun shouldFetch(data: List<TransactionWithDetail>?): Boolean =
@@ -127,6 +131,12 @@ class TransactionRepository(
             }
 
         }.asFlow()
+    }
+
+    override fun getTransactionWithDetail(id: String): Flow<TransactionWithDetail> {
+        return localDataSource.getTransactionWithDetail(id).mapNotNull {
+            DataMapper.mapTransactionWithDetailEntityToDomain(it)
+        }
     }
 
     override fun getRangeTransaction(

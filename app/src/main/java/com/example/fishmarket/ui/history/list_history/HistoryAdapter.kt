@@ -103,7 +103,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
                 itemView.context
             )
             binding.tvJam.text = Utils.formatTime(transaction.transaction.created_date)
-
+            binding.tvTable.text = transaction.transaction.id_table
             itemView.setOnClickListener {
                 onItemClickCallback.onItemClicked(transaction)
             }

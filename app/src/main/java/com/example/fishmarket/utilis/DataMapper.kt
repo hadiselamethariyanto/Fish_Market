@@ -18,6 +18,7 @@ import com.example.fishmarket.data.repository.transaction.source.remote.model.De
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.domain.model.*
 import com.google.firebase.auth.FirebaseUser
+import timber.log.Timber
 
 object DataMapper {
 
@@ -31,7 +32,7 @@ object DataMapper {
             )
         }
 
-    fun mapTransactionWithDetailEntityToDomain(list: List<TransactionWithDetailEntity>): List<TransactionWithDetail> =
+    fun mapTransactionsWithDetailEntityToDomain(list: List<TransactionWithDetailEntity>): List<TransactionWithDetail> =
         list.map {
             val transaction = mapTransactionEntityToDomain(it.transactionEntity)
             val detailTransactionHistory =
@@ -40,6 +41,99 @@ object DataMapper {
             TransactionWithDetail(
                 transaction = transaction,
                 detailTransactionHistory = detailTransactionHistory
+            )
+        }
+
+    fun mapTransactionWithDetailEntityToDomain(data: TransactionWithDetailEntity?): TransactionWithDetail {
+        val transaction = mapTransactionEntityToDomain(
+            data?.transactionEntity ?: TransactionEntity(
+                "",
+                "",
+                "",
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            )
+        )
+        val detailTransactionHistory =
+            mapDetailTransactionHistoryEntitiesToDomain(data?.detailTransactionEntity ?: listOf())
+        return TransactionWithDetail(
+            transaction = transaction,
+            detailTransactionHistory = detailTransactionHistory
+        )
+    }
+
+    fun mapProductToDetailResponse(list: List<Product>): List<DetailTransactionResponse> =
+        list.map { menu ->
+            DetailTransactionResponse(
+                id = Utils.getRandomString(),
+                id_menu = menu.id,
+                quantity = menu.quantity,
+                price = menu.price,
+                status = true
+            )
+        }
+
+    fun mapDetailTransactionHistoryToDetailResponse(list: List<DetailTransactionHistory>): List<DetailTransactionResponse> =
+        list.map { menu ->
+            DetailTransactionResponse(
+                id = menu.id,
+                id_menu = menu.id_menu,
+                quantity = menu.quantity,
+                price = menu.price,
+                status = menu.status
+            )
+        }
+
+    fun mapCombineDetailTransaction(
+        listExisting: ArrayList<DetailTransactionResponse>,
+        newList: ArrayList<DetailTransactionResponse>
+    ): List<DetailTransactionResponse> {
+        val combinedDetail = ArrayList<DetailTransactionResponse>()
+        newList.map { new ->
+            val sa = listExisting.filter { x -> x.id_menu == new.id_menu }
+            if (sa.size == 1) {
+                val newQuantity = sa[0].quantity!! + new.quantity!!
+                sa[0].quantity = newQuantity
+                combinedDetail.add(sa[0])
+            } else {
+                combinedDetail.add(new)
+            }
+        }
+        return combinedDetail
+    }
+
+    fun mapTransactionToTransactionResponse(
+        transaction: Transaction,
+        totalFee: Int,
+        detail: List<DetailTransactionResponse>
+    ): TransactionResponse =
+        TransactionResponse(
+            id = transaction.id,
+            id_table = transaction.id_table,
+            id_restaurant = transaction.id_restaurant,
+            created_date = transaction.created_date,
+            dibakar_date = transaction.dibakar_date,
+            disajikan_date = transaction.disajikan_date,
+            finished_date = transaction.finished_date,
+            status = transaction.status,
+            total_fee = totalFee,
+            detail = detail,
+            no_urut = transaction.no_urut
+        )
+
+    fun mapDetailTransactionHistoryToProduct(list: List<DetailTransactionHistory>): List<Product> =
+        list.map {
+            Product(
+                id = it.id_menu,
+                name = it.name,
+                price = it.price,
+                quantity = it.quantity,
+                unit = it.unit
             )
         }
 
@@ -199,14 +293,21 @@ object DataMapper {
     }
 
     fun mapTableEntitiesToDomain(list: List<TableEntity>): List<Table> = list.map {
-        Table(id = it.id, name = it.name, status = it.status, createdDate = it.createdDate)
+        Table(
+            id = it.id,
+            name = it.name,
+            status = it.status,
+            createdDate = it.createdDate,
+            idTransaction = it.id_transaction
+        )
     }
 
     fun mapTableEntityToDomain(tableEntity: TableEntity) = Table(
         id = tableEntity.id,
         name = tableEntity.name,
         status = tableEntity.status,
-        createdDate = tableEntity.createdDate
+        createdDate = tableEntity.createdDate,
+        idTransaction = tableEntity.id_transaction
     )
 
     fun mapFirebaseUserToUser(user: FirebaseUser) =
@@ -256,7 +357,8 @@ object DataMapper {
             id = it.id ?: "",
             name = it.name ?: "",
             status = false,
-            createdDate = it.createdDate ?: 0
+            createdDate = it.createdDate ?: 0,
+            id_transaction = it.idTransaction ?: ""
         )
     }
 

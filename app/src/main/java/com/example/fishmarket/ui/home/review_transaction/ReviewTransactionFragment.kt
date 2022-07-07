@@ -10,11 +10,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.fishmarket.App
 import com.example.fishmarket.R
-import com.example.fishmarket.data.repository.transaction.source.remote.model.DetailTransactionResponse
+import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.data.source.remote.Resource
 import com.example.fishmarket.databinding.FragmentReviewTransactionBinding
 import com.example.fishmarket.domain.model.Transaction
+import com.example.fishmarket.domain.model.TransactionWithDetail
 import com.example.fishmarket.ui.home.add_transaction.AddTransactionViewModel
+import com.example.fishmarket.utilis.DataMapper
 import com.example.fishmarket.utilis.Product
 import com.example.fishmarket.utilis.Utils
 import org.alkaaf.btprint.BluetoothPrint
@@ -25,7 +27,8 @@ class ReviewTransactionFragment : Fragment() {
 
     private var _binding: FragmentReviewTransactionBinding? = null
     private val binding get() = _binding!!
-    private lateinit var detailHistoryAdapter: ReviewTransactionAdapter
+    private lateinit var additionalAdapter: ReviewTransactionAdapter
+    private lateinit var orderAdapter: ReviewTransactionAdapter
     private val viewModel: AddTransactionViewModel by koinNavGraphViewModel(R.id.home)
     private val ct = App.getApp()
 
@@ -39,19 +42,22 @@ class ReviewTransactionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupAdapter()
+        setupAdditionalAdapter()
+        setupOrderAdapter()
         setupInfo()
         setTable()
         selectTable()
         setupQueueNumber()
         setupSaveTransaction()
         setDismissObserver()
+        setupTransactionWithDetailObserver()
     }
 
-    private fun setupAdapter() {
+    private fun setupAdditionalAdapter() {
         val detailTransaction = ct.getCart().cart
-        detailHistoryAdapter = ReviewTransactionAdapter(detailTransaction)
-        detailHistoryAdapter.setOnItemClickCallback(object :
+        additionalAdapter = ReviewTransactionAdapter()
+        additionalAdapter.updateData(detailTransaction)
+        additionalAdapter.setOnItemClickCallback(object :
             ReviewTransactionAdapter.OnItemClickCallback {
             override fun onItemClicked(position: Int, product: Product) {
                 val bundle = bundleOf(
@@ -68,7 +74,17 @@ class ReviewTransactionFragment : Fragment() {
                 )
             }
         })
-        binding.rvDetailTransaction.adapter = detailHistoryAdapter
+        binding.rvAdditionalOrder.adapter = additionalAdapter
+    }
+
+    private fun setupOrderAdapter() {
+        orderAdapter = ReviewTransactionAdapter()
+        orderAdapter.setOnItemClickCallback(object : ReviewTransactionAdapter.OnItemClickCallback {
+            override fun onItemClicked(position: Int, product: Product) {
+
+            }
+        })
+        binding.rvDetailTransaction.adapter = orderAdapter
     }
 
     private fun setupQueueNumber() {
@@ -83,21 +99,54 @@ class ReviewTransactionFragment : Fragment() {
         )?.observe(viewLifecycleOwner) {
             it?.let {
                 setupInfo()
-                detailHistoryAdapter.notifyDataSetChanged()
+                additionalAdapter.notifyDataSetChanged()
             }
         }
     }
 
     private fun setupInfo() {
-        val totalFee = ct.getCart().totalFee
+        val feeExisting = viewModel.transactionWithDetail.value?.transaction?.total_fee ?: 0
+        val totalFee = ct.getCart().totalFee + feeExisting
         binding.tvTotalFee.text = Utils.formatNumberToRupiah(totalFee, requireActivity())
     }
 
     private fun setTable() {
-        viewModel.table.observe(viewLifecycleOwner) {
-            binding.tvTableName.text = it.name
-            binding.tvSelectTable.text = it.name
+        viewModel.table.observe(viewLifecycleOwner) { table ->
+            binding.tvTableName.text = table.name
+            binding.tvSelectTable.text = table.name
+
+            viewModel.getTransactionWithDetail(table.idTransaction)
         }
+    }
+
+    private fun setupTransactionWithDetailObserver() {
+        viewModel.transactionWithDetail.observe(viewLifecycleOwner, transactionWithDetailObserver)
+    }
+
+    private val transactionWithDetailObserver =
+        Observer<TransactionWithDetail> { transactionWithDetail ->
+            if (transactionWithDetail != null && transactionWithDetail.transaction.id.isNotEmpty()) {
+                val products =
+                    DataMapper.mapDetailTransactionHistoryToProduct(transactionWithDetail.detailTransactionHistory)
+                binding.tvQueueNumber.text = transactionWithDetail.transaction.no_urut.toString()
+                orderAdapter.updateData(products)
+                binding.rvAdditionalOrder.setPadding(0, 0, 0, 0)
+                setVisibility(View.VISIBLE)
+                setupInfo()
+            } else {
+                setupQueueNumber()
+                orderAdapter.updateData(arrayListOf())
+                binding.rvAdditionalOrder.setPadding(0, 0, 0, 100)
+                setVisibility(View.GONE)
+                setupInfo()
+            }
+        }
+
+
+    private fun setVisibility(status: Int) {
+        binding.tvOrder.visibility = status
+        binding.tvAdditionalOrder.visibility = status
+        binding.rvDetailTransaction.visibility = status
     }
 
     private fun selectTable() {
@@ -118,20 +167,48 @@ class ReviewTransactionFragment : Fragment() {
                     getString(R.string.warning_message_select_table)
                 )
             } else {
-                val totalFee = ct.getCart().totalFee
-                val detailList = ArrayList<DetailTransactionResponse>()
-                for (x in 0 until ct.getCart().cartSize) {
-                    val menu = ct.getCart().getProduct(x)
-                    val detail = DetailTransactionResponse(
-                        id = Utils.getRandomString(),
-                        id_menu = menu.id,
-                        quantity = menu.quantity,
-                        price = menu.price,
-                        status = true
+                val transactionWithDetail = viewModel.transactionWithDetail.value
+                val transaction = transactionWithDetail?.transaction
+
+                var totalFee = ct.getCart().totalFee
+                val detailList = ArrayList(DataMapper.mapProductToDetailResponse(ct.getCart().cart))
+                val id = Utils.getRandomString()
+                val status = 1
+                val createdDate = System.currentTimeMillis()
+                val idTable = viewModel.table.value?.id
+
+                var transactionResponse = TransactionResponse(
+                    id = id,
+                    id_table = idTable ?: "",
+                    id_restaurant = "",
+                    created_date = createdDate,
+                    dibakar_date = 0,
+                    disajikan_date = 0,
+                    status = status,
+                    finished_date = 0,
+                    total_fee = totalFee,
+                    detail = detailList,
+                    no_urut = queue
+                )
+
+                if (transaction != null && transaction.id != "") {
+                    totalFee += transaction.total_fee
+                    val mDetail = ArrayList(
+                        DataMapper.mapDetailTransactionHistoryToDetailResponse(
+                            transactionWithDetail.detailTransactionHistory
+                        )
                     )
-                    detailList.add(detail)
+
+                    val newDetailList = DataMapper.mapCombineDetailTransaction(mDetail, detailList)
+
+                    transactionResponse = DataMapper.mapTransactionToTransactionResponse(
+                        transaction,
+                        totalFee,
+                        newDetailList
+                    )
                 }
-                viewModel.addTransaction(totalFee, queue, detailList)
+
+                viewModel.addTransaction(transactionResponse)
                     .observe(viewLifecycleOwner, addTransactionObserver)
             }
         }

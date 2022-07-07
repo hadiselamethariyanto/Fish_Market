@@ -37,6 +37,7 @@ class EditTableFragment : Fragment() {
         val id = arguments?.getString("id")
         val status = arguments?.getBoolean("status")
         val createdDate = arguments?.getLong("createdDate")
+        val idTransaction = arguments?.getString("idTransaction") ?: ""
 
         getTable(id.toString())
 
@@ -62,7 +63,8 @@ class EditTableFragment : Fragment() {
                 id = id ?: "",
                 name = etTableName.text.toString(),
                 status = status ?: false,
-                createdDate = createdDate ?: 0
+                createdDate = createdDate ?: 0,
+                id_transaction = idTransaction
             )
             viewModel.updateTable(table).observe(viewLifecycleOwner, editTableObserver)
         }

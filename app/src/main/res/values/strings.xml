@@ -104,5 +104,7 @@
     <string name="warning_quantity_empty">Please fill quantity menu</string>
     <string name="queue_number">Queue</string>
     <string name="queue">Queue: %s</string>
+    <string name="additional_order">Additional Order</string>
+    <string name="order">Order</string>
 
 </resources>

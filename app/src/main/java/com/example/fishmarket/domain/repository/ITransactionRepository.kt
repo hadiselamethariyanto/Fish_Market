@@ -16,11 +16,11 @@ interface ITransactionRepository {
         detailTransactionEntity: List<DetailTransactionEntity>
     ): Flow<Resource<ChangeStatusTransaction>>
 
-    suspend fun setStatusTable(status: Boolean, id: String)
-
     fun getTransactions(filter: Int): Flow<Resource<List<TransactionHome>>>
 
-    fun getTransactionWithDetail(): Flow<Resource<List<TransactionWithDetail>>>
+    fun getTransactionsWithDetail(): Flow<Resource<List<TransactionWithDetail>>>
+
+    fun getTransactionWithDetail(id: String): Flow<TransactionWithDetail>
 
     fun getRangeTransaction(first: Long, second: Long): Flow<Resource<List<RestaurantTransaction>>>
 

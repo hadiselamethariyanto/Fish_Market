@@ -55,7 +55,13 @@ class AddTableFragment : Fragment() {
                 val createdDate = System.currentTimeMillis()
 
                 val table =
-                    TableEntity(id = id, name = name, status = false, createdDate = createdDate)
+                    TableEntity(
+                        id = id,
+                        name = name,
+                        status = false,
+                        createdDate = createdDate,
+                        id_transaction = ""
+                    )
                 viewModel.addTable(table).observe(viewLifecycleOwner, addTableObserver)
             }
         }
