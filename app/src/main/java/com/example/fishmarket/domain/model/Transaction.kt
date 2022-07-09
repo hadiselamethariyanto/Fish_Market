@@ -10,5 +10,7 @@ data class Transaction(
     val finished_date: Long,
     val status: Int,
     val total_fee: Int,
-    val no_urut: Int
+    val no_urut: Int,
+    val original_fee:Int,
+    val discount:Int
 )

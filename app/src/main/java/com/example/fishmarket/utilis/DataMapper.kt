@@ -184,7 +184,9 @@ object DataMapper {
                 finished_date = transactionEntity.finished_date,
                 status = transactionEntity.status,
                 total_fee = transactionEntity.total_fee,
-                no_urut = transactionEntity.no_urut
+                no_urut = transactionEntity.no_urut,
+                original_fee = transactionEntity.original_fee,
+                discount = transactionEntity.discount
             )
         }
 
@@ -218,7 +220,9 @@ object DataMapper {
             finished_date = transactionEntity.finished_date,
             status = transactionEntity.status,
             total_fee = transactionEntity.total_fee,
-            no_urut = transactionEntity.no_urut
+            no_urut = transactionEntity.no_urut,
+            original_fee = transactionEntity.original_fee,
+            discount = transactionEntity.discount
         )
 
     fun mapMenuEntitiesToDomain(list: List<MenuEntity>): List<Menu> = list.map {

@@ -34,10 +34,12 @@ class DetailHistoryFragment : Fragment() {
         val bundle = arguments?.getString("data")
         val transaction = Gson().fromJson(bundle, TransactionWithDetail::class.java)
 
-        binding.id.text = transaction.transaction.id
+        binding.id.text = transaction.transaction.no_urut.toString()
         binding.time.text = Utils.formatTime(transaction.transaction.created_date)
         binding.totalFee.text =
             Utils.formatNumberToRupiah(transaction.transaction.total_fee, requireActivity())
+        binding.tvRestaurant.text = transaction.transaction.id_restaurant
+        binding.tvTable.text = transaction.transaction.id_table
 
         setupAdapter(transaction.detailTransactionHistory)
 
@@ -74,8 +76,10 @@ class DetailHistoryFragment : Fragment() {
         builder.addTextln(getString(R.string.address))
         builder.addLine()
         builder.setAlignLeft()
-        builder.addFrontEnd("No Transaksi: ", transaction.transaction.id)
+        builder.addFrontEnd("No Urut: ", transaction.transaction.no_urut.toString())
         builder.addFrontEnd("Hari: ", Utils.formatDate(transaction.transaction.created_date))
+        builder.addFrontEnd("Pembakar: ", transaction.transaction.id_restaurant)
+        builder.addFrontEnd("Meja: ", transaction.transaction.id_table)
         builder.addLine()
 
         val detailTransaction = transaction.detailTransactionHistory
@@ -94,6 +98,20 @@ class DetailHistoryFragment : Fragment() {
             }
         }
 
+        builder.addLine()
+        builder.addFrontEnd(
+            "Subtotal",
+            ":${
+                Utils.formatNumberToRupiah(
+                    transaction.transaction.original_fee,
+                    requireActivity()
+                )
+            }"
+        )
+        builder.addFrontEnd(
+            "Discount",
+            ":${Utils.formatNumberToRupiah(transaction.transaction.discount, requireActivity())}"
+        )
         builder.addLine()
         builder.addFrontEnd(
             "Total Biaya",
