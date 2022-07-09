@@ -75,7 +75,10 @@ class ReportFragment : Fragment() {
             override fun onItemClicked(
                 idRestaurant: String,
                 restaurantName: String,
-                transactionCount: Int
+                transactionCount: Int,
+                originalFee: Int,
+                discount: Int,
+                totalFee: Int
             ) {
                 val dateRange = viewModel.dateRangeFormState.value
                 val first = dateRange?.first ?: this@ReportFragment.first
@@ -87,7 +90,10 @@ class ReportFragment : Fragment() {
                         "first" to first,
                         "second" to second,
                         "restaurantName" to restaurantName,
-                        "transactionCount" to transactionCount
+                        "transactionCount" to transactionCount,
+                        "originalFee" to originalFee,
+                        "discount" to discount,
+                        "totalFee" to totalFee
                     )
 
                 findNavController().navigate(
@@ -127,6 +133,14 @@ class ReportFragment : Fragment() {
                     binding.content.tvTotalIncome.text = Utils.formatDoubleToRupiah(
                         data.sumOf { it.income }, requireActivity()
                     )
+
+                    val discount = data.sumOf { it.discount }
+                    val originalFee = data.sumOf { it.originalFee }
+
+                    binding.content.tvOriginalFeeAndDiscount.text = Utils.formatNumberToRupiah(
+                        originalFee,
+                        requireActivity()
+                    ) + " - " + Utils.formatNumberToRupiah(discount, requireActivity())
 
                     restaurantTransactionAdapter.updateData(data)
                 }

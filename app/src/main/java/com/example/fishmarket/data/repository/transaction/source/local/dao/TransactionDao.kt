@@ -44,7 +44,7 @@ interface TransactionDao {
     fun getTransactionWithDetail(id: String): Flow<TransactionWithDetailEntity>
 
     @Query(
-        "SELECT r.id,r.name, SUM(t.total_fee) as income, COUNT(t.id) as transactionCount FROM restaurant r " +
+        "SELECT r.id,r.name, SUM(t.total_fee) as income,SUM(t.discount) as discount, SUM(t.original_fee) as original_fee, COUNT(t.id) as transactionCount FROM restaurant r " +
                 "INNER JOIN `transaction` t ON r.id = t.id_restaurant " +
                 "WHERE date(t.created_date/1000,'unixepoch','localtime')>= date(:first/1000,'unixepoch','localtime') " +
                 "AND date(t.created_date/1000,'unixepoch','localtime') <= date(:second/1000,'unixepoch','localtime') GROUP BY r.name"

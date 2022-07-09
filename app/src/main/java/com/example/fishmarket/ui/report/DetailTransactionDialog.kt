@@ -40,10 +40,25 @@ class DetailTransactionDialog : BottomSheetDialogFragment() {
         val second = arguments?.getLong("second") ?: 0
         val restaurantName = arguments?.getString("restaurantName") ?: ""
         val transactionCount = arguments?.getInt("transactionCount") ?: 0
+        val originalFee = arguments?.getInt("originalFee") ?: 0
+        val discount = arguments?.getInt("discount") ?: 0
+        val totalFee = arguments?.getInt("totalFee") ?: 0
 
         binding.btnPrint.setOnClickListener {
-            printDetailTransaction(restaurantName, first, second, transactionCount)
+            printDetailTransaction(
+                restaurantName,
+                first,
+                second,
+                transactionCount,
+                originalFee,
+                discount,
+                totalFee
+            )
         }
+
+        binding.tvOriginalFee.text = Utils.formatNumberToRupiah(originalFee, requireActivity())
+        binding.tvDiscount.text = "-" + Utils.formatNumberToRupiah(discount, requireActivity())
+        binding.tvTotalIncome.text = Utils.formatNumberToRupiah(totalFee, requireActivity())
 
         viewModel.getDetailTransactionRestaurant(idRestaurant, first, second)
         viewModel.detailTransactionHistory.observe(
@@ -56,7 +71,10 @@ class DetailTransactionDialog : BottomSheetDialogFragment() {
         restaurantName: String,
         first: Long,
         second: Long,
-        transactionCount: Int
+        transactionCount: Int,
+        originalFee: Int,
+        discount: Int,
+        totalFee: Int,
     ) {
         val detailTransactionHistory = viewModel.detailTransactionHistory.value ?: listOf()
         val firstDate = Utils.formatDate(first)
@@ -98,10 +116,19 @@ class DetailTransactionDialog : BottomSheetDialogFragment() {
 
         builder.addLine()
         builder.addFrontEnd(
+            "Pemasukan",
+            ":${Utils.formatNumberToRupiah(originalFee, requireActivity())}"
+        )
+        builder.addFrontEnd(
+            "Discount",
+            ": -${Utils.formatNumberToRupiah(discount, requireActivity())}"
+        )
+        builder.addLine()
+        builder.addFrontEnd(
             "Total Pemasukan",
             ":${
-                Utils.formatDoubleToRupiah(
-                    detailTransactionHistory.sumOf { data -> data.price * data.quantity },
+                Utils.formatNumberToRupiah(
+                    totalFee,
                     requireActivity()
                 )
             }"
@@ -129,14 +156,6 @@ class DetailTransactionDialog : BottomSheetDialogFragment() {
                     LinearLayoutManager.VERTICAL
                 )
             )
-
-            val newList = list.filter { it.status }
-            binding.tvTotalIncome.text =
-                Utils.formatDoubleToRupiah(
-                    newList.sumOf { data -> data.price * data.quantity },
-                    requireActivity()
-                )
-
         }
 
     override fun onDestroy() {

@@ -27,7 +27,9 @@ object DataMapper {
                 id = it.id,
                 name = it.name,
                 income = it.income,
-                transactionCount = it.transactionCount
+                transactionCount = it.transactionCount,
+                discount = it.discount,
+                originalFee = it.original_fee
             )
         }
 

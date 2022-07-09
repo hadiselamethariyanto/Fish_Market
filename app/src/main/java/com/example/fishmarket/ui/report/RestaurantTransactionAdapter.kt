@@ -29,9 +29,20 @@ class RestaurantTransactionAdapter :
             binding.tvName.text = data.name
             binding.tvIncome.text = Utils.formatDoubleToRupiah(data.income, itemView.context)
             binding.tvTransactionCount.text = data.transactionCount.toString()
+            binding.tvOriginalFeeAndDiscount.text = Utils.formatNumberToRupiah(
+                data.originalFee,
+                itemView.context
+            ) + " - " + Utils.formatNumberToRupiah(data.discount, itemView.context)
 
             itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(data.id, data.name, data.transactionCount)
+                onItemClickCallback.onItemClicked(
+                    data.id,
+                    data.name,
+                    data.transactionCount,
+                    data.originalFee,
+                    data.discount,
+                    data.income.toInt()
+                )
             }
         }
     }
@@ -49,6 +60,13 @@ class RestaurantTransactionAdapter :
     override fun getItemCount(): Int = list.size
 
     interface OnItemClickCallback {
-        fun onItemClicked(idRestaurant: String, restaurantName: String, transactionCount: Int)
+        fun onItemClicked(
+            idRestaurant: String,
+            restaurantName: String,
+            transactionCount: Int,
+            originalFee: Int,
+            discount: Int,
+            totalFee: Int
+        )
     }
 }
