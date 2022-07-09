@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.fishmarket.R
 import com.example.fishmarket.databinding.ItemHistoryBinding
 import com.example.fishmarket.databinding.ItemHistoryDateBinding
@@ -33,68 +34,22 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     inner class ViewHolderItem(private val binding: ItemHistoryBinding) :
         ViewHolder(binding.root) {
         fun bindItem(transaction: TransactionWithDetail) {
-            val context = itemView.context
             when (transaction.transaction.status) {
                 1 -> {
-                    val colorHex = "#" + Integer.toHexString(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.yellow_700
-                        ) and 0x00ffffff
-                    )
-                    binding.tvStatus.text = HtmlCompat.fromHtml(
-                        context.resources.getString(
-                            R.string.status_history_transaction,
-                            colorHex,
-                            "Dibersihkan"
-                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+                    Glide.with(itemView.context).load(R.drawable.ic_dibersihkan_history)
+                        .into(binding.tvStatus)
                 }
                 2 -> {
-                    val colorHex = "#" + Integer.toHexString(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.red_600
-                        ) and 0x00ffffff
-                    )
-                    binding.tvStatus.text = HtmlCompat.fromHtml(
-                        context.resources.getString(
-                            R.string.status_history_transaction,
-                            colorHex,
-                            "Dibakar"
-                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+                    Glide.with(itemView.context).load(R.drawable.ic_fire_history)
+                        .into(binding.tvStatus)
                 }
                 3 -> {
-                    val colorHex = "#" + Integer.toHexString(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.indigo_500
-                        ) and 0x00ffffff
-                    )
-                    binding.tvStatus.text = HtmlCompat.fromHtml(
-                        context.resources.getString(
-                            R.string.status_history_transaction,
-                            colorHex,
-                            "Disajikan"
-                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+                    Glide.with(itemView.context).load(R.drawable.ic_served_history)
+                        .into(binding.tvStatus)
                 }
                 else -> {
-                    val colorHex = "#" + Integer.toHexString(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.green_500
-                        ) and 0x00ffffff
-                    )
-
-                    binding.tvStatus.text = HtmlCompat.fromHtml(
-                        context.resources.getString(
-                            R.string.status_history_transaction,
-                            colorHex,
-                            "Dibayar"
-                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+                    Glide.with(itemView.context).load(R.drawable.ic_history_dibayar)
+                        .into(binding.tvStatus)
                 }
             }
 
@@ -102,6 +57,7 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
                 transaction.transaction.total_fee,
                 itemView.context
             )
+            binding.tvRestaurant.text = transaction.transaction.id_restaurant
             binding.tvJam.text = Utils.formatTime(transaction.transaction.created_date)
             binding.tvTable.text = transaction.transaction.id_table
             itemView.setOnClickListener {

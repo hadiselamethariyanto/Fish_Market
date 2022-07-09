@@ -9,29 +9,15 @@
     android:paddingBottom="8dp">
 
     <TextView
-        android:id="@+id/total"
+        android:id="@+id/restaurant"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_regular"
-        android:text="@string/total"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@id/status"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_regular"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/status"
+        android:text="@string/restaurant"
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@id/table"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/total"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -39,26 +25,55 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_regular"
-        android:gravity="center"
+        android:gravity="start"
         android:text="@string/title_table"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@id/jam"
+        app:layout_constraintEnd_toStartOf="@id/total"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/status"
+        app:layout_constraintStart_toEndOf="@id/restaurant"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
-        android:id="@+id/jam"
+        android:id="@+id/total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_regular"
         android:gravity="center"
-        android:text="@string/time"
+        android:text="@string/total"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintEnd_toStartOf="@id/tvJam"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@id/table"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRestaurant"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="start"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/tvTable"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/restaurant" />
+
+    <TextView
+        android:id="@+id/tvTable"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="start"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/tvTotalBiaya"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/tvRestaurant"
+        app:layout_constraintTop_toBottomOf="@id/table" />
 
     <TextView
         android:id="@+id/tvTotalBiaya"
@@ -66,54 +81,38 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:fontFamily="sans-serif-black"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/tvStatus"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/total" />
-
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:fontFamily="sans-serif"
-        android:paddingStart="16dp"
-        android:paddingEnd="0dp"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/tvTable"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/tvTotalBiaya"
-        app:layout_constraintTop_toBottomOf="@id/status" />
-
-    <TextView
-        android:id="@+id/tvTable"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_medium"
-        android:layout_marginTop="2dp"
-        android:textSize="16sp"
         android:gravity="center"
         android:textColor="@color/black"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/tvJam"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@id/tvTable"
+        app:layout_constraintTop_toBottomOf="@id/total" />
+
+    <ImageView
+        android:id="@+id/tvStatus"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_history_dibayar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/tvStatus"
-        app:layout_constraintTop_toBottomOf="@id/table" />
+        app:layout_constraintStart_toEndOf="@id/tvTotalBiaya"
+        app:layout_constraintTop_toBottomOf="@id/tvJam" />
+
 
     <TextView
         android:id="@+id/tvJam"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/tvTable"
-        app:layout_constraintTop_toBottomOf="@id/jam" />
+        app:layout_constraintStart_toEndOf="@id/total"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
