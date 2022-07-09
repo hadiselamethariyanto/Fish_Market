@@ -36,7 +36,7 @@ interface TransactionDao {
     fun getChangeStatusTransaction(id: String): Flow<ChangeStatusTransactionEntity>
 
     @Transaction
-    @Query("SELECT t.id,tr.name as id_table,t.id_restaurant,t.created_date,t.dibakar_date,t.disajikan_date,t.finished_date,t.status,t.total_fee,t.no_urut  FROM `transaction` t INNER JOIN table_restaurant tr ON t.id_table = tr.id ORDER BY created_date DESC LIMIT 50")
+    @Query("SELECT t.id,tr.name as id_table,t.id_restaurant,t.created_date,t.dibakar_date,t.disajikan_date,t.finished_date,t.status,t.total_fee,t.no_urut,t.original_fee,t.discount  FROM `transaction` t INNER JOIN table_restaurant tr ON t.id_table = tr.id ORDER BY created_date DESC LIMIT 50")
     fun getTransactionsWithDetail(): Flow<List<TransactionWithDetailEntity>>
 
     @Transaction

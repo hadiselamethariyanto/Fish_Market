@@ -18,7 +18,6 @@ import com.example.fishmarket.data.repository.transaction.source.remote.model.De
 import com.example.fishmarket.data.repository.transaction.source.remote.model.TransactionResponse
 import com.example.fishmarket.domain.model.*
 import com.google.firebase.auth.FirebaseUser
-import timber.log.Timber
 
 object DataMapper {
 
@@ -50,6 +49,8 @@ object DataMapper {
                 "",
                 "",
                 "",
+                0,
+                0,
                 0,
                 0,
                 0,
@@ -199,7 +200,9 @@ object DataMapper {
             total_fee = value.total_fee,
             table_name = value.table_name,
             restaurant_name = value.restaurant_name,
-            no_urut = value.no_urut
+            no_urut = value.no_urut,
+            original_fee = value.original_fee,
+            discount = value.discount
         )
 
     fun mapTransactionEntityToDomain(transactionEntity: TransactionEntity): Transaction =
@@ -340,7 +343,9 @@ object DataMapper {
             finished_date = transactionResponse.finished_date ?: 0,
             status = transactionResponse.status ?: 0,
             total_fee = transactionResponse.total_fee ?: 0,
-            no_urut = transactionResponse.no_urut ?: 0
+            no_urut = transactionResponse.no_urut ?: 0,
+            original_fee = transactionResponse.original_fee ?: 0,
+            discount = transactionResponse.discount ?: 0
         )
 
     fun mapCategoriesResponseToEntity(list: List<CategoryResponse>): List<CategoryEntity> =
@@ -374,7 +379,9 @@ object DataMapper {
                 finished_date = it.finished_date ?: 0,
                 status = it.status ?: 0,
                 total_fee = it.total_fee ?: 0,
-                no_urut = it.no_urut ?: 1
+                no_urut = it.no_urut ?: 1,
+                original_fee = it.original_fee ?: 0,
+                discount = it.discount ?: 0
             )
         }
 

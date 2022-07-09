@@ -12,5 +12,7 @@ data class ChangeStatusTransactionEntity(
     var total_fee: Int,
     var table_name: String,
     var restaurant_name: String,
-    var no_urut:Int
+    var no_urut:Int,
+    var original_fee:Int,
+    var discount:Int
 )

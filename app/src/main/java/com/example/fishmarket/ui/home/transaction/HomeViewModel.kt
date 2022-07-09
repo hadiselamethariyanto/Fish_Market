@@ -1,6 +1,7 @@
 package com.example.fishmarket.ui.home.transaction
 
 import androidx.lifecycle.*
+import com.example.fishmarket.R
 import com.example.fishmarket.data.repository.transaction.source.local.entity.DetailTransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionEntity
 import com.example.fishmarket.data.repository.transaction.source.local.entity.TransactionHomeEntity
@@ -10,6 +11,7 @@ import com.example.fishmarket.domain.model.DetailTransactionHistory
 import com.example.fishmarket.domain.usecase.restaurant.RestaurantUseCase
 import com.example.fishmarket.domain.usecase.status_transaction.StatusTransactionUseCase
 import com.example.fishmarket.domain.usecase.transaction.TransactionUseCase
+import com.example.fishmarket.ui.payment.AddDiscountFormState
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -21,12 +23,44 @@ class HomeViewModel(
     private var _filter = MutableLiveData(0)
     val filter: LiveData<Int> get() = _filter
 
+    private var _discount = MutableLiveData(0)
+    val discount: LiveData<Int> get() = _discount
+
     private var _detailTransactionHistory = MutableLiveData<List<DetailTransactionHistory>>()
     val detailTransactionHistory: LiveData<List<DetailTransactionHistory>> get() = _detailTransactionHistory
+
+    private var _addDiscountForm = MutableLiveData<AddDiscountFormState>()
+    val addDiscountFormState: LiveData<AddDiscountFormState> get() = _addDiscountForm
 
     val transactions = Transformations.switchMap(filter) { filter ->
         transactionUseCase.getTransactions(filter).asLiveData()
     }
+
+    fun addDiscountDataChanged(discount: String, originalFee: Int) {
+        if (!isDiscountValid(discount)) {
+            _addDiscountForm.value =
+                AddDiscountFormState(discountError = R.string.warning_discount_empty)
+        } else if (!isDiscountValid(discount, originalFee)) {
+            _addDiscountForm.value =
+                AddDiscountFormState(discountError = R.string.warning_discount_more)
+        } else {
+            _addDiscountForm.value = AddDiscountFormState(isDataValid = true)
+        }
+    }
+
+    fun setDiscount(discount: Int) {
+        _discount.value = discount
+    }
+
+    fun resetDiscount() {
+        _discount.value = 0
+        _addDiscountForm.value = AddDiscountFormState(discountError = null, isDataValid = false)
+    }
+
+    private fun isDiscountValid(discount: String): Boolean = discount.isNotEmpty()
+
+    private fun isDiscountValid(discount: String, originalFee: Int): Boolean =
+        discount.toInt() in 1..originalFee
 
     fun getStatusTransaction() = statusTransactionUseCase.getStatusTransaction().asLiveData()
 
@@ -45,7 +79,9 @@ class HomeViewModel(
             finished_date = transaction.finished_date,
             status = newStatus,
             total_fee = getTotalFee(),
-            no_urut = transaction.no_urut
+            no_urut = transaction.no_urut,
+            original_fee = getOriginalFee(),
+            discount = discount.value ?: 0
         )
 
         val finishedDate = System.currentTimeMillis()
@@ -97,12 +133,20 @@ class HomeViewModel(
         ).asLiveData()
     }
 
-    fun getTotalFee(): Int {
+    fun getOriginalFee(): Int {
         val newList = _detailTransactionHistory.value?.filter {
             it.status
         } ?: listOf()
 
         return newList.sumOf { it.price * it.quantity }.toInt()
+    }
+
+    fun getTotalFee(): Int {
+        val newList = _detailTransactionHistory.value?.filter {
+            it.status
+        } ?: listOf()
+
+        return newList.sumOf { it.price * it.quantity }.toInt() - discount.value!!
     }
 
 

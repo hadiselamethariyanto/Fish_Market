@@ -37,7 +37,9 @@ class TransactionRemoteDataSource(private val firebase: FirebaseFirestore) {
                 "finished_date" to transaction.finished_date,
                 "status" to transaction.status,
                 "total_fee" to transaction.total_fee,
-                "detail" to detailTransactionEntity
+                "detail" to detailTransactionEntity,
+                "discount" to transaction.discount,
+                "original_fee" to transaction.original_fee
             )
             val transactionReference = firebase.collection("transaction").document(transaction.id)
             transactionReference.update(dataUpdate).await()

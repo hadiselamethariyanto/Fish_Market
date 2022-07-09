@@ -77,4 +77,9 @@
     <string name="queue">No Urut: %s</string>
     <string name="additional_order">Pesanan Tambahan</string>
     <string name="order">Pesanan</string>
+    <string name="et_discount">Diskon</string>
+    <string name="title_payment">Pembayaran</string>
+    <string name="add_discount">Tambah Diskon</string>
+    <string name="warning_discount_empty">Mohon isi diskon</string>
+    <string name="warning_discount_more">Diskon melebihi total biaya</string>
 </resources>

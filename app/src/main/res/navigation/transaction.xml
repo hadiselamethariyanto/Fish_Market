@@ -19,6 +19,26 @@
     <dialog
         android:id="@+id/navigation_dialog_change_status_transaction"
         android:name="com.example.fishmarket.ui.home.transaction.ChangeStatusTransactionDialog"
-        tools:layout="@layout/dialog_change_status_transaction" />
+        tools:layout="@layout/dialog_change_status_transaction" >
+        <action
+            android:id="@+id/action_navigation_dialog_change_status_transaction_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.example.fishmarket.ui.payment.PaymentFragment"
+        android:label="@string/title_payment"
+        tools:layout="@layout/fragment_payment" >
+        <action
+            android:id="@+id/action_paymentFragment_to_addDiscountFragment"
+            app:destination="@id/addDiscountFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/addDiscountFragment"
+        android:name="com.example.fishmarket.ui.payment.AddDiscountFragment"
+        android:label="fragment_add_discount"
+        tools:layout="@layout/fragment_add_discount" />
 
 </navigation>

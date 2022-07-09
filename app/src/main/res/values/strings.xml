@@ -106,5 +106,11 @@
     <string name="queue">Queue: %s</string>
     <string name="additional_order">Additional Order</string>
     <string name="order">Order</string>
+    <string name="et_discount">Discount</string>
+    <string name="title_payment">Payment</string>
+    <string name="add_discount">Add Discount</string>
+    <string name="warning_discount_empty">Please fill discount value</string>
+    <string name="warning_discount_more">Discount value more than total fee</string>
+    <string name="subtotal" translatable="false">Subtotal</string>
 
 </resources>

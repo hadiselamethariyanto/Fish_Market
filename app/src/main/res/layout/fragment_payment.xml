@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.review_transaction.ReviewTransactionFragment">
+    tools:context=".ui.payment.PaymentFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -17,95 +17,41 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tvSelectTable"
-                android:layout_width="0dp"
+                android:id="@+id/tvDiscount"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:drawablePadding="8dp"
                 android:fontFamily="@font/roboto_regular"
-                android:paddingStart="24dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="12dp"
-                android:text="@string/select_table"
-                android:textColor="@color/orange_500"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_table_orange"
-                app:layout_constraintEnd_toStartOf="@id/tvQueueNumber"
+                android:text="@string/add_discount"
+                android:textSize="14sp"
+                app:drawableStartCompat="@drawable/ic_discount"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvQueueNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawablePadding="16dp"
-                android:fontFamily="@font/roboto_regular"
-                android:paddingStart="24dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="12dp"
-                android:text="@string/queue_number"
-                android:textColor="@color/orange_500"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_receipt_orange_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tvSelectTable"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/v1"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
+                android:layout_marginTop="12dp"
                 android:background="@color/gray_200"
-                app:layout_constraintTop_toBottomOf="@id/tvSelectTable" />
-
-            <TextView
-                android:id="@+id/tvAdditionalOrder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/additional_order"
-                android:textSize="16sp"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/v1" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvAdditionalOrder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:scrollbars="vertical"
-                android:clipToPadding="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/tvAdditionalOrder"
-                tools:listitem="@layout/item_history_detail" />
-
-            <TextView
-                android:id="@+id/tvOrder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/order"
-                android:textSize="16sp"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/rvAdditionalOrder" />
+                app:layout_constraintTop_toBottomOf="@id/tvDiscount" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvDetailTransaction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:paddingBottom="100dp"
+                android:nestedScrollingEnabled="false"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/tvOrder"
+                app:layout_constraintTop_toBottomOf="@id/v1"
                 tools:listitem="@layout/item_history_detail" />
 
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
@@ -119,22 +65,44 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/placeholderTable"
+            android:id="@+id/placeholderSubtotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:fontFamily="sans-serif"
-            android:text="@string/title_table"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/subtotal"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/tvTableName"
+            android:id="@+id/tvSubtotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@id/placeholderTable"
-            android:fontFamily="sans-serif"
+            android:layout_toEndOf="@id/placeholderSubtotal"
+            android:fontFamily="@font/roboto_regular"
             android:gravity="end"
+            android:text="@string/placeholder_total_income"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/placeholderDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/placeholderSubtotal"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/et_discount"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvDiscountValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvSubtotal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="4dp"
+            android:text="@string/placeholder_total_income"
             android:textSize="14sp" />
 
 
@@ -142,8 +110,9 @@
             android:id="@+id/placeholderTotalFee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/placeholderTable"
+            android:layout_below="@id/placeholderDiscount"
             android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif-black"
             android:text="@string/total_fee"
@@ -153,8 +122,9 @@
             android:id="@+id/tvTotalFee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTableName"
+            android:layout_below="@id/tvDiscountValue"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:layout_toEndOf="@id/placeholderTotalFee"
             android:fontFamily="sans-serif-black"
@@ -174,4 +144,5 @@
             android:textSize="16sp" />
 
     </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

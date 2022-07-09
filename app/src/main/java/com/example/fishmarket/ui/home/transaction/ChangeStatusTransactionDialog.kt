@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,8 +61,8 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
                         binding.rlDetail.visibility = View.GONE
                     }
                     4 -> {
-                        binding.llSelectRestaurant.visibility = View.GONE
-                        binding.rlDetail.visibility = View.VISIBLE
+//                        binding.llSelectRestaurant.visibility = View.GONE
+//                        binding.rlDetail.visibility = View.VISIBLE
                     }
                     else -> {
                         binding.llSelectRestaurant.visibility = View.GONE
@@ -143,6 +145,15 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
                             restaurant.id
                         ).observe(viewLifecycleOwner, changeStatusObserver)
                     }
+                } else if (newStatus == 4) {
+                    val jsonTransaction = Gson().toJson(transaction)
+
+                    val bundle = bundleOf("transaction" to jsonTransaction)
+                    findNavController().navigate(
+                        R.id.action_navigation_dialog_change_status_transaction_to_paymentFragment,
+                        bundle
+                    )
+                    dismiss()
                 } else {
                     homeViewModel.changeStatusTransaction(transaction, newStatus, "")
                         .observe(viewLifecycleOwner, changeStatusObserver)
@@ -190,8 +201,8 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
         homeViewModel.detailTransactionHistory.observe(viewLifecycleOwner) { list ->
             if (list.isNotEmpty()) {
                 detailTransactionPaymentAdapter.updateData(list)
-                val totalFee = homeViewModel.getTotalFee()
-                binding.tvTotalFee.text = Utils.formatNumberToRupiah(totalFee, requireActivity())
+//                val totalFee = homeViewModel.getTotalFee()
+//                binding.tvTotalFee.text = Utils.formatNumberToRupiah(totalFee, requireActivity())
             }
         }
     }
@@ -252,6 +263,8 @@ class ChangeStatusTransactionDialog : BottomSheetDialogFragment() {
             .setData(builder.byte)
             .print()
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

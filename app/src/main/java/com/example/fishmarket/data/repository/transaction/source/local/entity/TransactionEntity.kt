@@ -14,6 +14,8 @@ data class TransactionEntity(
     @ColumnInfo(name = "disajikan_date") var disajikan_date: Long,
     @ColumnInfo(name = "finished_date") var finished_date: Long,
     @ColumnInfo(name = "status") var status: Int,
+    @ColumnInfo(name = "original_fee") var original_fee: Int,
+    @ColumnInfo(name = "discount") var discount: Int,
     @ColumnInfo(name = "total_fee") var total_fee: Int,
     @ColumnInfo(name = "no_urut") var no_urut: Int
 )

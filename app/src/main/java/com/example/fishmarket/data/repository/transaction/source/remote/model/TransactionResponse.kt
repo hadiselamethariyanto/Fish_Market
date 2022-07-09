@@ -9,6 +9,8 @@ data class TransactionResponse(
     var disajikan_date: Long? = 0,
     var finished_date: Long? = 0,
     var status: Int? = 0,
+    var original_fee: Int? = 0,
+    var discount: Int? = 0,
     var total_fee: Int? = 0,
     var detail: List<DetailTransactionResponse>? = listOf(),
     var no_urut: Int? = 1
